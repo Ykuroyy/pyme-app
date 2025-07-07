@@ -11,12 +11,16 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-app = Flask(__name__)
-
 # アプリケーション起動時のログ
 logger.info("Flask application starting...")
 logger.info(f"Python version: {sys.version}")
 logger.info(f"Working directory: {os.getcwd()}")
+
+# Flaskアプリケーションの初期化
+app = Flask(__name__)
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'dev-secret-key')
+
+logger.info("Flask app initialized successfully")
 
 # 自動化ツールリスト（シンプル版）
 TOOLS = [
@@ -283,9 +287,15 @@ TOOLS = [
 ]
 
 @app.route('/')
+@app.route('/index')
+@app.route('/index.html')
 def index():
     logger.info("Index page accessed")
-    return render_template('index.html', tools=TOOLS)
+    try:
+        return render_template('index.html', tools=TOOLS)
+    except Exception as e:
+        logger.error(f"Error rendering index page: {e}")
+        return "Internal Server Error", 500
 
 @app.route('/tool/<int:tool_id>')
 def tool_detail(tool_id):
@@ -299,7 +309,19 @@ def tool_detail(tool_id):
 # ヘルスチェック用エンドポイント
 @app.route('/health')
 def health_check():
-    return {"status": "healthy"}, 200
+    return {"status": "healthy", "app": "pyme-app"}, 200
+
+# デバッグ用エンドポイント
+@app.route('/debug')
+def debug_info():
+    return {
+        "app_name": "pyme-app",
+        "python_version": sys.version,
+        "working_directory": os.getcwd(),
+        "port": os.environ.get('PORT', '8000'),
+        "flask_env": os.environ.get('FLASK_ENV', 'production'),
+        "tools_count": len(TOOLS)
+    }, 200
 
 if __name__ == '__main__':
     try:
