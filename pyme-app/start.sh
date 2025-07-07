@@ -12,4 +12,4 @@ echo "Files in directory:"
 ls -la
 
 # アプリケーションの起動（最もシンプルな設定）
-exec gunicorn app:app 
+exec gunicorn --bind 0.0.0.0:${PORT:-8000} app:app 
