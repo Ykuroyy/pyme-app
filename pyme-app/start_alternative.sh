@@ -11,5 +11,14 @@ echo "Current directory: $(pwd)"
 echo "Files in directory:"
 ls -la
 
+# Pythonのバージョン確認
+echo "Python version:"
+python --version
+
+# 依存関係の確認
+echo "Installed packages:"
+pip list
+
 # 直接Pythonで起動
+echo "Starting with Python directly..."
 python app.py 

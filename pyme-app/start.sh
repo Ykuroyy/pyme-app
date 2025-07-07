@@ -15,6 +15,6 @@ ls -la
 echo "Templates directory:"
 ls -la templates/ 2>/dev/null || echo "Templates directory not found"
 
-# アプリケーションの起動
-echo "Starting gunicorn..."
-exec gunicorn --workers 1 --bind 0.0.0.0:${PORT:-8000} --timeout 120 --log-level info app:app 
+# 最も基本的な起動方法
+echo "Starting with basic gunicorn command..."
+exec gunicorn app:app 

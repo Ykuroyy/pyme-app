@@ -366,8 +366,13 @@ if __name__ == '__main__':
         debug_mode = os.environ.get('FLASK_ENV') == 'development'
         logger.info(f"Starting Flask app on port {port}, debug={debug_mode}")
         logger.info(f"App will be available at: http://0.0.0.0:{port}")
+        logger.info("Press Ctrl+C to stop the server")
         app.run(host='0.0.0.0', port=port, debug=debug_mode)
+    except KeyboardInterrupt:
+        logger.info("Server stopped by user")
     except Exception as e:
         logger.error(f"Failed to start Flask app: {e}")
         logger.error(f"Error details: {type(e).__name__}: {e}")
+        logger.error(f"Current working directory: {os.getcwd()}")
+        logger.error(f"Files in current directory: {os.listdir('.')}")
         sys.exit(1) 
