@@ -164,136 +164,136 @@ TOOLS = [
         "difficulty": "中級",
         "ai_prompt": "PythonでSNS自動投稿のコードを作成してください。以下の条件でお願いします：\n\n1. tweepyライブラリを使ってTwitterに投稿する\n2. 毎日9時にビジネスTipsを自動投稿する\n3. 複数のTipsからランダムに選択する\n4. エラーハンドリングも含める\n5. 初心者でも理解できるようにコメントを詳しく書く\n\n投稿時間: 毎日9時\n投稿内容: ビジネスTips（複数パターン）\n投稿先: Twitter"
     },
-         {
-         "id": 11, 
-         "title": "カレンダー自動登録", 
-         "desc": "予定を自動でGoogleカレンダーに登録",
-         "how_to": "Google Calendar APIを使って予定を自動でカレンダーに登録します。",
-         "sample_code": "from google.oauth2.credentials import Credentials\nfrom googleapiclient.discovery import build\nfrom datetime import datetime, timedelta\n\n# Google Calendar API設定\ncreds = Credentials.from_authorized_user_file('token.json', SCOPES)\nservice = build('calendar', 'v3', credentials=creds)\n\n# 予定を作成\nevent = {\n    'summary': '会議',\n    'description': 'プロジェクト会議',\n    'start': {\n        'dateTime': '2024-01-15T10:00:00+09:00',\n        'timeZone': 'Asia/Tokyo',\n    },\n    'end': {\n        'dateTime': '2024-01-15T11:00:00+09:00',\n        'timeZone': 'Asia/Tokyo',\n    }\n}\n\nevent = service.events().insert(calendarId='primary', body=event).execute()\nprint(f'予定を作成しました: {event.get(\"htmlLink\")}')",
-         "libraries": "google-auth、google-api-python-client",
-         "explanation": "Google Calendar APIを使って予定を自動登録することで、スケジュール管理を効率化できます。",
-         "benefits": ["手動入力が不要", "ミスを防げる", "一括登録が可能"],
-         "time_required": "1〜2時間",
-         "difficulty": "中級",
-         "ai_prompt": "PythonでGoogleカレンダー自動登録のコードを作成してください。以下の条件でお願いします：\n\n1. Google Calendar APIを使う\n2. 指定した日時に予定を登録する\n3. 予定のタイトル、説明、開始・終了時間を設定する\n4. エラーハンドリングも含める\n5. 初心者でも理解できるようにコメントを詳しく書く\n\n予定内容: 会議\n日時: 指定した日時\nカレンダー: プライマリカレンダー"
-     },
-     {
-         "id": 12, 
-         "title": "名刺データ自動整理", 
-         "desc": "名刺画像から情報を自動抽出",
-         "how_to": "OCR技術を使って名刺画像から文字を認識し、連絡先情報を自動抽出します。",
-         "sample_code": "import cv2\nimport pytesseract\nimport re\n\n# 名刺画像を読み込み\ndef extract_business_card(image_path):\n    # 画像を読み込み\n    image = cv2.imread(image_path)\n    \n    # OCRで文字認識\n    text = pytesseract.image_to_string(image, lang='jpn')\n    \n    # 正規表現で情報を抽出\n    name_pattern = r'([\\u4e00-\\u9fa5]{2,4})'  # 日本語の名前\n    phone_pattern = r'(\\d{2,4}-\\d{2,4}-\\d{4})'  # 電話番号\n    email_pattern = r'([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,})'  # メールアドレス\n    \n    # 情報を抽出\n    name = re.search(name_pattern, text)\n    phone = re.search(phone_pattern, text)\n    email = re.search(email_pattern, text)\n    \n    return {\n        'name': name.group(1) if name else '',\n        'phone': phone.group(1) if phone else '',\n        'email': email.group(1) if email else ''\n    }\n\n# 使用例\nresult = extract_business_card('business_card.jpg')\nprint(f'名前: {result[\"name\"]}')\nprint(f'電話: {result[\"phone\"]}')\nprint(f'メール: {result[\"email\"]}')",
-         "libraries": "opencv-python、pytesseract、re（標準ライブラリ）",
-         "explanation": "名刺の画像から自動で連絡先情報を抽出することで、手動入力の手間を大幅に削減できます。",
-         "benefits": ["手動入力が不要", "大量処理が可能", "データベース化が簡単"],
-         "time_required": "1〜2時間",
-         "difficulty": "中級",
-         "ai_prompt": "Pythonで名刺データ自動整理のコードを作成してください。以下の条件でお願いします：\n\n1. OpenCVとTesseract OCRを使う\n2. 名刺画像から文字を認識する\n3. 名前、電話番号、メールアドレスを抽出する\n4. 正規表現で情報を整理する\n5. 初心者でも理解できるようにコメントを詳しく書く\n\n対象画像: 名刺の画像ファイル\n抽出情報: 名前、電話番号、メールアドレス\n出力形式: 辞書形式"
-     },
-     {
-         "id": 13, 
-         "title": "請求書自動作成", 
-         "desc": "請求書を自動で作成",
-         "how_to": "テンプレートを使って請求書を自動生成し、PDFファイルとして保存します。",
-         "sample_code": "from reportlab.pdfgen import canvas\nfrom reportlab.lib.pagesizes import A4\nfrom datetime import datetime\n\ndef create_invoice(client_name, items, total_amount):\n    # PDF作成\n    c = canvas.Canvas('invoice.pdf', pagesize=A4)\n    \n    # ヘッダー\n    c.setFont('Helvetica-Bold', 16)\n    c.drawString(100, 750, '請求書')\n    \n    # 日付\n    c.setFont('Helvetica', 12)\n    c.drawString(100, 720, f'発行日: {datetime.now().strftime(\"%Y年%m月%d日\")}')\n    \n    # 顧客名\n    c.drawString(100, 690, f'顧客名: {client_name}')\n    \n    # 明細\n    y = 650\n    for item in items:\n        c.drawString(100, y, f'{item[\"name\"]} - {item[\"price\"]:,}円')\n        y -= 20\n    \n    # 合計\n    c.setFont('Helvetica-Bold', 14)\n    c.drawString(100, y-20, f'合計: {total_amount:,}円')\n    \n    c.save()\n    print('請求書を作成しました')\n\n# 使用例\nitems = [\n    {'name': 'Webサイト制作', 'price': 100000},\n    {'name': '保守費用', 'price': 20000}\n]\ncreate_invoice('株式会社サンプル', items, 120000)",
-         "libraries": "reportlab、datetime（標準ライブラリ）",
-         "explanation": "請求書を自動生成することで、経理作業を効率化し、ミスを防げます。",
-         "benefits": ["手動作成が不要", "フォーマットが統一", "大量作成が可能"],
-         "time_required": "1〜2時間",
-         "difficulty": "中級",
-         "ai_prompt": "Pythonで請求書自動作成のコードを作成してください。以下の条件でお願いします：\n\n1. reportlabライブラリを使う\n2. 顧客名、明細、合計金額を含む請求書を作成する\n3. 見やすいレイアウトにする\n4. PDFファイルとして保存する\n5. 初心者でも理解できるようにコメントを詳しく書く\n\n請求書内容: 顧客名、明細、合計金額\n出力形式: PDFファイル\nファイル名: invoice.pdf"
-     },
-     {
-         "id": 14, 
-         "title": "アンケート自動集計", 
-         "desc": "アンケート結果を自動で集計",
-         "how_to": "ExcelやCSVファイルのアンケート結果を読み込み、自動で集計・分析します。",
-         "sample_code": "import pandas as pd\nimport matplotlib.pyplot as plt\n\n# アンケートデータを読み込み\ndf = pd.read_csv('survey_results.csv')\n\n# 基本統計\nprint('=== 基本統計 ===')\nprint(f'回答者数: {len(df)}人')\nprint(f'平均年齢: {df[\"年齢\"].mean():.1f}歳')\n\n# 性別の集計\nprint('\\n=== 性別集計 ===')\ngender_counts = df['性別'].value_counts()\nprint(gender_counts)\n\n# 満足度の集計\nprint('\\n=== 満足度集計 ===')\nsatisfaction_counts = df['満足度'].value_counts().sort_index()\nprint(satisfaction_counts)\n\n# グラフ作成\nplt.figure(figsize=(10, 6))\nsatisfaction_counts.plot(kind='bar')\nplt.title('満足度分布')\nplt.xlabel('満足度')\nplt.ylabel('回答者数')\nplt.savefig('satisfaction_chart.png')\nplt.show()\n\nprint('集計完了！グラフを保存しました。')",
-         "libraries": "pandas、matplotlib",
-         "explanation": "アンケート結果を自動集計することで、手作業の時間を大幅に削減し、正確な分析が可能になります。",
-         "benefits": ["手作業が不要", "正確な集計", "グラフも自動作成"],
-         "time_required": "30分〜1時間",
-         "difficulty": "初級",
-         "ai_prompt": "Pythonでアンケート自動集計のコードを作成してください。以下の条件でお願いします：\n\n1. pandasライブラリを使う\n2. CSVファイルのアンケート結果を読み込む\n3. 基本統計（回答者数、平均年齢など）を計算する\n4. 性別、満足度などの集計を行う\n5. 初心者でも理解できるようにコメントを詳しく書く\n\n対象ファイル: survey_results.csv\n集計項目: 性別、年齢、満足度\n出力: 統計結果とグラフ"
-     },
-     {
-         "id": 15, 
-         "title": "音声データ自動文字起こし", 
-         "desc": "音声ファイルを自動でテキスト化",
-         "how_to": "音声認識APIを使って音声ファイルを自動でテキストに変換します。",
-         "sample_code": "import speech_recognition as sr\nimport os\n\ndef transcribe_audio(audio_file_path):\n    # 音声認識エンジンを初期化\n    recognizer = sr.Recognizer()\n    \n    # 音声ファイルを読み込み\n    with sr.AudioFile(audio_file_path) as source:\n        # 音声を録音\n        audio = recognizer.record(source)\n        \n        try:\n            # Google Speech Recognitionで文字起こし\n            text = recognizer.recognize_google(audio, language='ja-JP')\n            return text\n        except sr.UnknownValueError:\n            return '音声を認識できませんでした'\n        except sr.RequestError as e:\n            return f'エラーが発生しました: {e}'\n\n# 使用例\nresult = transcribe_audio('meeting_recording.wav')\nprint('文字起こし結果:')\nprint(result)\n\n# 結果をファイルに保存\nwith open('transcription.txt', 'w', encoding='utf-8') as f:\n    f.write(result)\nprint('文字起こし結果をファイルに保存しました')",
-         "libraries": "SpeechRecognition、pyaudio",
-         "explanation": "会議の録音やインタビュー音声を自動でテキスト化することで、議事録作成の時間を大幅に短縮できます。",
-         "benefits": ["手動入力が不要", "時間を大幅節約", "正確な文字起こし"],
-         "time_required": "1〜2時間",
-         "difficulty": "中級",
-         "ai_prompt": "Pythonで音声データ自動文字起こしのコードを作成してください。以下の条件でお願いします：\n\n1. SpeechRecognitionライブラリを使う\n2. 音声ファイル（WAV形式）を読み込む\n3. Google Speech Recognitionで文字起こしする\n4. 日本語に対応する\n5. 初心者でも理解できるようにコメントを詳しく書く\n\n対象ファイル: 音声ファイル（WAV形式）\n言語: 日本語\n出力: テキストファイル"
-     },
-     {
-         "id": 16, 
-         "title": "画像から文字抽出", 
-         "desc": "画像内の文字を自動で抽出",
-         "how_to": "OCR技術を使って画像内の文字を認識し、テキストとして抽出します。",
-         "sample_code": "import pytesseract\nfrom PIL import Image\nimport cv2\nimport numpy as np\n\ndef extract_text_from_image(image_path):\n    # 画像を読み込み\n    image = cv2.imread(image_path)\n    \n    # グレースケールに変換\n    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)\n    \n    # ノイズ除去\n    denoised = cv2.medianBlur(gray, 3)\n    \n    # 二値化\n    _, binary = cv2.threshold(denoised, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)\n    \n    # OCRで文字認識\n    text = pytesseract.image_to_string(binary, lang='jpn')\n    \n    return text.strip()\n\n# 使用例\nresult = extract_text_from_image('document_image.jpg')\nprint('抽出されたテキスト:')\nprint(result)\n\n# 結果をファイルに保存\nwith open('extracted_text.txt', 'w', encoding='utf-8') as f:\n    f.write(result)\nprint('テキストをファイルに保存しました')",
-         "libraries": "pytesseract、opencv-python、Pillow",
-         "explanation": "画像内の文字を自動で抽出することで、手動入力の手間を大幅に削減できます。",
-         "benefits": ["手動入力が不要", "大量処理が可能", "正確な文字認識"],
-         "time_required": "30分〜1時間",
-         "difficulty": "初級",
-         "ai_prompt": "Pythonで画像から文字抽出のコードを作成してください。以下の条件でお願いします：\n\n1. pytesseractライブラリを使う\n2. 画像ファイルを読み込む\n3. 前処理（グレースケール化、ノイズ除去）を行う\n4. 日本語の文字を認識する\n5. 初心者でも理解できるようにコメントを詳しく書く\n\n対象画像: 文字が含まれる画像ファイル\n言語: 日本語\n出力: テキストファイル"
-     },
-     {
-         "id": 17, 
-         "title": "ファイル自動バックアップ", 
-         "desc": "重要ファイルを自動でバックアップ",
-         "how_to": "指定したフォルダのファイルを定期的にバックアップフォルダにコピーします。",
-         "sample_code": "import shutil\nimport os\nfrom datetime import datetime\nimport schedule\nimport time\n\ndef backup_files(source_folder, backup_folder):\n    # バックアップフォルダを作成（日付付き）\n    today = datetime.now().strftime('%Y%m%d')\n    backup_path = os.path.join(backup_folder, f'backup_{today}')\n    \n    if not os.path.exists(backup_path):\n        os.makedirs(backup_path)\n    \n    # ファイルをコピー\n    for item in os.listdir(source_folder):\n        source_item = os.path.join(source_folder, item)\n        backup_item = os.path.join(backup_path, item)\n        \n        if os.path.isfile(source_item):\n            shutil.copy2(source_item, backup_item)\n            print(f'バックアップ完了: {item}')\n        elif os.path.isdir(source_item):\n            shutil.copytree(source_item, backup_item)\n            print(f'フォルダバックアップ完了: {item}')\n    \n    print(f'バックアップ完了: {backup_path}')\n\n# 毎日18時にバックアップ\nschedule.every().day.at('18:00').do(\n    backup_files, \n    'C:/Users/YourName/Documents', \n    'C:/Users/YourName/Backups'\n)\n\n# スケジュール実行\nwhile True:\n    schedule.run_pending()\n    time.sleep(60)",
-         "libraries": "shutil、os、datetime、schedule（標準ライブラリ）",
-         "explanation": "重要ファイルを自動でバックアップすることで、データ損失のリスクを軽減できます。",
-         "benefits": ["データ保護", "手動バックアップが不要", "定期的な実行"],
-         "time_required": "30分〜1時間",
-         "difficulty": "初級",
-         "ai_prompt": "Pythonでファイル自動バックアップのコードを作成してください。以下の条件でお願いします：\n\n1. shutilライブラリを使う\n2. 指定したフォルダのファイルをバックアップする\n3. 日付付きのフォルダにコピーする\n4. 毎日指定した時間に自動実行する\n5. 初心者でも理解できるようにコメントを詳しく書く\n\n対象フォルダ: バックアップしたいフォルダ\nバックアップ先: 指定したフォルダ\n実行時間: 毎日18時"
-     },
-     {
-         "id": 18, 
-         "title": "会議議事録自動作成", 
-         "desc": "会議音声から議事録を自動作成",
-         "how_to": "音声認識とAIを使って会議の録音から議事録を自動生成します。",
-         "sample_code": "import speech_recognition as sr\nfrom datetime import datetime\nimport re\n\ndef create_meeting_minutes(audio_file_path):\n    # 音声認識\n    recognizer = sr.Recognizer()\n    \n    with sr.AudioFile(audio_file_path) as source:\n        audio = recognizer.record(source)\n        \n        try:\n            # 文字起こし\n            text = recognizer.recognize_google(audio, language='ja-JP')\n            \n            # 議事録の形式に整理\n            minutes = f'''\n会議議事録\n\n日時: {datetime.now().strftime('%Y年%m月%d日 %H:%M')}\n参加者: [参加者名を記入]\n\n【議題】\n[議題を記入]\n\n【議事内容】\n{text}\n\n【決定事項】\n[決定事項を記入]\n\n【次回予定】\n[次回予定を記入]\n            '''\n            \n            return minutes\n            \n        except sr.UnknownValueError:\n            return '音声を認識できませんでした'\n\n# 使用例\nminutes = create_meeting_minutes('meeting.wav')\nprint(minutes)\n\n# ファイルに保存\nwith open('meeting_minutes.txt', 'w', encoding='utf-8') as f:\n    f.write(minutes)\nprint('議事録を保存しました')",
-         "libraries": "SpeechRecognition、datetime（標準ライブラリ）",
-         "explanation": "会議の録音から自動で議事録を作成することで、手動での議事録作成の時間を大幅に短縮できます。",
-         "benefits": ["議事録作成が自動化", "時間を大幅節約", "正確な記録"],
-         "time_required": "1〜2時間",
-         "difficulty": "中級",
-         "ai_prompt": "Pythonで会議議事録自動作成のコードを作成してください。以下の条件でお願いします：\n\n1. SpeechRecognitionライブラリを使う\n2. 会議の音声ファイルを文字起こしする\n3. 議事録の形式に整理する（日時、参加者、議題、議事内容、決定事項）\n4. テキストファイルとして保存する\n5. 初心者でも理解できるようにコメントを詳しく書く\n\n対象ファイル: 会議の音声ファイル\n出力形式: 議事録テキストファイル\n内容: 日時、参加者、議題、議事内容、決定事項"
-     },
-     {
-         "id": 19, 
-         "title": "翻訳自動化", 
-         "desc": "テキストを自動で翻訳",
-         "how_to": "Google Translate APIを使ってテキストを自動翻訳します。",
-         "sample_code": "from googletrans import Translator\nimport pandas as pd\n\ndef translate_text(text, target_lang='en'):\n    translator = Translator()\n    \n    try:\n        # 翻訳実行\n        result = translator.translate(text, dest=target_lang)\n        return result.text\n    except Exception as e:\n        return f'翻訳エラー: {e}'\n\ndef translate_file(input_file, output_file, target_lang='en'):\n    # ファイルを読み込み\n    with open(input_file, 'r', encoding='utf-8') as f:\n        content = f.read()\n    \n    # 翻訳\n    translated_content = translate_text(content, target_lang)\n    \n    # 結果を保存\n    with open(output_file, 'w', encoding='utf-8') as f:\n        f.write(translated_content)\n    \n    print(f'翻訳完了: {output_file}')\n\n# 使用例\n# 単一テキストの翻訳\ntranslated = translate_text('こんにちは、世界', 'en')\nprint(f'翻訳結果: {translated}')\n\n# ファイルの翻訳\ntranslate_file('japanese_text.txt', 'english_text.txt', 'en')",
-         "libraries": "googletrans==4.0.0rc1、pandas",
-         "explanation": "テキストを自動翻訳することで、多言語対応や国際的なコミュニケーションを効率化できます。",
-         "benefits": ["手動翻訳が不要", "多言語対応", "大量翻訳が可能"],
-         "time_required": "30分〜1時間",
-         "difficulty": "初級",
-         "ai_prompt": "Pythonで翻訳自動化のコードを作成してください。以下の条件でお願いします：\n\n1. googletransライブラリを使う\n2. 日本語のテキストを英語に翻訳する\n3. ファイル全体を翻訳する機能も含める\n4. エラーハンドリングも含める\n5. 初心者でも理解できるようにコメントを詳しく書く\n\n対象言語: 日本語→英語\n入力: テキストファイル\n出力: 翻訳されたテキストファイル"
-     },
-     {
-         "id": 20, 
-         "title": "タスク自動リマインド", 
-         "desc": "タスクを自動でリマインド",
-         "how_to": "スケジュール機能を使ってタスクの期限を管理し、自動でリマインドを送信します。",
-         "sample_code": "import schedule\nimport time\nimport smtplib\nfrom email.mime.text import MIMEText\nfrom datetime import datetime, timedelta\n\n# タスクリスト\ntasks = [\n    {'title': 'レポート提出', 'deadline': '2024-01-20', 'priority': 'high'},\n    {'title': '会議準備', 'deadline': '2024-01-18', 'priority': 'medium'},\n    {'title': 'メール返信', 'deadline': '2024-01-17', 'priority': 'low'}\n]\n\ndef check_deadlines():\n    today = datetime.now().date()\n    \n    for task in tasks:\n        deadline = datetime.strptime(task['deadline'], '%Y-%m-%d').date()\n        days_left = (deadline - today).days\n        \n        if days_left <= 1 and days_left >= 0:\n            send_reminder(task, days_left)\n\ndef send_reminder(task, days_left):\n    # メール設定\n    sender_email = 'your_email@gmail.com'\n    sender_password = 'your_password'\n    receiver_email = 'your_email@gmail.com'\n    \n    # メール内容\n    subject = f'タスクリマインド: {task[\"title\"]}'\n    body = f'''\n    タスクリマインド\n    \n    タスク: {task['title']}\n    期限: {task['deadline']}\n    優先度: {task['priority']}\n    残り日数: {days_left}日\n    \n    早めに完了させましょう！\n    '''\n    \n    # メール送信\n    msg = MIMEText(body, 'plain')\n    msg['Subject'] = subject\n    msg['From'] = sender_email\n    msg['To'] = receiver_email\n    \n    server = smtplib.SMTP('smtp.gmail.com', 587)\n    server.starttls()\n    server.login(sender_email, sender_password)\n    server.send_message(msg)\n    server.quit()\n    \n    print(f'リマインド送信: {task[\"title\"]}')\n\n# 毎日9時にチェック\nschedule.every().day.at('09:00').do(check_deadlines)\n\n# スケジュール実行\nwhile True:\n    schedule.run_pending()\n    time.sleep(60)",
-         "libraries": "schedule、smtplib（標準ライブラリ）、datetime（標準ライブラリ）",
-         "explanation": "タスクの期限を自動で管理し、リマインドを送信することで、タスクの見落としを防げます。",
-         "benefits": ["タスクの見落としを防ぐ", "時間管理が向上", "自動リマインド"],
-         "time_required": "1〜2時間",
-         "difficulty": "中級",
-         "ai_prompt": "Pythonでタスク自動リマインドのコードを作成してください。以下の条件でお願いします：\n\n1. scheduleライブラリで毎日9時にチェックする\n2. タスクリストから期限が近いものを検出する\n3. 期限が1日前になったらメールでリマインドを送信する\n4. タスクのタイトル、期限、優先度を含める\n5. 初心者でも理解できるようにコメントを詳しく書く\n\nチェック時間: 毎日9時\nリマインド条件: 期限1日前\n送信内容: タスク名、期限、優先度"
-     }
+    {
+        "id": 11, 
+        "title": "カレンダー自動登録", 
+        "desc": "予定を自動でGoogleカレンダーに登録",
+        "how_to": "Google Calendar APIを使って予定を自動でカレンダーに登録します。",
+        "sample_code": "from google.oauth2.credentials import Credentials\nfrom googleapiclient.discovery import build\nfrom datetime import datetime, timedelta\n\n# Google Calendar API設定\ncreds = Credentials.from_authorized_user_file('token.json', SCOPES)\nservice = build('calendar', 'v3', credentials=creds)\n\n# 予定を作成\nevent = {\n    'summary': '会議',\n    'description': 'プロジェクト会議',\n    'start': {\n        'dateTime': '2024-01-15T10:00:00+09:00',\n        'timeZone': 'Asia/Tokyo',\n    },\n    'end': {\n        'dateTime': '2024-01-15T11:00:00+09:00',\n        'timeZone': 'Asia/Tokyo',\n    }\n}\n\nevent = service.events().insert(calendarId='primary', body=event).execute()\nprint(f'予定を作成しました: {event.get(\"htmlLink\")}')",
+        "libraries": "google-auth、google-api-python-client",
+        "explanation": "Google Calendar APIを使って予定を自動登録することで、スケジュール管理を効率化できます。",
+        "benefits": ["手動入力が不要", "ミスを防げる", "一括登録が可能"],
+        "time_required": "1〜2時間",
+        "difficulty": "中級",
+        "ai_prompt": "PythonでGoogleカレンダー自動登録のコードを作成してください。以下の条件でお願いします：\n\n1. Google Calendar APIを使う\n2. 指定した日時に予定を登録する\n3. 予定のタイトル、説明、開始・終了時間を設定する\n4. エラーハンドリングも含める\n5. 初心者でも理解できるようにコメントを詳しく書く\n\n予定内容: 会議\n日時: 指定した日時\nカレンダー: プライマリカレンダー"
+    },
+    {
+        "id": 12, 
+        "title": "名刺データ自動整理", 
+        "desc": "名刺画像から情報を自動抽出",
+        "how_to": "OCR技術を使って名刺画像から文字を認識し、連絡先情報を自動抽出します。",
+        "sample_code": "import cv2\nimport pytesseract\nimport re\n\n# 名刺画像を読み込み\ndef extract_business_card(image_path):\n    # 画像を読み込み\n    image = cv2.imread(image_path)\n    \n    # OCRで文字認識\n    text = pytesseract.image_to_string(image, lang='jpn')\n    \n    # 正規表現で情報を抽出\n    name_pattern = r'([\\u4e00-\\u9fa5]{2,4})'  # 日本語の名前\n    phone_pattern = r'(\\d{2,4}-\\d{2,4}-\\d{4})'  # 電話番号\n    email_pattern = r'([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,})'  # メールアドレス\n    \n    # 情報を抽出\n    name = re.search(name_pattern, text)\n    phone = re.search(phone_pattern, text)\n    email = re.search(email_pattern, text)\n    \n    return {\n        'name': name.group(1) if name else '',\n        'phone': phone.group(1) if phone else '',\n        'email': email.group(1) if email else ''\n    }\n\n# 使用例\nresult = extract_business_card('business_card.jpg')\nprint(f'名前: {result[\"name\"]}')\nprint(f'電話: {result[\"phone\"]}')\nprint(f'メール: {result[\"email\"]}')",
+        "libraries": "opencv-python、pytesseract、re（標準ライブラリ）",
+        "explanation": "名刺の画像から自動で連絡先情報を抽出することで、手動入力の手間を大幅に削減できます。",
+        "benefits": ["手動入力が不要", "大量処理が可能", "データベース化が簡単"],
+        "time_required": "1〜2時間",
+        "difficulty": "中級",
+        "ai_prompt": "Pythonで名刺データ自動整理のコードを作成してください。以下の条件でお願いします：\n\n1. OpenCVとTesseract OCRを使う\n2. 名刺画像から文字を認識する\n3. 名前、電話番号、メールアドレスを抽出する\n4. 正規表現で情報を整理する\n5. 初心者でも理解できるようにコメントを詳しく書く\n\n対象画像: 名刺の画像ファイル\n抽出情報: 名前、電話番号、メールアドレス\n出力形式: 辞書形式"
+    },
+    {
+        "id": 13, 
+        "title": "請求書自動作成", 
+        "desc": "請求書を自動で作成",
+        "how_to": "テンプレートを使って請求書を自動生成し、PDFファイルとして保存します。",
+        "sample_code": "from reportlab.pdfgen import canvas\nfrom reportlab.lib.pagesizes import A4\nfrom datetime import datetime\n\ndef create_invoice(client_name, items, total_amount):\n    # PDF作成\n    c = canvas.Canvas('invoice.pdf', pagesize=A4)\n    \n    # ヘッダー\n    c.setFont('Helvetica-Bold', 16)\n    c.drawString(100, 750, '請求書')\n    \n    # 日付\n    c.setFont('Helvetica', 12)\n    c.drawString(100, 720, f'発行日: {datetime.now().strftime(\"%Y年%m月%d日\")}')\n    \n    # 顧客名\n    c.drawString(100, 690, f'顧客名: {client_name}')\n    \n    # 明細\n    y = 650\n    for item in items:\n        c.drawString(100, y, f'{item[\"name\"]} - {item[\"price\"]:,}円')\n        y -= 20\n    \n    # 合計\n    c.setFont('Helvetica-Bold', 14)\n    c.drawString(100, y-20, f'合計: {total_amount:,}円')\n    \n    c.save()\n    print('請求書を作成しました')\n\n# 使用例\nitems = [\n    {'name': 'Webサイト制作', 'price': 100000},\n    {'name': '保守費用', 'price': 20000}\n]\ncreate_invoice('株式会社サンプル', items, 120000)",
+        "libraries": "reportlab、datetime（標準ライブラリ）",
+        "explanation": "請求書を自動生成することで、経理作業を効率化し、ミスを防げます。",
+        "benefits": ["手動作成が不要", "フォーマットが統一", "大量作成が可能"],
+        "time_required": "1〜2時間",
+        "difficulty": "中級",
+        "ai_prompt": "Pythonで請求書自動作成のコードを作成してください。以下の条件でお願いします：\n\n1. reportlabライブラリを使う\n2. 顧客名、明細、合計金額を含む請求書を作成する\n3. 見やすいレイアウトにする\n4. PDFファイルとして保存する\n5. 初心者でも理解できるようにコメントを詳しく書く\n\n請求書内容: 顧客名、明細、合計金額\n出力形式: PDFファイル\nファイル名: invoice.pdf"
+    },
+    {
+        "id": 14, 
+        "title": "アンケート自動集計", 
+        "desc": "アンケート結果を自動で集計",
+        "how_to": "ExcelやCSVファイルのアンケート結果を読み込み、自動で集計・分析します。",
+        "sample_code": "import pandas as pd\nimport matplotlib.pyplot as plt\n\n# アンケートデータを読み込み\ndf = pd.read_csv('survey_results.csv')\n\n# 基本統計\nprint('=== 基本統計 ===')\nprint(f'回答者数: {len(df)}人')\nprint(f'平均年齢: {df[\"年齢\"].mean():.1f}歳')\n\n# 性別の集計\nprint('\\n=== 性別集計 ===')\ngender_counts = df['性別'].value_counts()\nprint(gender_counts)\n\n# 満足度の集計\nprint('\\n=== 満足度集計 ===')\nsatisfaction_counts = df['満足度'].value_counts().sort_index()\nprint(satisfaction_counts)\n\n# グラフ作成\nplt.figure(figsize=(10, 6))\nsatisfaction_counts.plot(kind='bar')\nplt.title('満足度分布')\nplt.xlabel('満足度')\nplt.ylabel('回答者数')\nplt.savefig('satisfaction_chart.png')\nplt.show()\n\nprint('集計完了！グラフを保存しました。')",
+        "libraries": "pandas、matplotlib",
+        "explanation": "アンケート結果を自動集計することで、手作業の時間を大幅に削減し、正確な分析が可能になります。",
+        "benefits": ["手作業が不要", "正確な集計", "グラフも自動作成"],
+        "time_required": "30分〜1時間",
+        "difficulty": "初級",
+        "ai_prompt": "Pythonでアンケート自動集計のコードを作成してください。以下の条件でお願いします：\n\n1. pandasライブラリを使う\n2. CSVファイルのアンケート結果を読み込む\n3. 基本統計（回答者数、平均年齢など）を計算する\n4. 性別、満足度などの集計を行う\n5. 初心者でも理解できるようにコメントを詳しく書く\n\n対象ファイル: survey_results.csv\n集計項目: 性別、年齢、満足度\n出力: 統計結果とグラフ"
+    },
+    {
+        "id": 15, 
+        "title": "音声データ自動文字起こし", 
+        "desc": "音声ファイルを自動でテキスト化",
+        "how_to": "音声認識APIを使って音声ファイルを自動でテキストに変換します。",
+        "sample_code": "import speech_recognition as sr\nimport os\n\ndef transcribe_audio(audio_file_path):\n    # 音声認識エンジンを初期化\n    recognizer = sr.Recognizer()\n    \n    # 音声ファイルを読み込み\n    with sr.AudioFile(audio_file_path) as source:\n        # 音声を録音\n        audio = recognizer.record(source)\n        \n        try:\n            # Google Speech Recognitionで文字起こし\n            text = recognizer.recognize_google(audio, language='ja-JP')\n            return text\n        except sr.UnknownValueError:\n            return '音声を認識できませんでした'\n        except sr.RequestError as e:\n            return f'エラーが発生しました: {e}'\n\n# 使用例\nresult = transcribe_audio('meeting_recording.wav')\nprint('文字起こし結果:')\nprint(result)\n\n# 結果をファイルに保存\nwith open('transcription.txt', 'w', encoding='utf-8') as f:\n    f.write(result)\nprint('文字起こし結果をファイルに保存しました')",
+        "libraries": "SpeechRecognition、pyaudio",
+        "explanation": "会議の録音やインタビュー音声を自動でテキスト化することで、議事録作成の時間を大幅に短縮できます。",
+        "benefits": ["手動入力が不要", "時間を大幅節約", "正確な文字起こし"],
+        "time_required": "1〜2時間",
+        "difficulty": "中級",
+        "ai_prompt": "Pythonで音声データ自動文字起こしのコードを作成してください。以下の条件でお願いします：\n\n1. SpeechRecognitionライブラリを使う\n2. 音声ファイル（WAV形式）を読み込む\n3. Google Speech Recognitionで文字起こしする\n4. 日本語に対応する\n5. 初心者でも理解できるようにコメントを詳しく書く\n\n対象ファイル: 音声ファイル（WAV形式）\n言語: 日本語\n出力: テキストファイル"
+    },
+    {
+        "id": 16, 
+        "title": "画像から文字抽出", 
+        "desc": "画像内の文字を自動で抽出",
+        "how_to": "OCR技術を使って画像内の文字を認識し、テキストとして抽出します。",
+        "sample_code": "import pytesseract\nfrom PIL import Image\nimport cv2\nimport numpy as np\n\ndef extract_text_from_image(image_path):\n    # 画像を読み込み\n    image = cv2.imread(image_path)\n    \n    # グレースケールに変換\n    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)\n    \n    # ノイズ除去\n    denoised = cv2.medianBlur(gray, 3)\n    \n    # 二値化\n    _, binary = cv2.threshold(denoised, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)\n    \n    # OCRで文字認識\n    text = pytesseract.image_to_string(binary, lang='jpn')\n    \n    return text.strip()\n\n# 使用例\nresult = extract_text_from_image('document_image.jpg')\nprint('抽出されたテキスト:')\nprint(result)\n\n# 結果をファイルに保存\nwith open('extracted_text.txt', 'w', encoding='utf-8') as f:\n    f.write(result)\nprint('テキストをファイルに保存しました')",
+        "libraries": "pytesseract、opencv-python、Pillow",
+        "explanation": "画像内の文字を自動で抽出することで、手動入力の手間を大幅に削減できます。",
+        "benefits": ["手動入力が不要", "大量処理が可能", "正確な文字認識"],
+        "time_required": "30分〜1時間",
+        "difficulty": "初級",
+        "ai_prompt": "Pythonで画像から文字抽出のコードを作成してください。以下の条件でお願いします：\n\n1. pytesseractライブラリを使う\n2. 画像ファイルを読み込む\n3. 前処理（グレースケール化、ノイズ除去）を行う\n4. 日本語の文字を認識する\n5. 初心者でも理解できるようにコメントを詳しく書く\n\n対象画像: 文字が含まれる画像ファイル\n言語: 日本語\n出力: テキストファイル"
+    },
+    {
+        "id": 17, 
+        "title": "ファイル自動バックアップ", 
+        "desc": "重要ファイルを自動でバックアップ",
+        "how_to": "指定したフォルダのファイルを定期的にバックアップフォルダにコピーします。",
+        "sample_code": "import shutil\nimport os\nfrom datetime import datetime\nimport schedule\nimport time\n\ndef backup_files(source_folder, backup_folder):\n    # バックアップフォルダを作成（日付付き）\n    today = datetime.now().strftime('%Y%m%d')\n    backup_path = os.path.join(backup_folder, f'backup_{today}')\n    \n    if not os.path.exists(backup_path):\n        os.makedirs(backup_path)\n    \n    # ファイルをコピー\n    for item in os.listdir(source_folder):\n        source_item = os.path.join(source_folder, item)\n        backup_item = os.path.join(backup_path, item)\n        \n        if os.path.isfile(source_item):\n            shutil.copy2(source_item, backup_item)\n            print(f'バックアップ完了: {item}')\n        elif os.path.isdir(source_item):\n            shutil.copytree(source_item, backup_item)\n            print(f'フォルダバックアップ完了: {item}')\n    \n    print(f'バックアップ完了: {backup_path}')\n\n# 毎日18時にバックアップ\nschedule.every().day.at('18:00').do(\n    backup_files, \n    'C:/Users/YourName/Documents', \n    'C:/Users/YourName/Backups'\n)\n\n# スケジュール実行\nwhile True:\n    schedule.run_pending()\n    time.sleep(60)",
+        "libraries": "shutil、os、datetime、schedule（標準ライブラリ）",
+        "explanation": "重要ファイルを自動でバックアップすることで、データ損失のリスクを軽減できます。",
+        "benefits": ["データ保護", "手動バックアップが不要", "定期的な実行"],
+        "time_required": "30分〜1時間",
+        "difficulty": "初級",
+        "ai_prompt": "Pythonでファイル自動バックアップのコードを作成してください。以下の条件でお願いします：\n\n1. shutilライブラリを使う\n2. 指定したフォルダのファイルをバックアップする\n3. 日付付きのフォルダにコピーする\n4. 毎日指定した時間に自動実行する\n5. 初心者でも理解できるようにコメントを詳しく書く\n\n対象フォルダ: バックアップしたいフォルダ\nバックアップ先: 指定したフォルダ\n実行時間: 毎日18時"
+    },
+    {
+        "id": 18, 
+        "title": "会議議事録自動作成", 
+        "desc": "会議音声から議事録を自動作成",
+        "how_to": "音声認識とAIを使って会議の録音から議事録を自動生成します。",
+        "sample_code": "import speech_recognition as sr\nfrom datetime import datetime\nimport re\n\ndef create_meeting_minutes(audio_file_path):\n    # 音声認識\n    recognizer = sr.Recognizer()\n    \n    with sr.AudioFile(audio_file_path) as source:\n        audio = recognizer.record(source)\n        \n        try:\n            # 文字起こし\n            text = recognizer.recognize_google(audio, language='ja-JP')\n            \n            # 議事録の形式に整理\n            minutes = f'''\n会議議事録\n\n日時: {datetime.now().strftime('%Y年%m月%d日 %H:%M')}\n参加者: [参加者名を記入]\n\n【議題】\n[議題を記入]\n\n【議事内容】\n{text}\n\n【決定事項】\n[決定事項を記入]\n\n【次回予定】\n[次回予定を記入]\n            '''\n            \n            return minutes\n            \n        except sr.UnknownValueError:\n            return '音声を認識できませんでした'\n\n# 使用例\nminutes = create_meeting_minutes('meeting.wav')\nprint(minutes)\n\n# ファイルに保存\nwith open('meeting_minutes.txt', 'w', encoding='utf-8') as f:\n    f.write(minutes)\nprint('議事録を保存しました')",
+        "libraries": "SpeechRecognition、datetime（標準ライブラリ）",
+        "explanation": "会議の録音から自動で議事録を作成することで、手動での議事録作成の時間を大幅に短縮できます。",
+        "benefits": ["議事録作成が自動化", "時間を大幅節約", "正確な記録"],
+        "time_required": "1〜2時間",
+        "difficulty": "中級",
+        "ai_prompt": "Pythonで会議議事録自動作成のコードを作成してください。以下の条件でお願いします：\n\n1. SpeechRecognitionライブラリを使う\n2. 会議の音声ファイルを文字起こしする\n3. 議事録の形式に整理する（日時、参加者、議題、議事内容、決定事項）\n4. テキストファイルとして保存する\n5. 初心者でも理解できるようにコメントを詳しく書く\n\n対象ファイル: 会議の音声ファイル\n出力形式: 議事録テキストファイル\n内容: 日時、参加者、議題、議事内容、決定事項"
+    },
+    {
+        "id": 19, 
+        "title": "翻訳自動化", 
+        "desc": "テキストを自動で翻訳",
+        "how_to": "Google Translate APIを使ってテキストを自動翻訳します。",
+        "sample_code": "from googletrans import Translator\nimport pandas as pd\n\ndef translate_text(text, target_lang='en'):\n    translator = Translator()\n    \n    try:\n        # 翻訳実行\n        result = translator.translate(text, dest=target_lang)\n        return result.text\n    except Exception as e:\n        return f'翻訳エラー: {e}'\n\ndef translate_file(input_file, output_file, target_lang='en'):\n    # ファイルを読み込み\n    with open(input_file, 'r', encoding='utf-8') as f:\n        content = f.read()\n    \n    # 翻訳\n    translated_content = translate_text(content, target_lang)\n    \n    # 結果を保存\n    with open(output_file, 'w', encoding='utf-8') as f:\n        f.write(translated_content)\n    \n    print(f'翻訳完了: {output_file}')\n\n# 使用例\n# 単一テキストの翻訳\ntranslated = translate_text('こんにちは、世界', 'en')\nprint(f'翻訳結果: {translated}')\n\n# ファイルの翻訳\ntranslate_file('japanese_text.txt', 'english_text.txt', 'en')",
+        "libraries": "googletrans==4.0.0rc1、pandas",
+        "explanation": "テキストを自動翻訳することで、多言語対応や国際的なコミュニケーションを効率化できます。",
+        "benefits": ["手動翻訳が不要", "多言語対応", "大量翻訳が可能"],
+        "time_required": "30分〜1時間",
+        "difficulty": "初級",
+        "ai_prompt": "Pythonで翻訳自動化のコードを作成してください。以下の条件でお願いします：\n\n1. googletransライブラリを使う\n2. 日本語のテキストを英語に翻訳する\n3. ファイル全体を翻訳する機能も含める\n4. エラーハンドリングも含める\n5. 初心者でも理解できるようにコメントを詳しく書く\n\n対象言語: 日本語→英語\n入力: テキストファイル\n出力: 翻訳されたテキストファイル"
+    },
+    {
+        "id": 20, 
+        "title": "タスク自動リマインド", 
+        "desc": "タスクを自動でリマインド",
+        "how_to": "スケジュール機能を使ってタスクの期限を管理し、自動でリマインドを送信します。",
+        "sample_code": "import schedule\nimport time\nimport smtplib\nfrom email.mime.text import MIMEText\nfrom datetime import datetime, timedelta\n\n# タスクリスト\ntasks = [\n    {'title': 'レポート提出', 'deadline': '2024-01-20', 'priority': 'high'},\n    {'title': '会議準備', 'deadline': '2024-01-18', 'priority': 'medium'},\n    {'title': 'メール返信', 'deadline': '2024-01-17', 'priority': 'low'}\n]\n\ndef check_deadlines():\n    today = datetime.now().date()\n    \n    for task in tasks:\n        deadline = datetime.strptime(task['deadline'], '%Y-%m-%d').date()\n        days_left = (deadline - today).days\n        \n        if days_left <= 1 and days_left >= 0:\n            send_reminder(task, days_left)\n\ndef send_reminder(task, days_left):\n    # メール設定\n    sender_email = 'your_email@gmail.com'\n    sender_password = 'your_password'\n    receiver_email = 'your_email@gmail.com'\n    \n    # メール内容\n    subject = f'タスクリマインド: {task[\"title\"]}'\n    body = f'''\n    タスクリマインド\n    \n    タスク: {task['title']}\n    期限: {task['deadline']}\n    優先度: {task['priority']}\n    残り日数: {days_left}日\n    \n    早めに完了させましょう！\n    '''\n    \n    # メール送信\n    msg = MIMEText(body, 'plain')\n    msg['Subject'] = subject\n    msg['From'] = sender_email\n    msg['To'] = receiver_email\n    \n    server = smtplib.SMTP('smtp.gmail.com', 587)\n    server.starttls()\n    server.login(sender_email, sender_password)\n    server.send_message(msg)\n    server.quit()\n    \n    print(f'リマインド送信: {task[\"title\"]}')\n\n# 毎日9時にチェック\nschedule.every().day.at('09:00').do(check_deadlines)\n\n# スケジュール実行\nwhile True:\n    schedule.run_pending()\n    time.sleep(60)",
+        "libraries": "schedule、smtplib（標準ライブラリ）、datetime（標準ライブラリ）",
+        "explanation": "タスクの期限を自動で管理し、リマインドを送信することで、タスクの見落としを防げます。",
+        "benefits": ["タスクの見落としを防ぐ", "時間管理が向上", "自動リマインド"],
+        "time_required": "1〜2時間",
+        "difficulty": "中級",
+        "ai_prompt": "Pythonでタスク自動リマインドのコードを作成してください。以下の条件でお願いします：\n\n1. scheduleライブラリで毎日9時にチェックする\n2. タスクリストから期限が近いものを検出する\n3. 期限が1日前になったらメールでリマインドを送信する\n4. タスクのタイトル、期限、優先度を含める\n5. 初心者でも理解できるようにコメントを詳しく書く\n\nチェック時間: 毎日9時\nリマインド条件: 期限1日前\n送信内容: タスク名、期限、優先度"
+    }
 ]
 
 @app.route('/')
@@ -376,3 +376,7 @@ if __name__ == '__main__':
         logger.error(f"Current working directory: {os.getcwd()}")
         logger.error(f"Files in current directory: {os.listdir('.')}")
         sys.exit(1) 
+
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 10000))
+    app.run(host="0.0.0.0", port=port)
