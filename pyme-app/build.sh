@@ -7,6 +7,11 @@ pip install -r requirements.txt
 
 # 起動スクリプトに実行権限を付与
 chmod +x start.sh
+chmod +x start_alternative.sh
 
-# アプリケーションの権限を確認
+# ファイル構造の確認
+echo "Current directory: $(pwd)"
+echo "Files in directory:"
+ls -la
+
 echo "Build completed successfully" 

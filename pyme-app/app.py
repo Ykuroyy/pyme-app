@@ -21,6 +21,8 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'dev-secret-key')
 
 logger.info("Flask app initialized successfully")
+logger.info(f"App name: {app.name}")
+logger.info(f"App instance path: {app.instance_path}")
 
 # 自動化ツールリスト（シンプル版）
 TOOLS = [
@@ -314,14 +316,27 @@ def health_check():
 # デバッグ用エンドポイント
 @app.route('/debug')
 def debug_info():
-    return {
-        "app_name": "pyme-app",
-        "python_version": sys.version,
-        "working_directory": os.getcwd(),
-        "port": os.environ.get('PORT', '8000'),
-        "flask_env": os.environ.get('FLASK_ENV', 'production'),
-        "tools_count": len(TOOLS)
-    }, 200
+    try:
+        import platform
+        return {
+            "app_name": "pyme-app",
+            "python_version": sys.version,
+            "platform": platform.platform(),
+            "working_directory": os.getcwd(),
+            "port": os.environ.get('PORT', '8000'),
+            "flask_env": os.environ.get('FLASK_ENV', 'production'),
+            "tools_count": len(TOOLS),
+            "app_imported": True,
+            "templates_exist": os.path.exists('templates'),
+            "templates_files": os.listdir('templates') if os.path.exists('templates') else []
+        }, 200
+    except Exception as e:
+        return {"error": str(e)}, 500
+
+# favicon.icoのハンドリング
+@app.route('/favicon.ico')
+def favicon():
+    return '', 204  # No content
 
 if __name__ == '__main__':
     try:
@@ -329,7 +344,9 @@ if __name__ == '__main__':
         # 本番環境ではデバッグモードを無効にする
         debug_mode = os.environ.get('FLASK_ENV') == 'development'
         logger.info(f"Starting Flask app on port {port}, debug={debug_mode}")
+        logger.info(f"App will be available at: http://0.0.0.0:{port}")
         app.run(host='0.0.0.0', port=port, debug=debug_mode)
     except Exception as e:
         logger.error(f"Failed to start Flask app: {e}")
+        logger.error(f"Error details: {type(e).__name__}: {e}")
         sys.exit(1) 

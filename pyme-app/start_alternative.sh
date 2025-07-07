@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-echo "Starting Python application..."
+echo "Starting Python application (alternative method)..."
 
 # 環境変数の確認
 echo "PORT: $PORT"
@@ -11,5 +11,5 @@ echo "Current directory: $(pwd)"
 echo "Files in directory:"
 ls -la
 
-# アプリケーションの起動（最もシンプルな設定）
-exec gunicorn app:app 
+# 直接Pythonで起動
+python app.py 
