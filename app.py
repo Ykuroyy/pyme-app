@@ -32,16 +32,7 @@ if os.path.exists(app.template_folder):
 else:
     logger.error(f"Template folder not found: {app.template_folder}")
 
-# アプリケーション起動時の確認
-@app.before_first_request
-def before_first_request():
-    logger.info("First request received - checking application state")
-    logger.info(f"Current working directory: {os.getcwd()}")
-    logger.info(f"Files in current directory: {os.listdir('.')}")
-    if os.path.exists('templates'):
-        logger.info(f"Templates directory contents: {os.listdir('templates')}")
-    else:
-        logger.error("Templates directory not found!")
+# アプリケーション起動時の確認（Flask 3.xではbefore_first_requestが削除されたため削除）
 
 # 自動化ツールリスト（シンプル版）
 TOOLS = [
