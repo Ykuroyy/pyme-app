@@ -13,6 +13,53 @@
 <body>
 <div class="container py-5">
     <h1 class="mb-4 text-center">Pythonでできるビジネス自動化20選</h1>
+    
+    <!-- AIプロンプト例セクション -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-info text-white">
+                    <h3 class="mb-0">🤖 AIにコード作成を依頼する時のプロンプト例</h3>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-info">
+                        <strong>初心者向けの使い方：</strong>
+                        <p class="mb-2">以下のプロンプトをAI（ChatGPT、Claude等）にコピー&ペーストして、コードを作成してもらいましょう！</p>
+                    </div>
+                    
+                    <div class="code-block">
+                        <pre><code>Pythonで[自動化したい内容]のコードを作成してください。以下の条件でお願いします：
+
+1. [使用するライブラリ]を使う
+2. [具体的な機能]を実装する
+3. [出力形式]で結果を保存する
+4. エラーハンドリングも含める
+5. 初心者でも理解できるようにコメントを詳しく書く
+
+対象: [具体的な対象]
+出力: [出力形式]
+機能: [実装したい機能]</code></pre>
+                    </div>
+                    
+                    <div class="mt-3">
+                        <h5>💡 プロンプトの使い方：</h5>
+                        <ol>
+                            <li>上記のプロンプトをコピーする</li>
+                            <li>AIツール（ChatGPT、Claude等）に貼り付ける</li>
+                            <li><strong>[ ]</strong>内の部分を具体的な内容に置き換える</li>
+                            <li>生成されたコードを確認・実行する</li>
+                        </ol>
+                    </div>
+                    
+                    <div class="mt-3">
+                        <h5>🎯 各ツールの詳細ページには、具体的なプロンプト例があります！</h5>
+                        <p class="mb-0">下のボタンをクリックして、各自動化ツールの詳細なプロンプト例を確認してください。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
     <div class="row">
         {% for tool in tools %}
         <div class="col-md-6 col-lg-4 mb-3">

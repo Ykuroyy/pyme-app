@@ -279,5 +279,5 @@ def tool_detail(tool_id):
     return render_template('detail.html', tool=tool)
 
 if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 5000))
-    app.run(host='0.0.0.0', port=port, debug=False) 
+    port = int(os.environ.get('PORT', 8000))  # ローカルでは8000を使用
+    app.run(host='0.0.0.0', port=port, debug=True)  # ローカルではデバッグモード有効 
