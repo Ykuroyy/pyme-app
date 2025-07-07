@@ -1,7 +1,15 @@
 from flask import Flask, render_template
 import os
+import logging
+
+# ログ設定
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
+
+# アプリケーション起動時のログ
+logger.info("Flask application starting...")
 
 # 自動化ツールリスト（シンプル版）
 TOOLS = [
@@ -269,15 +277,26 @@ TOOLS = [
 
 @app.route('/')
 def index():
+    logger.info("Index page accessed")
     return render_template('index.html', tools=TOOLS)
 
 @app.route('/tool/<int:tool_id>')
 def tool_detail(tool_id):
+    logger.info(f"Tool detail page accessed for tool_id: {tool_id}")
     tool = next((t for t in TOOLS if t['id'] == tool_id), None)
     if tool is None:
+        logger.warning(f"Tool not found for tool_id: {tool_id}")
         return "ツールが見つかりません", 404
     return render_template('detail.html', tool=tool)
 
+# ヘルスチェック用エンドポイント
+@app.route('/health')
+def health_check():
+    return {"status": "healthy"}, 200
+
 if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 8000))  # ローカルでは8000を使用
-    app.run(host='0.0.0.0', port=port, debug=True)  # ローカルではデバッグモード有効 
+    port = int(os.environ.get('PORT', 8000))
+    # 本番環境ではデバッグモードを無効にする
+    debug_mode = os.environ.get('FLASK_ENV') == 'development'
+    logger.info(f"Starting Flask app on port {port}, debug={debug_mode}")
+    app.run(host='0.0.0.0', port=port, debug=debug_mode) 
