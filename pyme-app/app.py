@@ -1,15 +1,22 @@
 from flask import Flask, render_template
 import os
 import logging
+import sys
 
 # ログ設定
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    stream=sys.stdout
+)
 logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
 
 # アプリケーション起動時のログ
 logger.info("Flask application starting...")
+logger.info(f"Python version: {sys.version}")
+logger.info(f"Working directory: {os.getcwd()}")
 
 # 自動化ツールリスト（シンプル版）
 TOOLS = [
@@ -295,8 +302,12 @@ def health_check():
     return {"status": "healthy"}, 200
 
 if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 8000))
-    # 本番環境ではデバッグモードを無効にする
-    debug_mode = os.environ.get('FLASK_ENV') == 'development'
-    logger.info(f"Starting Flask app on port {port}, debug={debug_mode}")
-    app.run(host='0.0.0.0', port=port, debug=debug_mode) 
+    try:
+        port = int(os.environ.get('PORT', 8000))
+        # 本番環境ではデバッグモードを無効にする
+        debug_mode = os.environ.get('FLASK_ENV') == 'development'
+        logger.info(f"Starting Flask app on port {port}, debug={debug_mode}")
+        app.run(host='0.0.0.0', port=port, debug=debug_mode)
+    except Exception as e:
+        logger.error(f"Failed to start Flask app: {e}")
+        sys.exit(1) 
