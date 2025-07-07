@@ -11,5 +11,10 @@ echo "Current directory: $(pwd)"
 echo "Files in directory:"
 ls -la
 
-# アプリケーションの起動（最もシンプルな設定）
-exec gunicorn --workers 1 --threads 4 --bind 0.0.0.0:${PORT:-8000} --log-file - app:app 
+# テンプレートディレクトリの確認
+echo "Templates directory:"
+ls -la templates/ 2>/dev/null || echo "Templates directory not found"
+
+# アプリケーションの起動
+echo "Starting gunicorn..."
+exec gunicorn --workers 1 --bind 0.0.0.0:${PORT:-8000} --timeout 120 --log-level info app:app 

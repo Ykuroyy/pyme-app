@@ -23,6 +23,14 @@ app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'dev-secret-key')
 logger.info("Flask app initialized successfully")
 logger.info(f"App name: {app.name}")
 logger.info(f"App instance path: {app.instance_path}")
+logger.info(f"Template folder: {app.template_folder}")
+
+# テンプレートディレクトリの確認
+if os.path.exists(app.template_folder):
+    logger.info(f"Template folder exists: {app.template_folder}")
+    logger.info(f"Template files: {os.listdir(app.template_folder)}")
+else:
+    logger.error(f"Template folder not found: {app.template_folder}")
 
 # 自動化ツールリスト（シンプル版）
 TOOLS = [
@@ -294,10 +302,18 @@ TOOLS = [
 def index():
     logger.info("Index page accessed")
     try:
+        # テンプレートファイルの存在確認
+        template_path = os.path.join(app.template_folder, 'index.html')
+        if not os.path.exists(template_path):
+            logger.error(f"Template file not found: {template_path}")
+            return f"Template file not found: {template_path}", 500
+        
+        logger.info(f"Rendering template: {template_path}")
         return render_template('index.html', tools=TOOLS)
     except Exception as e:
         logger.error(f"Error rendering index page: {e}")
-        return "Internal Server Error", 500
+        logger.error(f"Error type: {type(e).__name__}")
+        return f"Internal Server Error: {str(e)}", 500
 
 @app.route('/tool/<int:tool_id>')
 def tool_detail(tool_id):
@@ -318,6 +334,7 @@ def health_check():
 def debug_info():
     try:
         import platform
+        template_folder = app.template_folder
         return {
             "app_name": "pyme-app",
             "python_version": sys.version,
@@ -327,11 +344,15 @@ def debug_info():
             "flask_env": os.environ.get('FLASK_ENV', 'production'),
             "tools_count": len(TOOLS),
             "app_imported": True,
-            "templates_exist": os.path.exists('templates'),
-            "templates_files": os.listdir('templates') if os.path.exists('templates') else []
+            "template_folder": template_folder,
+            "templates_exist": os.path.exists(template_folder),
+            "templates_files": os.listdir(template_folder) if os.path.exists(template_folder) else [],
+            "index_template_exists": os.path.exists(os.path.join(template_folder, 'index.html')) if os.path.exists(template_folder) else False,
+            "detail_template_exists": os.path.exists(os.path.join(template_folder, 'detail.html')) if os.path.exists(template_folder) else False,
+            "all_files": os.listdir('.') if os.path.exists('.') else []
         }, 200
     except Exception as e:
-        return {"error": str(e)}, 500
+        return {"error": str(e), "error_type": type(e).__name__}, 500
 
 # favicon.icoのハンドリング
 @app.route('/favicon.ico')
