@@ -1,7 +1,9 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, jsonify
 import os
 import logging
 import sys
+from config import config
+from models import db, Tool
 
 # ログ設定
 logging.basicConfig(
@@ -18,7 +20,13 @@ logger.info(f"Working directory: {os.getcwd()}")
 
 # Flaskアプリケーションの初期化
 app = Flask(__name__)
-app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'dev-secret-key')
+
+# 設定の読み込み
+config_name = os.environ.get('FLASK_ENV', 'development')
+app.config.from_object(config[config_name])
+
+# データベース初期化
+db.init_app(app)
 
 logger.info("Flask app initialized successfully")
 logger.info(f"App name: {app.name}")
@@ -499,6 +507,16 @@ TOOLS = TOOLS + EXTRA_TOOLS
 def index():
     logger.info("Index page accessed")
     try:
+        # データベースからツールデータを取得
+        tools = []
+        try:
+            tools = [tool.to_dict() for tool in Tool.query.all()]
+            logger.info(f"Retrieved {len(tools)} tools from database")
+        except Exception as db_error:
+            logger.warning(f"Database error, using fallback data: {db_error}")
+            # データベースエラーの場合はフォールバックデータを使用
+            tools = TOOLS
+        
         # テンプレートファイルの存在確認
         template_path = os.path.join(app.template_folder, 'index.html')
         if not os.path.exists(template_path):
@@ -506,7 +524,7 @@ def index():
             return f"Template file not found: {template_path}", 500
         
         logger.info(f"Rendering template: {template_path}")
-        return render_template('index.html', tools=TOOLS)
+        return render_template('index.html', tools=tools)
     except Exception as e:
         logger.error(f"Error rendering index page: {e}")
         logger.error(f"Error type: {type(e).__name__}")
@@ -515,11 +533,21 @@ def index():
 @app.route('/tool/<int:tool_id>')
 def tool_detail(tool_id):
     logger.info(f"Tool detail page accessed for tool_id: {tool_id}")
-    tool = next((t for t in TOOLS if t['id'] == tool_id), None)
-    if tool is None:
-        logger.warning(f"Tool not found for tool_id: {tool_id}")
-        return "ツールが見つかりません", 404
-    return render_template('detail.html', tool=tool)
+    try:
+        # データベースからツールを取得
+        tool = Tool.query.get(tool_id)
+        if tool is None:
+            logger.warning(f"Tool not found for tool_id: {tool_id}")
+            return "ツールが見つかりません", 404
+        return render_template('detail.html', tool=tool.to_dict())
+    except Exception as db_error:
+        logger.warning(f"Database error, using fallback data: {db_error}")
+        # データベースエラーの場合はフォールバックデータを使用
+        tool = next((t for t in TOOLS if t['id'] == tool_id), None)
+        if tool is None:
+            logger.warning(f"Tool not found for tool_id: {tool_id}")
+            return "ツールが見つかりません", 404
+        return render_template('detail.html', tool=tool)
 
 # ヘルスチェック用エンドポイント
 @app.route('/health')
@@ -532,6 +560,16 @@ def debug_info():
     try:
         import platform
         template_folder = app.template_folder
+        
+        # データベース接続テスト
+        db_status = "unknown"
+        db_tools_count = 0
+        try:
+            db_tools_count = Tool.query.count()
+            db_status = "connected"
+        except Exception as db_error:
+            db_status = f"error: {str(db_error)}"
+        
         return {
             "app_name": "pyme-app",
             "python_version": sys.version,
@@ -539,7 +577,10 @@ def debug_info():
             "working_directory": os.getcwd(),
             "port": os.environ.get('PORT', '8000'),
             "flask_env": os.environ.get('FLASK_ENV', 'production'),
-            "tools_count": len(TOOLS),
+            "database_url": app.config.get('SQLALCHEMY_DATABASE_URI', 'not_set'),
+            "database_status": db_status,
+            "database_tools_count": db_tools_count,
+            "fallback_tools_count": len(TOOLS),
             "app_imported": True,
             "template_folder": template_folder,
             "templates_exist": os.path.exists(template_folder),
@@ -550,6 +591,27 @@ def debug_info():
         }, 200
     except Exception as e:
         return {"error": str(e), "error_type": type(e).__name__}, 500
+
+# データベース接続テスト用エンドポイント
+@app.route('/db-test')
+def database_test():
+    try:
+        # データベース接続テスト
+        with db.engine.connect() as connection:
+            connection.execute(db.text('SELECT 1'))
+        tools_count = Tool.query.count()
+        return {
+            "status": "success",
+            "message": "Database connection successful",
+            "tools_count": tools_count,
+            "database_url": app.config.get('SQLALCHEMY_DATABASE_URI', 'not_set')
+        }, 200
+    except Exception as e:
+        return {
+            "status": "error",
+            "message": f"Database connection failed: {str(e)}",
+            "database_url": app.config.get('SQLALCHEMY_DATABASE_URI', 'not_set')
+        }, 500
 
 # favicon.icoのハンドリング
 @app.route('/favicon.ico')

@@ -114,8 +114,56 @@ Pythonでメール自動送信のコードを作成してください。以下�
 
 - **Python 3.13.4**: 最新のPython
 - **Flask 3.x**: 軽量なWebフレームワーク
+- **PostgreSQL**: 本格的なデータベース
+- **SQLAlchemy**: ORM（オブジェクト関係マッピング）
 - **Bootstrap 5**: モダンなUI
+- **Docker**: コンテナ化されたデータベース
 - **Render**: 無料ホスティング
+
+## 🗄️ データベース設定
+
+### aroma-app-db (PostgreSQL)
+- **データベース名**: `aroma_app_db`
+- **ユーザー名**: `pyme_user`
+- **パスワード**: `pyme_password`
+- **ポート**: `5432`
+- **pgAdmin**: `http://localhost:5050` (管理画面)
+
+## 🚀 ローカル開発環境のセットアップ
+
+### 1. データベースの起動
+```bash
+# PostgreSQLデータベースを起動
+./start_db.sh
+```
+
+### 2. アプリケーションの起動
+```bash
+# Flaskアプリケーションを起動
+./start_app.sh
+```
+
+### 3. アクセス
+- **アプリケーション**: http://localhost:8000
+- **デバッグ情報**: http://localhost:8000/debug
+- **データベーステスト**: http://localhost:8000/db-test
+- **pgAdmin**: http://localhost:5050
+
+## 📊 データベース管理
+
+### 手動でのデータベース初期化
+```bash
+python init_db.py
+```
+
+### データベース接続確認
+```bash
+# データベースの状態確認
+docker-compose ps
+
+# データベースログの確認
+docker-compose logs aroma-app-db
+```
 
 ## 📈 バージョンアップ履歴
 

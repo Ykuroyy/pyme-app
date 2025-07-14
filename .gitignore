@@ -112,4 +112,24 @@ dmypy.json
 
 # OS
 .DS_Store
-Thumbs.db 
+Thumbs.db
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Docker
+.dockerignore
+
+# Environment variables
+.env.local
+.env.production
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+*.tmp
+*.temp 

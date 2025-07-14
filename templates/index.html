@@ -63,7 +63,7 @@
     
     <!-- カテゴリー別ツール表示 -->
     {% set categories = {} %}
-    {% for tool in tools %}
+        {% for tool in tools %}
         {% if tool.category not in categories %}
             {% set _ = categories.update({tool.category: []}) %}
         {% endif %}
