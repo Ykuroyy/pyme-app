@@ -59,7 +59,7 @@ AIと一緒に、今すぐ "自分の仕事用の自動化ツール" を作っ�
 
 ### 🎯 アプリの目的
 - **業務効率化**: 仕事で手一杯の方でも、AIツールを使えば業務自動化が実現できることを実証
-- **プロンプト設計力向上**: 各ツールに具体的なAIプロンプト例を提供（ChatGPT、Claude、Gemini、Copilot等対応）
+- **プロンプト設計力向上**: 各ツールに具体的なAIプロンプト例を提供（ChatGPT、Claude、Gemini、Cursor、Copilot等対応）
 - **実践的な学習**: **100種類のビジネス自動化タスク**を、AIと一緒に実装
 - **誰でも簡単に使える**: パソコンが苦手でも、AIと一緒なら誰でもできることを実証
 
@@ -89,7 +89,7 @@ AIと一緒に、今すぐ "自分の仕事用の自動化ツール" を作っ�
 
 ### 📧 メール自動送信のプロンプト例
 
-**対応AIツール**: ChatGPT、Claude、Gemini、GitHub Copilot
+**対応AIツール**: ChatGPT、Claude、Gemini、Cursor、GitHub Copilot
 
 ```
 Pythonでメール自動送信のコードを作成してください。以下の条件でお願いします：
@@ -108,7 +108,7 @@ Pythonでメール自動送信のコードを作成してください。以下�
 
 ### 📊 Excel自動処理のプロンプト例
 
-**対応AIツール**: ChatGPT、Claude、Gemini、GitHub Copilot
+**対応AIツール**: ChatGPT、Claude、Gemini、Cursor、GitHub Copilot
 
 ```
 PythonでExcel自動処理のコードを作成してください。以下の条件でお願いします：
@@ -259,7 +259,7 @@ PythonでExcel自動処理のコードを作成してください。以下の条
 
 **AI活用の学習方法**:
 - やりたいことを明確化
-- AIツール（ChatGPT、Claude、Gemini等）に具体的に指示
+- AIツール（ChatGPT、Claude、Gemini、Cursor等）に具体的に指示
 - エラーもAIに相談
 - 即座に実装可能
 
@@ -330,7 +330,7 @@ if __name__ == '__main__':
 4. **コミュニティを活用**: AIと人間の両方の知恵を借りる
 
 ### 🔧 AI活用の学習順序
-1. **プロンプト基礎**: AIツール（ChatGPT、Claude、Gemini等）の基本的な使い方
+1. **プロンプト基礎**: AIツール（ChatGPT、Claude、Gemini、Cursor等）の基本的な使い方
 2. **Python基礎**: 変数、関数、クラス
 3. **AI協働開発**: AIと一緒にコードを書く
 4. **Web開発**: Flask + AI
@@ -395,4 +395,4 @@ AI時代のプログラミング学習は、**楽しく、効率的で、実践�
 
 ---
 
-**#Python #Flask #初学者 #Webアプリ #自動化 #Render #プログラミング学習 #AI #ChatGPT #Claude #Gemini #Copilot #プロンプト設計 #業務効率化 #100選 #パソコン苦手 #エクセル苦手** 
+**#Python #Flask #初学者 #Webアプリ #自動化 #Render #プログラミング学習 #AI #ChatGPT #Claude #Gemini #Cursor #Copilot #プロンプト設計 #業務効率化 #100選 #パソコン苦手 #エクセル苦手** 

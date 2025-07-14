@@ -15,7 +15,7 @@
 
 ### 🤖 AIと一緒に作る
 - **100種類の自動化ツール**: メール・スタッフ・顧客管理から業務効率化まで
-- **コピペで使えるAIプロンプト**: ChatGPT、Claude、Gemini対応
+- **コピペで使えるAIプロンプト**: ChatGPT、Claude、Gemini、Cursor対応
 - **実践的なコード例**: すぐに使える完成版
 
 ### 💼 ビジネスに直結
@@ -71,7 +71,7 @@ https://pyme-app.onrender.com/
 100種類のツールから、自分の業務に合うものを選択
 
 ### 3. AIプロンプトをコピペ
-用意されたプロンプト例をAIツール（ChatGPT、Claude、Gemini等）に貼り付け
+用意されたプロンプト例をAIツール（ChatGPT、Claude、Gemini、Cursor等）に貼り付け
 
 ### 4. コードを実行
 生成されたコードを自分のPCで実行
@@ -170,4 +170,4 @@ AIと一緒に成長していきましょう！
 
 ---
 
-**#Python #Flask #初学者 #Webアプリ #自動化 #AI #ChatGPT #Claude #Gemini #プロンプト設計 #業務効率化 #100選** 
+**#Python #Flask #初学者 #Webアプリ #自動化 #AI #ChatGPT #Claude #Gemini #Cursor #プロンプト設計 #業務効率化 #100選** 
