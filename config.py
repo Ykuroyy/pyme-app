@@ -10,10 +10,18 @@ class Config:
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     
     # Database configuration
-    DATABASE_URL = os.environ.get('DATABASE_URL') or \
-        'postgresql://pyme_user:pyme_password@localhost:5432/aroma_app_db'
+    # Renderの無料プランではSQLiteを使用、有料プランではPostgreSQLを使用
+    if os.environ.get('RENDER'):
+        # Render環境では環境変数のDATABASE_URLを使用
+        DATABASE_URL = os.environ.get('DATABASE_URL')
+        if DATABASE_URL and DATABASE_URL.startswith('postgres://'):
+            # RenderのPostgreSQL URLをSQLAlchemy形式に変換
+            DATABASE_URL = DATABASE_URL.replace('postgres://', 'postgresql://', 1)
+    else:
+        # ローカル開発環境ではSQLiteを使用
+        DATABASE_URL = os.environ.get('DATABASE_URL') or 'sqlite:///pyme_app.db'
     
-    # PostgreSQL specific settings
+    # PostgreSQL specific settings (ローカル開発用)
     POSTGRES_DB = os.environ.get('POSTGRES_DB', 'aroma_app_db')
     POSTGRES_USER = os.environ.get('POSTGRES_USER', 'pyme_user')
     POSTGRES_PASSWORD = os.environ.get('POSTGRES_PASSWORD', 'pyme_password')

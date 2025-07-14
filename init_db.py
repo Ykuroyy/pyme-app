@@ -76,7 +76,11 @@ def check_database_connection():
         try:
             # データベース接続テスト
             with db.engine.connect() as connection:
-                connection.execute(db.text('SELECT 1'))
+                # SQLiteとPostgreSQLの両方に対応
+                if 'sqlite' in str(db.engine.url):
+                    connection.execute(db.text('SELECT 1'))
+                else:
+                    connection.execute(db.text('SELECT 1'))
             print("✓ データベース接続成功")
             return True
         except Exception as e:
