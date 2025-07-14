@@ -35,9 +35,13 @@ else:
 # アプリケーション起動時の確認（Flask 3.xではbefore_first_requestが削除されたため削除）
 
 # 自動化ツールリスト（シンプル版）
+from tools_extra import EXTRA_TOOLS
+
 TOOLS = [
     {
-        "id": 1, 
+        "id": 1,
+        "category": "メール・コミュニケーション",
+        "number": "1/100",
         "title": "メール自動送信", 
         "desc": "Pythonでメールを自動送信する方法",
         "how_to": "smtplibライブラリを使ってメールサーバーに接続し、メールを送信します。",
@@ -47,10 +51,12 @@ TOOLS = [
         "benefits": ["時間を節約できる", "ミスを減らせる", "一括送信が可能"],
         "time_required": "30分〜1時間",
         "difficulty": "初級",
-        "ai_prompt": "Pythonでメール自動送信のコードを作成してください。以下の条件でお願いします：\n\n1. smtplibライブラリを使う\n2. GmailのSMTPサーバーを使用する\n3. 件名、本文、送信者、受信者を設定する\n4. エラーハンドリングも含める\n5. 初心者でも理解できるようにコメントを詳しく書く\n\n送信者: 自分のGmailアドレス\n受信者: 指定したメールアドレス\n件名: 自動送信メール\n本文: 簡単なメッセージ"
+        "ai_prompt": "Pythonでメール自動送信のコードを作成してください。以下の条件でお願いします：\n\n1. smtplibライブラリを使う\n2. GmailのSMTPサーバーを使用する\n3. 件名、本文、送信者、受信者を設定する\n4. エラーハンドリングも含める\n5. 初心者でも理解できるようにコメントを詳しく書く\n6. セキュリティのため、パスワードは環境変数から読み込む\n\n送信者: 自分のGmailアドレス\n受信者: 指定したメールアドレス\n件名: 自動送信メール\n本文: 簡単なメッセージ\n\n注意: Gmailを使用する場合は、アプリパスワードの設定が必要です。\n\nコピペ用プロンプト:\nPythonでメール自動送信のコードを作成してください。smtplibライブラリを使ってGmailのSMTPサーバーに接続し、指定したメールアドレスに自動でメールを送信するコードを書いてください。エラーハンドリングも含めて、初心者でも理解できるようにコメントを詳しく書いてください。"
     },
     {
-        "id": 2, 
+        "id": 2,
+        "category": "データ処理・分析",
+        "number": "2/100",
         "title": "Excel自動処理", 
         "desc": "Excelファイルを自動で編集・集計",
         "how_to": "openpyxlライブラリを使ってExcelファイルを読み込み、データを編集・集計します。",
@@ -60,10 +66,12 @@ TOOLS = [
         "benefits": ["手作業の時間を大幅削減", "計算ミスを防げる", "大量データも瞬時に処理"],
         "time_required": "1〜2時間",
         "difficulty": "初級",
-        "ai_prompt": "PythonでExcel自動処理のコードを作成してください。以下の条件でお願いします：\n\n1. openpyxlライブラリを使う\n2. Excelファイルを読み込んでデータを取得する\n3. 売上データを集計する\n4. 結果を新しいセルに書き込む\n5. 初心者でも理解できるようにコメントを詳しく書く\n\n対象ファイル: data.xlsx\n集計項目: 売上列の合計\n出力先: 新しいセル（D2など）"
+        "ai_prompt": "PythonでExcel自動処理のコードを作成してください。以下の条件でお願いします：\n\n1. openpyxlライブラリを使う\n2. Excelファイルを読み込んでデータを取得する\n3. 売上データを集計する\n4. 結果を新しいセルに書き込む\n5. 初心者でも理解できるようにコメントを詳しく書く\n\n対象ファイル: data.xlsx\n集計項目: 売上列の合計\n出力先: 新しいセル（D2など）\n\nコピペ用プロンプト:\nPythonでExcel自動処理のコードを作成してください。openpyxlライブラリを使ってExcelファイルを読み込み、売上データを集計して結果を新しいセルに書き込むコードを書いてください。初心者でも理解できるようにコメントを詳しく書いてください。"
     },
     {
-        "id": 3, 
+        "id": 3,
+        "category": "文書作成・管理",
+        "number": "3/100",
         "title": "PDF自動生成", 
         "desc": "PDFファイルを自動で作成",
         "how_to": "reportlabライブラリを使ってPDFドキュメントを作成し、テキストや表を追加します。",
@@ -73,10 +81,12 @@ TOOLS = [
         "benefits": ["レポート作成が自動化", "フォーマットが統一される", "大量のPDFも一括作成"],
         "time_required": "1〜2時間",
         "difficulty": "中級",
-        "ai_prompt": "PythonでPDF自動生成のコードを作成してください。以下の条件でお願いします：\n\n1. reportlabライブラリを使う\n2. 月次レポートのPDFを作成する\n3. タイトル、売上、利益を表示する\n4. 見やすいレイアウトにする\n5. 初心者でも理解できるようにコメントを詳しく書く\n\nPDF内容: 月次レポート\n表示項目: 売上、利益\nファイル名: report.pdf"
+        "ai_prompt": "PythonでPDF自動生成のコードを作成してください。以下の条件でお願いします：\n\n1. reportlabライブラリを使う\n2. 月次レポートのPDFを作成する\n3. タイトル、売上、利益を表示する\n4. 見やすいレイアウトにする\n5. 初心者でも理解できるようにコメントを詳しく書く\n\nPDF内容: 月次レポート\n表示項目: 売上、利益\nファイル名: report.pdf\n\nコピペ用プロンプト:\nPythonでPDF自動生成のコードを作成してください。reportlabライブラリを使って月次レポートのPDFを作成し、タイトル、売上、利益を表示するコードを書いてください。見やすいレイアウトにして、初心者でも理解できるようにコメントを詳しく書いてください。"
     },
     {
-        "id": 4, 
+        "id": 4,
+        "category": "データ収集・分析",
+        "number": "4/100",
         "title": "Webスクレイピング", 
         "desc": "Webサイトから自動でデータ取得",
         "how_to": "requestsとBeautifulSoupを使ってWebページから情報を取得し、データを整理します。",
@@ -86,10 +96,12 @@ TOOLS = [
         "benefits": ["手作業の時間を大幅削減", "大量データも瞬時に取得", "定期的な情報収集が自動化"],
         "time_required": "1〜2時間",
         "difficulty": "中級",
-        "ai_prompt": "PythonでWebスクレイピングのコードを作成してください。以下の条件でお願いします：\n\n1. requestsとBeautifulSoupを使う\n2. 指定したWebサイトから商品名と価格を取得する\n3. 取得したデータをCSVファイルに保存する\n4. 初心者でも理解できるようにコメントを詳しく書く\n5. エラーハンドリングも含める\n\n対象サイト: [サイトURLを指定]\n取得したい情報: 商品名、価格、説明文"
+        "ai_prompt": "PythonでWebスクレイピングのコードを作成してください。以下の条件でお願いします：\n\n1. requestsとBeautifulSoupを使う\n2. 指定したWebサイトから商品名と価格を取得する\n3. 取得したデータをCSVファイルに保存する\n4. 初心者でも理解できるようにコメントを詳しく書く\n5. エラーハンドリングも含める\n\n対象サイト: [サイトURLを指定]\n取得したい情報: 商品名、価格、説明文\n\nコピペ用プロンプト:\nPythonでWebスクレイピングのコードを作成してください。requestsとBeautifulSoupライブラリを使って指定したWebサイトから商品名と価格を取得し、CSVファイルに保存するコードを書いてください。エラーハンドリングも含めて、初心者でも理解できるようにコメントを詳しく書いてください。"
     },
     {
-        "id": 5, 
+        "id": 5,
+        "category": "データ処理・分析",
+        "number": "5/100",
         "title": "データ可視化グラフ作成", 
         "desc": "データをグラフで見やすく表示",
         "how_to": "matplotlibやplotlyを使ってデータをグラフ化し、見やすい図表を作成します。",
@@ -99,10 +111,12 @@ TOOLS = [
         "benefits": ["データの傾向が一目で分かる", "プレゼンが分かりやすくなる", "意思決定がスピードアップ"],
         "time_required": "30分〜1時間",
         "difficulty": "初級",
-        "ai_prompt": "Pythonでデータ可視化のコードを作成してください。以下の条件でお願いします：\n\n1. matplotlibを使う\n2. 月次売上データを折れ線グラフで表示する\n3. グラフのタイトル、軸ラベル、グリッド線を設定する\n4. グラフを画像ファイルとして保存する\n5. 初心者でも理解できるようにコメントを詳しく書く\n\nデータ形式: CSVファイル（月、売上の列がある）\nグラフの種類: 折れ線グラフ"
+        "ai_prompt": "Pythonでデータ可視化のコードを作成してください。以下の条件でお願いします：\n\n1. matplotlibを使う\n2. 月次売上データを折れ線グラフで表示する\n3. グラフのタイトル、軸ラベル、グリッド線を設定する\n4. グラフを画像ファイルとして保存する\n5. 初心者でも理解できるようにコメントを詳しく書く\n\nデータ形式: CSVファイル（月、売上の列がある）\nグラフの種類: 折れ線グラフ\n\nコピペ用プロンプト:\nPythonでデータ可視化のコードを作成してください。matplotlibライブラリを使って月次売上データを折れ線グラフで表示し、グラフのタイトル、軸ラベル、グリッド線を設定して画像ファイルとして保存するコードを書いてください。初心者でも理解できるようにコメントを詳しく書いてください。"
     },
     {
-        "id": 6, 
+        "id": 6,
+        "category": "ファイル管理",
+        "number": "6/100",
         "title": "ファイル自動整理", 
         "desc": "フォルダ内のファイルを自動で整理",
         "how_to": "osライブラリを使ってフォルダ内のファイルを種類別に自動整理します。",
@@ -112,10 +126,12 @@ TOOLS = [
         "benefits": ["作業効率が向上", "ファイルが見つけやすくなる", "ストレスが減る"],
         "time_required": "30分〜1時間",
         "difficulty": "初級",
-        "ai_prompt": "Pythonでファイル自動整理のコードを作成してください。以下の条件でお願いします：\n\n1. 指定したフォルダ内のファイルを拡張子別に整理する\n2. 画像、文書、動画、音楽の4つのカテゴリに分類する\n3. 各カテゴリ用のフォルダを自動作成する\n4. ファイルを適切なフォルダに移動する\n5. 初心者でも理解できるようにコメントを詳しく書く\n\n対象フォルダ: ダウンロードフォルダ\n分類カテゴリ: 画像、文書、動画、音楽"
+        "ai_prompt": "Pythonでファイル自動整理のコードを作成してください。以下の条件でお願いします：\n\n1. 指定したフォルダ内のファイルを拡張子別に整理する\n2. 画像、文書、動画、音楽の4つのカテゴリに分類する\n3. 各カテゴリ用のフォルダを自動作成する\n4. ファイルを適切なフォルダに移動する\n5. 初心者でも理解できるようにコメントを詳しく書く\n\n対象フォルダ: ダウンロードフォルダ\n分類カテゴリ: 画像、文書、動画、音楽\n\nコピペ用プロンプト:\nPythonでファイル自動整理のコードを作成してください。指定したフォルダ内のファイルを拡張子別に整理し、画像、文書、動画、音楽の4つのカテゴリに分類して各カテゴリ用のフォルダを自動作成し、ファイルを適切なフォルダに移動するコードを書いてください。初心者でも理解できるようにコメントを詳しく書いてください。"
     },
     {
-        "id": 7, 
+        "id": 7,
+        "category": "メール・コミュニケーション",
+        "number": "7/100",
         "title": "チャットボット作成", 
         "desc": "簡単な自動応答チャットボット",
         "how_to": "if文や辞書を使って応答パターンを定義し、ユーザーの入力に応じて自動で返答します。",
@@ -125,10 +141,12 @@ TOOLS = [
         "benefits": ["24時間対応可能", "人件費を削減", "応答速度が速い"],
         "time_required": "30分〜1時間",
         "difficulty": "初級",
-        "ai_prompt": "Pythonで簡単なチャットボットのコードを作成してください。以下の条件でお願いします：\n\n1. 辞書を使って質問と回答のパターンを定義する\n2. ユーザーの入力を受け取って適切な回答を返す\n3. 終了コマンドでプログラムを終了できる\n4. 知らない質問には適切なメッセージを返す\n5. 初心者でも理解できるようにコメントを詳しく書く\n\n対応したい質問: 挨拶、天気、時間、感謝の言葉\n終了コマンド: さようなら、終了、bye"
+        "ai_prompt": "Pythonで簡単なチャットボットのコードを作成してください。以下の条件でお願いします：\n\n1. 辞書を使って質問と回答のパターンを定義する\n2. ユーザーの入力を受け取って適切な回答を返す\n3. 終了コマンドでプログラムを終了できる\n4. 知らない質問には適切なメッセージを返す\n5. 初心者でも理解できるようにコメントを詳しく書く\n\n対応したい質問: 挨拶、天気、時間、感謝の言葉\n終了コマンド: さようなら、終了、bye\n\nコピペ用プロンプト:\nPythonで簡単なチャットボットのコードを作成してください。辞書を使って質問と回答のパターンを定義し、ユーザーの入力を受け取って適切な回答を返すコードを書いてください。終了コマンドでプログラムを終了でき、知らない質問には適切なメッセージを返すようにしてください。初心者でも理解できるようにコメントを詳しく書いてください。"
     },
     {
-        "id": 8, 
+        "id": 8,
+        "category": "ファイル管理",
+        "number": "8/100",
         "title": "画像自動リサイズ", 
         "desc": "画像ファイルを自動でリサイズ",
         "how_to": "PIL（Pillow）ライブラリを使って画像ファイルを一括でリサイズします。",
@@ -138,10 +156,12 @@ TOOLS = [
         "benefits": ["大量画像も一括処理", "ファイルサイズを削減", "Web表示が高速化"],
         "time_required": "30分〜1時間",
         "difficulty": "初級",
-        "ai_prompt": "Pythonで画像自動リサイズのコードを作成してください。以下の条件でお願いします：\n\n1. Pillowライブラリを使う\n2. 指定したフォルダ内の画像を一括でリサイズする\n3. アスペクト比を保ってリサイズする\n4. 元ファイルは残して、新しいファイル名で保存する\n5. 初心者でも理解できるようにコメントを詳しく書く\n\n対象フォルダ: 画像フォルダのパス\nリサイズサイズ: 幅800px（高さは自動調整）\n対応形式: JPG、PNG、GIF、BMP"
+        "ai_prompt": "Pythonで画像自動リサイズのコードを作成してください。以下の条件でお願いします：\n\n1. Pillowライブラリを使う\n2. 指定したフォルダ内の画像を一括でリサイズする\n3. アスペクト比を保ってリサイズする\n4. 元ファイルは残して、新しいファイル名で保存する\n5. 初心者でも理解できるようにコメントを詳しく書く\n\n対象フォルダ: 画像フォルダのパス\nリサイズサイズ: 幅800px（高さは自動調整）\n対応形式: JPG、PNG、GIF、BMP\n\nコピペ用プロンプト:\nPythonで画像自動リサイズのコードを作成してください。Pillowライブラリを使って指定したフォルダ内の画像を一括でリサイズし、アスペクト比を保って元ファイルは残して新しいファイル名で保存するコードを書いてください。初心者でも理解できるようにコメントを詳しく書いてください。"
     },
     {
-        "id": 9, 
+        "id": 9,
+        "category": "メール・コミュニケーション",
+        "number": "9/100",
         "title": "定期レポート自動送信", 
         "desc": "定期的にレポートを自動送信",
         "how_to": "scheduleライブラリで定期実行を設定し、レポート作成とメール送信を自動化します。",
@@ -151,10 +171,12 @@ TOOLS = [
         "benefits": ["手作業が不要", "忘れることがない", "時間を大幅節約"],
         "time_required": "1〜2時間",
         "difficulty": "中級",
-        "ai_prompt": "Pythonで定期レポート自動送信のコードを作成してください。以下の条件でお願いします：\n\n1. scheduleライブラリで毎日18時に実行する\n2. 日次レポートを作成する（売上、顧客数、処理件数を含む）\n3. 作成したレポートをメールで送信する\n4. エラーハンドリングも含める\n5. 初心者でも理解できるようにコメントを詳しく書く\n\n送信時間: 毎日18時\nレポート内容: 売上、新規顧客数、処理件数\n送信先: 上司のメールアドレス"
+        "ai_prompt": "Pythonで定期レポート自動送信のコードを作成してください。以下の条件でお願いします：\n\n1. scheduleライブラリで毎日18時に実行する\n2. 日次レポートを作成する（売上、顧客数、処理件数を含む）\n3. 作成したレポートをメールで送信する\n4. エラーハンドリングも含める\n5. 初心者でも理解できるようにコメントを詳しく書く\n\n送信時間: 毎日18時\nレポート内容: 売上、新規顧客数、処理件数\n送信先: 上司のメールアドレス\n\nコピペ用プロンプト:\nPythonで定期レポート自動送信のコードを作成してください。scheduleライブラリで毎日18時に実行し、日次レポートを作成してメールで送信するコードを書いてください。エラーハンドリングも含めて、初心者でも理解できるようにコメントを詳しく書いてください。"
     },
     {
-        "id": 10, 
+        "id": 10,
+        "category": "メール・コミュニケーション",
+        "number": "10/100",
         "title": "SNS自動投稿", 
         "desc": "Twitterなどに自動で投稿",
         "how_to": "tweepyライブラリを使ってTwitter APIに接続し、定期的に投稿を自動化します。",
@@ -164,10 +186,12 @@ TOOLS = [
         "benefits": ["投稿を忘れることがない", "時間を節約", "一貫したブランディング"],
         "time_required": "1〜2時間",
         "difficulty": "中級",
-        "ai_prompt": "PythonでSNS自動投稿のコードを作成してください。以下の条件でお願いします：\n\n1. tweepyライブラリを使ってTwitterに投稿する\n2. 毎日9時にビジネスTipsを自動投稿する\n3. 複数のTipsからランダムに選択する\n4. エラーハンドリングも含める\n5. 初心者でも理解できるようにコメントを詳しく書く\n\n投稿時間: 毎日9時\n投稿内容: ビジネスTips（複数パターン）\n投稿先: Twitter"
+        "ai_prompt": "PythonでSNS自動投稿のコードを作成してください。以下の条件でお願いします：\n\n1. tweepyライブラリを使ってTwitterに投稿する\n2. 毎日9時にビジネスTipsを自動投稿する\n3. 複数のTipsからランダムに選択する\n4. エラーハンドリングも含める\n5. 初心者でも理解できるようにコメントを詳しく書く\n\n投稿時間: 毎日9時\n投稿内容: ビジネスTips（複数パターン）\n投稿先: Twitter\n\nコピペ用プロンプト:\nPythonでSNS自動投稿のコードを作成してください。tweepyライブラリを使ってTwitterに毎日9時にビジネスTipsを自動投稿し、複数のTipsからランダムに選択するコードを書いてください。エラーハンドリングも含めて、初心者でも理解できるようにコメントを詳しく書いてください。"
     },
     {
-        "id": 11, 
+        "id": 11,
+        "category": "スケジュール管理",
+        "number": "11/100",
         "title": "カレンダー自動登録", 
         "desc": "予定を自動でGoogleカレンダーに登録",
         "how_to": "Google Calendar APIを使って予定を自動でカレンダーに登録します。",
@@ -177,10 +201,12 @@ TOOLS = [
         "benefits": ["手動入力が不要", "ミスを防げる", "一括登録が可能"],
         "time_required": "1〜2時間",
         "difficulty": "中級",
-        "ai_prompt": "PythonでGoogleカレンダー自動登録のコードを作成してください。以下の条件でお願いします：\n\n1. Google Calendar APIを使う\n2. 指定した日時に予定を登録する\n3. 予定のタイトル、説明、開始・終了時間を設定する\n4. エラーハンドリングも含める\n5. 初心者でも理解できるようにコメントを詳しく書く\n\n予定内容: 会議\n日時: 指定した日時\nカレンダー: プライマリカレンダー"
+        "ai_prompt": "PythonでGoogleカレンダー自動登録のコードを作成してください。以下の条件でお願いします：\n\n1. Google Calendar APIを使う\n2. 指定した日時に予定を登録する\n3. 予定のタイトル、説明、開始・終了時間を設定する\n4. エラーハンドリングも含める\n5. 初心者でも理解できるようにコメントを詳しく書く\n\n予定内容: 会議\n日時: 指定した日時\nカレンダー: プライマリカレンダー\n\nコピペ用プロンプト:\nPythonでGoogleカレンダー自動登録のコードを作成してください。Google Calendar APIを使って指定した日時に予定を登録し、予定のタイトル、説明、開始・終了時間を設定するコードを書いてください。エラーハンドリングも含めて、初心者でも理解できるようにコメントを詳しく書いてください。"
     },
     {
-        "id": 12, 
+        "id": 12,
+        "category": "顧客管理",
+        "number": "12/100",
         "title": "名刺データ自動整理", 
         "desc": "名刺画像から情報を自動抽出",
         "how_to": "OCR技術を使って名刺画像から文字を認識し、連絡先情報を自動抽出します。",
@@ -190,10 +216,12 @@ TOOLS = [
         "benefits": ["手動入力が不要", "大量処理が可能", "データベース化が簡単"],
         "time_required": "1〜2時間",
         "difficulty": "中級",
-        "ai_prompt": "Pythonで名刺データ自動整理のコードを作成してください。以下の条件でお願いします：\n\n1. OpenCVとTesseract OCRを使う\n2. 名刺画像から文字を認識する\n3. 名前、電話番号、メールアドレスを抽出する\n4. 正規表現で情報を整理する\n5. 初心者でも理解できるようにコメントを詳しく書く\n\n対象画像: 名刺の画像ファイル\n抽出情報: 名前、電話番号、メールアドレス\n出力形式: 辞書形式"
+        "ai_prompt": "Pythonで名刺データ自動整理のコードを作成してください。以下の条件でお願いします：\n\n1. OpenCVとTesseract OCRを使う\n2. 名刺画像から文字を認識する\n3. 名前、電話番号、メールアドレスを抽出する\n4. 正規表現で情報を整理する\n5. 初心者でも理解できるようにコメントを詳しく書く\n\n対象画像: 名刺の画像ファイル\n抽出情報: 名前、電話番号、メールアドレス\n出力形式: 辞書形式\n\nコピペ用プロンプト:\nPythonで名刺データ自動整理のコードを作成してください。OpenCVとTesseract OCRを使って名刺画像から文字を認識し、名前、電話番号、メールアドレスを抽出して正規表現で情報を整理するコードを書いてください。初心者でも理解できるようにコメントを詳しく書いてください。"
     },
     {
-        "id": 13, 
+        "id": 13,
+        "category": "文書作成・管理",
+        "number": "13/100",
         "title": "請求書自動作成", 
         "desc": "請求書を自動で作成",
         "how_to": "テンプレートを使って請求書を自動生成し、PDFファイルとして保存します。",
@@ -203,11 +231,13 @@ TOOLS = [
         "benefits": ["手動作成が不要", "フォーマットが統一", "大量作成が可能"],
         "time_required": "1〜2時間",
         "difficulty": "中級",
-        "ai_prompt": "Pythonで請求書自動作成のコードを作成してください。以下の条件でお願いします：\n\n1. reportlabライブラリを使う\n2. 顧客名、明細、合計金額を含む請求書を作成する\n3. 見やすいレイアウトにする\n4. PDFファイルとして保存する\n5. 初心者でも理解できるようにコメントを詳しく書く\n\n請求書内容: 顧客名、明細、合計金額\n出力形式: PDFファイル\nファイル名: invoice.pdf"
+        "ai_prompt": "Pythonで請求書自動作成のコードを作成してください。以下の条件でお願いします：\n\n1. reportlabライブラリを使う\n2. 顧客名、明細、合計金額を含む請求書を作成する\n3. 見やすいレイアウトにする\n4. PDFファイルとして保存する\n5. 初心者でも理解できるようにコメントを詳しく書く\n\n請求書内容: 顧客名、明細、合計金額\n出力形式: PDFファイル\nファイル名: invoice.pdf\n\nコピペ用プロンプト:\nPythonで請求書自動作成のコードを作成してください。reportlabライブラリを使って顧客名、明細、合計金額を含む請求書を作成し、見やすいレイアウトにしてPDFファイルとして保存するコードを書いてください。初心者でも理解できるようにコメントを詳しく書いてください。"
     },
     {
-        "id": 14, 
-        "title": "アンケート自動集計", 
+        "id": 14,
+        "category": "データ処理・分析",
+        "number": "14/100",
+        "title": "アンケート自動集計",
         "desc": "アンケート結果を自動で集計",
         "how_to": "ExcelやCSVファイルのアンケート結果を読み込み、自動で集計・分析します。",
         "sample_code": "import pandas as pd\nimport matplotlib.pyplot as plt\n\n# アンケートデータを読み込み\ndf = pd.read_csv('survey_results.csv')\n\n# 基本統計\nprint('=== 基本統計 ===')\nprint(f'回答者数: {len(df)}人')\nprint(f'平均年齢: {df[\"年齢\"].mean():.1f}歳')\n\n# 性別の集計\nprint('\\n=== 性別集計 ===')\ngender_counts = df['性別'].value_counts()\nprint(gender_counts)\n\n# 満足度の集計\nprint('\\n=== 満足度集計 ===')\nsatisfaction_counts = df['満足度'].value_counts().sort_index()\nprint(satisfaction_counts)\n\n# グラフ作成\nplt.figure(figsize=(10, 6))\nsatisfaction_counts.plot(kind='bar')\nplt.title('満足度分布')\nplt.xlabel('満足度')\nplt.ylabel('回答者数')\nplt.savefig('satisfaction_chart.png')\nplt.show()\n\nprint('集計完了！グラフを保存しました。')",
@@ -216,10 +246,12 @@ TOOLS = [
         "benefits": ["手作業が不要", "正確な集計", "グラフも自動作成"],
         "time_required": "30分〜1時間",
         "difficulty": "初級",
-        "ai_prompt": "Pythonでアンケート自動集計のコードを作成してください。以下の条件でお願いします：\n\n1. pandasライブラリを使う\n2. CSVファイルのアンケート結果を読み込む\n3. 基本統計（回答者数、平均年齢など）を計算する\n4. 性別、満足度などの集計を行う\n5. 初心者でも理解できるようにコメントを詳しく書く\n\n対象ファイル: survey_results.csv\n集計項目: 性別、年齢、満足度\n出力: 統計結果とグラフ"
+        "ai_prompt": "Pythonでアンケート自動集計のコードを作成してください。以下の条件でお願いします：\n\n1. pandasライブラリを使う\n2. CSVファイルのアンケート結果を読み込む\n3. 基本統計（回答者数、平均年齢など）を計算する\n4. 性別、満足度などの集計を行う\n5. 初心者でも理解できるようにコメントを詳しく書く\n\n対象ファイル: survey_results.csv\n集計項目: 性別、年齢、満足度\n出力: 統計結果とグラフ\n\nコピペ用プロンプト:\nPythonでアンケート自動集計のコードを作成してください。pandasライブラリを使ってCSVファイルのアンケート結果を読み込み、基本統計を計算して性別、満足度などの集計を行うコードを書いてください。初心者でも理解できるようにコメントを詳しく書いてください。"
     },
     {
-        "id": 15, 
+        "id": 15,
+        "category": "音声・画像処理",
+        "number": "15/100",
         "title": "音声データ自動文字起こし", 
         "desc": "音声ファイルを自動でテキスト化",
         "how_to": "音声認識APIを使って音声ファイルを自動でテキストに変換します。",
@@ -229,10 +261,12 @@ TOOLS = [
         "benefits": ["手動入力が不要", "時間を大幅節約", "正確な文字起こし"],
         "time_required": "1〜2時間",
         "difficulty": "中級",
-        "ai_prompt": "Pythonで音声データ自動文字起こしのコードを作成してください。以下の条件でお願いします：\n\n1. SpeechRecognitionライブラリを使う\n2. 音声ファイル（WAV形式）を読み込む\n3. Google Speech Recognitionで文字起こしする\n4. 日本語に対応する\n5. 初心者でも理解できるようにコメントを詳しく書く\n\n対象ファイル: 音声ファイル（WAV形式）\n言語: 日本語\n出力: テキストファイル"
+        "ai_prompt": "Pythonで音声データ自動文字起こしのコードを作成してください。以下の条件でお願いします：\n\n1. SpeechRecognitionライブラリを使う\n2. 音声ファイル（WAV形式）を読み込む\n3. Google Speech Recognitionで文字起こしする\n4. 日本語に対応する\n5. 初心者でも理解できるようにコメントを詳しく書く\n\n対象ファイル: 音声ファイル（WAV形式）\n言語: 日本語\n出力: テキストファイル\n\nコピペ用プロンプト:\nPythonで音声データ自動文字起こしのコードを作成してください。SpeechRecognitionライブラリを使って音声ファイルを読み込み、Google Speech Recognitionで日本語の文字起こしを行うコードを書いてください。初心者でも理解できるようにコメントを詳しく書いてください。"
     },
     {
-        "id": 16, 
+        "id": 16,
+        "category": "音声・画像処理",
+        "number": "16/100",
         "title": "画像から文字抽出", 
         "desc": "画像内の文字を自動で抽出",
         "how_to": "OCR技術を使って画像内の文字を認識し、テキストとして抽出します。",
@@ -242,10 +276,12 @@ TOOLS = [
         "benefits": ["手動入力が不要", "大量処理が可能", "正確な文字認識"],
         "time_required": "30分〜1時間",
         "difficulty": "初級",
-        "ai_prompt": "Pythonで画像から文字抽出のコードを作成してください。以下の条件でお願いします：\n\n1. pytesseractライブラリを使う\n2. 画像ファイルを読み込む\n3. 前処理（グレースケール化、ノイズ除去）を行う\n4. 日本語の文字を認識する\n5. 初心者でも理解できるようにコメントを詳しく書く\n\n対象画像: 文字が含まれる画像ファイル\n言語: 日本語\n出力: テキストファイル"
+        "ai_prompt": "Pythonで画像から文字抽出のコードを作成してください。以下の条件でお願いします：\n\n1. pytesseractライブラリを使う\n2. 画像ファイルを読み込む\n3. 前処理（グレースケール化、ノイズ除去）を行う\n4. 日本語の文字を認識する\n5. 初心者でも理解できるようにコメントを詳しく書く\n\n対象画像: 文字が含まれる画像ファイル\n言語: 日本語\n出力: テキストファイル\n\nコピペ用プロンプト:\nPythonで画像から文字抽出のコードを作成してください。pytesseractライブラリを使って画像ファイルを読み込み、前処理を行って日本語の文字を認識するコードを書いてください。初心者でも理解できるようにコメントを詳しく書いてください。"
     },
     {
-        "id": 17, 
+        "id": 17,
+        "category": "ファイル管理",
+        "number": "17/100",
         "title": "ファイル自動バックアップ", 
         "desc": "重要ファイルを自動でバックアップ",
         "how_to": "指定したフォルダのファイルを定期的にバックアップフォルダにコピーします。",
@@ -255,10 +291,12 @@ TOOLS = [
         "benefits": ["データ保護", "手動バックアップが不要", "定期的な実行"],
         "time_required": "30分〜1時間",
         "difficulty": "初級",
-        "ai_prompt": "Pythonでファイル自動バックアップのコードを作成してください。以下の条件でお願いします：\n\n1. shutilライブラリを使う\n2. 指定したフォルダのファイルをバックアップする\n3. 日付付きのフォルダにコピーする\n4. 毎日指定した時間に自動実行する\n5. 初心者でも理解できるようにコメントを詳しく書く\n\n対象フォルダ: バックアップしたいフォルダ\nバックアップ先: 指定したフォルダ\n実行時間: 毎日18時"
+        "ai_prompt": "Pythonでファイル自動バックアップのコードを作成してください。以下の条件でお願いします：\n\n1. shutilライブラリを使う\n2. 指定したフォルダのファイルをバックアップする\n3. 日付付きのフォルダにコピーする\n4. 毎日指定した時間に自動実行する\n5. 初心者でも理解できるようにコメントを詳しく書く\n\n対象フォルダ: バックアップしたいフォルダ\nバックアップ先: 指定したフォルダ\n実行時間: 毎日18時\n\nコピペ用プロンプト:\nPythonでファイル自動バックアップのコードを作成してください。shutilライブラリを使って指定したフォルダのファイルをバックアップし、日付付きのフォルダにコピーして毎日指定した時間に自動実行するコードを書いてください。初心者でも理解できるようにコメントを詳しく書いてください。"
     },
     {
-        "id": 18, 
+        "id": 18,
+        "category": "文書作成・管理",
+        "number": "18/100",
         "title": "会議議事録自動作成", 
         "desc": "会議音声から議事録を自動作成",
         "how_to": "音声認識とAIを使って会議の録音から議事録を自動生成します。",
@@ -268,10 +306,12 @@ TOOLS = [
         "benefits": ["議事録作成が自動化", "時間を大幅節約", "正確な記録"],
         "time_required": "1〜2時間",
         "difficulty": "中級",
-        "ai_prompt": "Pythonで会議議事録自動作成のコードを作成してください。以下の条件でお願いします：\n\n1. SpeechRecognitionライブラリを使う\n2. 会議の音声ファイルを文字起こしする\n3. 議事録の形式に整理する（日時、参加者、議題、議事内容、決定事項）\n4. テキストファイルとして保存する\n5. 初心者でも理解できるようにコメントを詳しく書く\n\n対象ファイル: 会議の音声ファイル\n出力形式: 議事録テキストファイル\n内容: 日時、参加者、議題、議事内容、決定事項"
+        "ai_prompt": "Pythonで会議議事録自動作成のコードを作成してください。以下の条件でお願いします：\n\n1. SpeechRecognitionライブラリを使う\n2. 会議の音声ファイルを文字起こしする\n3. 議事録の形式に整理する（日時、参加者、議題、議事内容、決定事項）\n4. テキストファイルとして保存する\n5. 初心者でも理解できるようにコメントを詳しく書く\n\n対象ファイル: 会議の音声ファイル\n出力形式: 議事録テキストファイル\n内容: 日時、参加者、議題、議事内容、決定事項\n\nコピペ用プロンプト:\nPythonで会議議事録自動作成のコードを作成してください。SpeechRecognitionライブラリを使って会議の音声ファイルを文字起こしし、議事録の形式に整理してテキストファイルとして保存するコードを書いてください。初心者でも理解できるようにコメントを詳しく書いてください。"
     },
     {
-        "id": 19, 
+        "id": 19,
+        "category": "メール・コミュニケーション",
+        "number": "19/100",
         "title": "翻訳自動化", 
         "desc": "テキストを自動で翻訳",
         "how_to": "Google Translate APIを使ってテキストを自動翻訳します。",
@@ -281,22 +321,177 @@ TOOLS = [
         "benefits": ["手動翻訳が不要", "多言語対応", "大量翻訳が可能"],
         "time_required": "30分〜1時間",
         "difficulty": "初級",
-        "ai_prompt": "Pythonで翻訳自動化のコードを作成してください。以下の条件でお願いします：\n\n1. googletransライブラリを使う\n2. 日本語のテキストを英語に翻訳する\n3. ファイル全体を翻訳する機能も含める\n4. エラーハンドリングも含める\n5. 初心者でも理解できるようにコメントを詳しく書く\n\n対象言語: 日本語→英語\n入力: テキストファイル\n出力: 翻訳されたテキストファイル"
+        "ai_prompt": "Pythonで翻訳自動化のコードを作成してください。以下の条件でお願いします：\n\n1. googletransライブラリを使う\n2. 日本語のテキストを英語に翻訳する\n3. ファイル全体を翻訳する機能も含める\n4. エラーハンドリングも含める\n5. 初心者でも理解できるようにコメントを詳しく書く\n\n対象言語: 日本語→英語\n入力: テキストファイル\n出力: 翻訳されたテキストファイル\n\nコピペ用プロンプト:\nPythonで翻訳自動化のコードを作成してください。googletransライブラリを使って日本語のテキストを英語に翻訳し、ファイル全体を翻訳する機能も含めてエラーハンドリングも行うコードを書いてください。初心者でも理解できるようにコメントを詳しく書いてください。"
     },
     {
-        "id": 20, 
+        "id": 20,
+        "category": "スケジュール管理",
+        "number": "20/100",
         "title": "タスク自動リマインド", 
         "desc": "タスクを自動でリマインド",
-        "how_to": "スケジュール機能を使ってタスクの期限を管理し、自動でリマインドを送信します。",
-        "sample_code": "import schedule\nimport time\nimport smtplib\nfrom email.mime.text import MIMEText\nfrom datetime import datetime, timedelta\n\n# タスクリスト\ntasks = [\n    {'title': 'レポート提出', 'deadline': '2024-01-20', 'priority': 'high'},\n    {'title': '会議準備', 'deadline': '2024-01-18', 'priority': 'medium'},\n    {'title': 'メール返信', 'deadline': '2024-01-17', 'priority': 'low'}\n]\n\ndef check_deadlines():\n    today = datetime.now().date()\n    \n    for task in tasks:\n        deadline = datetime.strptime(task['deadline'], '%Y-%m-%d').date()\n        days_left = (deadline - today).days\n        \n        if days_left <= 1 and days_left >= 0:\n            send_reminder(task, days_left)\n\ndef send_reminder(task, days_left):\n    # メール設定\n    sender_email = 'your_email@gmail.com'\n    sender_password = 'your_password'\n    receiver_email = 'your_email@gmail.com'\n    \n    # メール内容\n    subject = f'タスクリマインド: {task[\"title\"]}'\n    body = f'''\n    タスクリマインド\n    \n    タスク: {task['title']}\n    期限: {task['deadline']}\n    優先度: {task['priority']}\n    残り日数: {days_left}日\n    \n    早めに完了させましょう！\n    '''\n    \n    # メール送信\n    msg = MIMEText(body, 'plain')\n    msg['Subject'] = subject\n    msg['From'] = sender_email\n    msg['To'] = receiver_email\n    \n    server = smtplib.SMTP('smtp.gmail.com', 587)\n    server.starttls()\n    server.login(sender_email, sender_password)\n    server.send_message(msg)\n    server.quit()\n    \n    print(f'リマインド送信: {task[\"title\"]}')\n\n# 毎日9時にチェック\nschedule.every().day.at('09:00').do(check_deadlines)\n\n# スケジュール実行\nwhile True:\n    schedule.run_pending()\n    time.sleep(60)",
+        "how_to": "scheduleライブラリを使ってタスクの期限を管理し、自動でリマインドメールを送信します。",
+        "sample_code": "import schedule\nimport time\nimport smtplib\nfrom email.mime.text import MIMEText\nfrom datetime import datetime\n\ntasks = [\n    {'title': 'レポート提出', 'deadline': '2024-01-15', 'email': 'boss@company.com'},\n    {'title': '会議準備', 'deadline': '2024-01-16', 'email': 'team@company.com'}\n]\n\ndef send_reminder(task):\n    # メール設定\n    sender_email = 'your_email@gmail.com'\n    sender_password = 'your_password'\n    \n    # メール作成\n    msg = MIMEText(f'タスクリマインド: {task[\"title\"]}の期限が近づいています。')\n    msg['Subject'] = f'タスクリマインド: {task[\"title\"]}'\n    msg['From'] = sender_email\n    msg['To'] = task['email']\n    \n    # 送信\n    server = smtplib.SMTP('smtp.gmail.com', 587)\n    server.starttls()\n    server.login(sender_email, sender_password)\n    server.send_message(msg)\n    server.quit()\n    \n    print(f'リマインド送信: {task[\"title\"]}')\n\n# 毎日9時にチェック\nschedule.every().day.at('09:00').do(lambda: [send_reminder(task) for task in tasks])\n\nwhile True:\n    schedule.run_pending()\n    time.sleep(60)",
         "libraries": "schedule、smtplib（標準ライブラリ）、datetime（標準ライブラリ）",
-        "explanation": "タスクの期限を自動で管理し、リマインドを送信することで、タスクの見落としを防げます。",
-        "benefits": ["タスクの見落としを防ぐ", "時間管理が向上", "自動リマインド"],
+        "explanation": "タスクの期限を自動で管理し、リマインドメールを送信することで、タスクの忘れを防げます。",
+        "benefits": ["タスク忘れを防ぐ", "自動リマインド", "時間管理が向上"],
+        "time_required": "30分〜1時間",
+        "difficulty": "初級",
+        "ai_prompt": "Pythonでタスク自動リマインドのコードを作成してください。以下の条件でお願いします：\n\n1. scheduleライブラリで毎日9時にチェックする\n2. タスクリストから期限が近いものを確認する\n3. リマインドメールを自動送信する\n4. エラーハンドリングも含める\n5. 初心者でも理解できるようにコメントを詳しく書く\n\nチェック時間: 毎日9時\nリマインド内容: タスク名と期限\n送信先: 指定したメールアドレス\n\nコピペ用プロンプト:\nPythonでタスク自動リマインドのコードを作成してください。scheduleライブラリで毎日9時にチェックし、タスクリストから期限が近いものを確認してリマインドメールを自動送信するコードを書いてください。エラーハンドリングも含めて、初心者でも理解できるようにコメントを詳しく書いてください。"
+    },
+    {
+        "id": 21,
+        "category": "データ処理・分析",
+        "number": "21/100",
+        "title": "CSVデータ自動変換", 
+        "desc": "CSVファイルを自動で変換・整形",
+        "how_to": "pandasライブラリを使ってCSVファイルを読み込み、データを変換・整形します。",
+        "sample_code": "import pandas as pd\nimport numpy as np\n\n# CSVファイルを読み込み\ndf = pd.read_csv('input_data.csv')\n\n# データの前処理\n# 欠損値を処理\ndf = df.fillna(0)\n\n# 日付列を変換\ndf['日付'] = pd.to_datetime(df['日付'])\n\n# 数値列の計算\ndf['合計'] = df['売上'] + df['手数料']\n\n# データの並び替え\ndf = df.sort_values('日付', ascending=False)\n\n# 結果を保存\ndf.to_csv('processed_data.csv', index=False, encoding='utf-8')\nprint('データ変換完了！')\nprint(f'処理件数: {len(df)}件')",
+        "libraries": "pandas、numpy",
+        "explanation": "CSVファイルのデータを自動で変換・整形することで、データ分析の準備作業を効率化できます。",
+        "benefits": ["手作業が不要", "大量データも瞬時処理", "データ品質が向上"],
+        "time_required": "30分〜1時間",
+        "difficulty": "初級",
+        "ai_prompt": "PythonでCSVデータ自動変換のコードを作成してください。以下の条件でお願いします：\n\n1. pandasライブラリを使う\n2. CSVファイルを読み込んで前処理する\n3. 欠損値の処理、日付変換、計算を行う\n4. 結果を新しいCSVファイルに保存する\n5. 初心者でも理解できるようにコメントを詳しく書く\n\n入力ファイル: input_data.csv\n処理内容: 欠損値処理、日付変換、計算\n出力ファイル: processed_data.csv\n\nコピペ用プロンプト:\nPythonでCSVデータ自動変換のコードを作成してください。pandasライブラリを使ってCSVファイルを読み込み、欠損値の処理、日付変換、計算を行って結果を新しいCSVファイルに保存するコードを書いてください。初心者でも理解できるようにコメントを詳しく書いてください。"
+    },
+    {
+        "id": 22,
+        "category": "ファイル管理",
+        "number": "22/100",
+        "title": "画像自動分類", 
+        "desc": "画像を自動で分類・整理",
+        "how_to": "機械学習を使って画像を自動で分類し、適切なフォルダに整理します。",
+        "sample_code": "import os\nimport shutil\nfrom PIL import Image\nimport numpy as np\nfrom sklearn.cluster import KMeans\n\ndef classify_images_by_color(image_folder, output_folder):\n    # 画像を色で分類\n    for filename in os.listdir(image_folder):\n        if filename.lower().endswith(('.png', '.jpg', '.jpeg')):\n            image_path = os.path.join(image_folder, filename)\n            \n            # 画像を読み込み\n            img = Image.open(image_path)\n            img_array = np.array(img)\n            \n            # 平均色を計算\n            avg_color = img_array.mean(axis=(0, 1))\n            \n            # 色で分類（例：明るい/暗い）\n            brightness = avg_color.mean()\n            \n            if brightness > 128:\n                category = '明るい画像'\n            else:\n                category = '暗い画像'\n            \n            # フォルダを作成\n            category_folder = os.path.join(output_folder, category)\n            if not os.path.exists(category_folder):\n                os.makedirs(category_folder)\n            \n            # 画像を移動\n            shutil.copy2(image_path, os.path.join(category_folder, filename))\n            print(f'{filename} → {category}')\n\n# 使用例\nclassify_images_by_color('input_images', 'classified_images')\nprint('画像分類完了！')",
+        "libraries": "Pillow、numpy、scikit-learn、os、shutil（標準ライブラリ）",
+        "explanation": "画像を自動で分類することで、大量の画像を効率的に整理できます。",
+        "benefits": ["手動分類が不要", "大量画像も一括処理", "整理が自動化"],
         "time_required": "1〜2時間",
         "difficulty": "中級",
-        "ai_prompt": "Pythonでタスク自動リマインドのコードを作成してください。以下の条件でお願いします：\n\n1. scheduleライブラリで毎日9時にチェックする\n2. タスクリストから期限が近いものを検出する\n3. 期限が1日前になったらメールでリマインドを送信する\n4. タスクのタイトル、期限、優先度を含める\n5. 初心者でも理解できるようにコメントを詳しく書く\n\nチェック時間: 毎日9時\nリマインド条件: 期限1日前\n送信内容: タスク名、期限、優先度"
+        "ai_prompt": "Pythonで画像自動分類のコードを作成してください。以下の条件でお願いします：\n\n1. Pillowとnumpyライブラリを使う\n2. 画像の色や明度で分類する\n3. 分類結果に応じてフォルダを作成する\n4. 画像を適切なフォルダに移動する\n5. 初心者でも理解できるようにコメントを詳しく書く\n\n対象画像: 指定したフォルダ内の画像\n分類基準: 明度（明るい/暗い）\n出力: 分類されたフォルダ\n\nコピペ用プロンプト:\nPythonで画像自動分類のコードを作成してください。Pillowとnumpyライブラリを使って画像の色や明度で分類し、分類結果に応じてフォルダを作成して画像を適切なフォルダに移動するコードを書いてください。初心者でも理解できるようにコメントを詳しく書いてください。"
+    },
+    {
+        "id": 23,
+        "category": "データ収集・分析",
+        "number": "23/100",
+        "title": "Webサイト監視", 
+        "desc": "Webサイトの変更を自動で監視",
+        "how_to": "requestsライブラリを使ってWebサイトの変更を定期的にチェックし、変更があれば通知します。",
+        "sample_code": "import requests\nimport hashlib\nimport time\nimport smtplib\nfrom email.mime.text import MIMEText\n\ndef monitor_website(url, check_interval=3600):\n    # 初期状態を取得\n    response = requests.get(url)\n    initial_hash = hashlib.md5(response.content).hexdigest()\n    \n    print(f'監視開始: {url}')\n    print(f'初期ハッシュ: {initial_hash}')\n    \n    while True:\n        try:\n            # 現在の状態を取得\n            response = requests.get(url)\n            current_hash = hashlib.md5(response.content).hexdigest()\n            \n            # 変更をチェック\n            if current_hash != initial_hash:\n                # 変更があった場合、メール通知\n                send_notification(url, 'Webサイトに変更が検出されました')\n                print(f'変更検出: {url}')\n                break\n            else:\n                print(f'変更なし: {time.strftime(\"%Y-%m-%d %H:%M:%S\")}')\n            \n            # 指定時間待機\n            time.sleep(check_interval)\n            \n        except Exception as e:\n            print(f'エラー: {e}')\n            time.sleep(60)\n\ndef send_notification(url, message):\n    # メール通知の実装\n    print(f'通知: {message} - {url}')\n\n# 使用例\nmonitor_website('https://example.com', 1800)  # 30分ごとにチェック",
+        "libraries": "requests、hashlib、time、smtplib（標準ライブラリ）",
+        "explanation": "Webサイトの変更を自動で監視することで、競合サイトの動向や価格変更を素早く把握できます。",
+        "benefits": ["24時間監視", "変更を即座に検出", "手動チェックが不要"],
+        "time_required": "30分〜1時間",
+        "difficulty": "初級",
+        "ai_prompt": "PythonでWebサイト監視のコードを作成してください。以下の条件でお願いします：\n\n1. requestsライブラリを使う\n2. 指定したWebサイトを定期的にチェックする\n3. 変更があった場合に通知する\n4. ハッシュ値で変更を検出する\n5. 初心者でも理解できるようにコメントを詳しく書く\n\n監視対象: 指定したWebサイトURL\nチェック間隔: 30分\n通知方法: メールまたはコンソール出力\n\nコピペ用プロンプト:\nPythonでWebサイト監視のコードを作成してください。requestsライブラリを使って指定したWebサイトを定期的にチェックし、ハッシュ値で変更を検出して変更があった場合に通知するコードを書いてください。初心者でも理解できるようにコメントを詳しく書いてください。"
+    },
+    {
+        "id": 24,
+        "category": "ファイル管理",
+        "number": "24/100",
+        "title": "データベース自動バックアップ", 
+        "desc": "データベースを自動でバックアップ",
+        "how_to": "SQLiteやMySQLのデータベースを定期的に自動バックアップします。",
+        "sample_code": "import sqlite3\nimport shutil\nimport os\nfrom datetime import datetime\nimport schedule\nimport time\n\ndef backup_sqlite_database(db_path, backup_folder):\n    # バックアップファイル名（日時付き）\n    timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')\n    backup_filename = f'backup_{timestamp}.db'\n    backup_path = os.path.join(backup_folder, backup_filename)\n    \n    # バックアップフォルダを作成\n    if not os.path.exists(backup_folder):\n        os.makedirs(backup_folder)\n    \n    # データベースをコピー\n    shutil.copy2(db_path, backup_path)\n    \n    print(f'バックアップ完了: {backup_path}')\n    \n    # 古いバックアップを削除（30日以上前）\n    cleanup_old_backups(backup_folder, days=30)\n\ndef cleanup_old_backups(backup_folder, days=30):\n    current_time = datetime.now()\n    \n    for filename in os.listdir(backup_folder):\n        if filename.startswith('backup_') and filename.endswith('.db'):\n            file_path = os.path.join(backup_folder, filename)\n            file_time = datetime.fromtimestamp(os.path.getctime(file_path))\n            \n            if (current_time - file_time).days > days:\n                os.remove(file_path)\n                print(f'古いバックアップを削除: {filename}')\n\n# 毎日深夜2時にバックアップ\nschedule.every().day.at('02:00').do(\n    backup_sqlite_database, \n    'database.db', \n    'backups'\n)\n\n# スケジュール実行\nwhile True:\n    schedule.run_pending()\n    time.sleep(60)",
+        "libraries": "sqlite3、shutil、os、datetime、schedule（標準ライブラリ）",
+        "explanation": "データベースを自動でバックアップすることで、データ損失のリスクを軽減し、復旧を容易にします。",
+        "benefits": ["データ保護", "自動実行", "古いバックアップの自動削除"],
+        "time_required": "30分〜1時間",
+        "difficulty": "初級",
+        "ai_prompt": "Pythonでデータベース自動バックアップのコードを作成してください。以下の条件でお願いします：\n\n1. sqlite3ライブラリを使う\n2. SQLiteデータベースを定期的にバックアップする\n3. 日時付きのファイル名で保存する\n4. 古いバックアップを自動削除する\n5. 初心者でも理解できるようにコメントを詳しく書く\n\n対象データベース: SQLiteファイル\nバックアップ間隔: 毎日深夜2時\n保持期間: 30日\n\nコピペ用プロンプト:\nPythonでデータベース自動バックアップのコードを作成してください。sqlite3ライブラリを使ってSQLiteデータベースを定期的にバックアップし、日時付きのファイル名で保存して古いバックアップを自動削除するコードを書いてください。初心者でも理解できるようにコメントを詳しく書いてください。"
+    },
+    {
+        "id": 25,
+        "category": "データ処理・分析",
+        "number": "25/100",
+        "title": "ログファイル自動分析", 
+        "desc": "ログファイルを自動で分析・集計",
+        "how_to": "ログファイルを読み込み、エラーやアクセスパターンを自動で分析します。",
+        "sample_code": "import re\nfrom collections import Counter\nfrom datetime import datetime\nimport pandas as pd\n\ndef analyze_log_file(log_file_path):\n    # ログファイルを読み込み\n    with open(log_file_path, 'r', encoding='utf-8') as f:\n        lines = f.readlines()\n    \n    # 分析結果を格納\n    analysis = {\n        'total_lines': len(lines),\n        'errors': [],\n        'access_patterns': [],\n        'ip_addresses': []\n    }\n    \n    # 各行を分析\n    for line in lines:\n        # エラーログを検出\n        if 'ERROR' in line or 'error' in line.lower():\n            analysis['errors'].append(line.strip())\n        \n        # IPアドレスを抽出\n        ip_pattern = r'\\b(?:\\d{1,3}\\.){3}\\d{1,3}\\b'\n        ips = re.findall(ip_pattern, line)\n        analysis['ip_addresses'].extend(ips)\n        \n        # アクセスパターンを抽出\n        if 'GET' in line or 'POST' in line:\n            analysis['access_patterns'].append(line.strip())\n    \n    # 統計を計算\n    error_count = len(analysis['errors'])\n    unique_ips = len(set(analysis['ip_addresses']))\n    \n    # 結果を表示\n    print(f'=== ログ分析結果 ===')\n    print(f'総行数: {analysis[\"total_lines\"]:,}行')\n    print(f'エラー数: {error_count}件')\n    print(f'ユニークIP数: {unique_ips}件')\n    print(f'アクセス数: {len(analysis[\"access_patterns\"])}件')\n    \n    # 結果をCSVに保存\n    results_df = pd.DataFrame({\n        '項目': ['総行数', 'エラー数', 'ユニークIP数', 'アクセス数'],\n        '数値': [analysis['total_lines'], error_count, unique_ips, len(analysis['access_patterns'])]\n    })\n    results_df.to_csv('log_analysis.csv', index=False, encoding='utf-8')\n    \n    print('分析結果をlog_analysis.csvに保存しました')\n\n# 使用例\nanalyze_log_file('application.log')",
+        "libraries": "re、collections、datetime、pandas（標準ライブラリ）",
+        "explanation": "ログファイルを自動で分析することで、システムの問題やアクセスパターンを素早く把握できます。",
+        "benefits": ["手動分析が不要", "問題の早期発見", "統計データの自動作成"],
+        "time_required": "30分〜1時間",
+        "difficulty": "初級",
+        "ai_prompt": "Pythonでログファイル自動分析のコードを作成してください。以下の条件でお願いします：\n\n1. 標準ライブラリ（re、collections）を使う\n2. ログファイルを読み込んで分析する\n3. エラー数、IPアドレス、アクセスパターンを集計する\n4. 結果をCSVファイルに保存する\n5. 初心者でも理解できるようにコメントを詳しく書く\n\n対象ファイル: ログファイル\n分析項目: エラー数、IPアドレス、アクセスパターン\n出力: CSVファイル\n\nコピペ用プロンプト:\nPythonでログファイル自動分析のコードを作成してください。標準ライブラリ（re、collections）を使ってログファイルを読み込み、エラー数、IPアドレス、アクセスパターンを集計して結果をCSVファイルに保存するコードを書いてください。初心者でも理解できるようにコメントを詳しく書いてください。"
+    },
+    {
+        "id": 26,
+        "category": "メール・コミュニケーション",
+        "number": "26/100",
+        "title": "メール自動振り分け", 
+        "desc": "受信メールを自動で振り分け",
+        "how_to": "imaplibライブラリを使って受信メールを自動で分類・振り分けします。",
+        "sample_code": "import imaplib\nimport email\nimport re\nfrom email.header import decode_header\n\ndef auto_sort_emails(email_address, password):\n    # メールサーバーに接続\n    mail = imaplib.IMAP4_SSL('imap.gmail.com')\n    mail.login(email_address, password)\n    mail.select('INBOX')\n    \n    # 未読メールを検索\n    _, messages = mail.search(None, 'UNSEEN')\n    \n    for num in messages[0].split():\n        # メールを取得\n        _, msg_data = mail.fetch(num, '(RFC822)')\n        email_body = msg_data[0][1]\n        email_message = email.message_from_bytes(email_body)\n        \n        # 件名と送信者を取得\n        subject = decode_header(email_message['subject'])[0][0]\n        if isinstance(subject, bytes):\n            subject = subject.decode()\n        \n        sender = email_message['from']\n        \n        # 振り分けルール\n        if '請求書' in subject or 'invoice' in subject.lower():\n            folder = '請求書'\n        elif '会議' in subject or 'meeting' in subject.lower():\n            folder = '会議'\n        elif '報告' in subject or 'report' in subject.lower():\n            folder = '報告書'\n        else:\n            folder = 'その他'\n        \n        print(f'件名: {subject}')\n        print(f'送信者: {sender}')\n        print(f'振り分け先: {folder}')\n        print('---')\n        \n        # 実際の振り分け処理（フォルダ作成と移動）\n        # mail.create(folder)  # フォルダ作成\n        # mail.copy(num, folder)  # メール移動\n    \n    mail.close()\n    mail.logout()\n\n# 使用例\n# auto_sort_emails('your_email@gmail.com', 'your_password')",
+        "libraries": "imaplib、email、re（標準ライブラリ）",
+        "explanation": "受信メールを自動で振り分けることで、メール管理を効率化し、重要なメールを見逃すことを防げます。",
+        "benefits": ["メール管理が自動化", "重要なメールを見逃さない", "作業効率が向上"],
+        "time_required": "1〜2時間",
+        "difficulty": "中級",
+        "ai_prompt": "Pythonでメール自動振り分けのコードを作成してください。以下の条件でお願いします：\n\n1. imaplibライブラリを使う\n2. GmailのIMAPに接続する\n3. 未読メールを検索する\n4. 件名や送信者で振り分けルールを設定する\n5. 初心者でも理解できるようにコメントを詳しく書く\n\n対象メール: Gmailの未読メール\n振り分け基準: 件名のキーワード\n振り分け先: 請求書、会議、報告書、その他\n\nコピペ用プロンプト:\nPythonでメール自動振り分けのコードを作成してください。imaplibライブラリを使ってGmailのIMAPに接続し、未読メールを検索して件名や送信者で振り分けルールを設定するコードを書いてください。初心者でも理解できるようにコメントを詳しく書いてください。"
+    },
+    {
+        "id": 27,
+        "category": "ファイル管理",
+        "number": "27/100",
+        "title": "ファイル重複チェック", 
+        "desc": "重複ファイルを自動で検出・削除",
+        "how_to": "ファイルのハッシュ値を比較して重複ファイルを検出し、自動で削除します。",
+        "sample_code": "import os\nimport hashlib\nfrom collections import defaultdict\n\ndef find_duplicate_files(folder_path):\n    # ファイルのハッシュ値を格納\n    hash_dict = defaultdict(list)\n    \n    # フォルダ内の全ファイルをスキャン\n    for root, dirs, files in os.walk(folder_path):\n        for filename in files:\n            file_path = os.path.join(root, filename)\n            \n            try:\n                # ファイルのハッシュ値を計算\n                with open(file_path, 'rb') as f:\n                    file_hash = hashlib.md5(f.read()).hexdigest()\n                    hash_dict[file_hash].append(file_path)\n            except Exception as e:\n                print(f'エラー: {file_path} - {e}')\n    \n    # 重複ファイルを検出\n    duplicates = []\n    for file_hash, file_paths in hash_dict.items():\n        if len(file_paths) > 1:\n            duplicates.append({\n                'hash': file_hash,\n                'files': file_paths,\n                'size': os.path.getsize(file_paths[0])\n            })\n    \n    return duplicates\ndef remove_duplicates(duplicates, keep_oldest=True):\n    total_saved = 0\n    \n    for duplicate in duplicates:\n        files = duplicate['files']\n        \n        if keep_oldest:\n            # 最も古いファイルを残す\n            files.sort(key=lambda x: os.path.getctime(x))\n            files_to_remove = files[1:]\n        else:\n            # 最も新しいファイルを残す\n            files.sort(key=lambda x: os.path.getctime(x), reverse=True)\n            files_to_remove = files[1:]\n        \n        # 重複ファイルを削除\n        for file_path in files_to_remove:\n            try:\n                os.remove(file_path)\n                total_saved += duplicate['size']\n                print(f'削除: {file_path}')\n            except Exception as e:\n                print(f'削除エラー: {file_path} - {e}')\n    \n    return total_saved\n\n# 使用例\nduplicates = find_duplicate_files('C:/Users/YourName/Documents')\nprint(f'重複ファイル数: {len(duplicates)}件')\n\nif duplicates:\n    saved_space = remove_duplicates(duplicates)\n    print(f'節約した容量: {saved_space / (1024*1024):.2f} MB')",
+        "libraries": "os、hashlib、collections（標準ライブラリ）",
+        "explanation": "重複ファイルを自動で検出・削除することで、ディスク容量を節約し、ファイル管理を効率化できます。",
+        "benefits": ["ディスク容量を節約", "ファイル管理が整理", "手動削除が不要"],
+        "time_required": "30分〜1時間",
+        "difficulty": "初級",
+        "ai_prompt": "Pythonでファイル重複チェックのコードを作成してください。以下の条件でお願いします：\n\n1. hashlibライブラリを使う\n2. 指定したフォルダ内のファイルをスキャンする\n3. ハッシュ値で重複ファイルを検出する\n4. 重複ファイルを削除する（古いファイルを残す）\n5. 初心者でも理解できるようにコメントを詳しく書く\n\n対象フォルダ: 指定したフォルダ\n検出方法: MD5ハッシュ値比較\n削除方法: 古いファイルを残して新しいファイルを削除\n\nコピペ用プロンプト:\nPythonでファイル重複チェックのコードを作成してください。hashlibライブラリを使って指定したフォルダ内のファイルをスキャンし、ハッシュ値で重複ファイルを検出して重複ファイルを削除するコードを書いてください。初心者でも理解できるようにコメントを詳しく書いてください。"
+    },
+    {
+        "id": 28,
+        "category": "ファイル管理",
+        "number": "28/100",
+        "title": "画像自動ウォーターマーク", 
+        "desc": "画像に自動でウォーターマークを追加",
+        "how_to": "PILライブラリを使って画像に自動でウォーターマーク（透かし）を追加します。",
+        "sample_code": "from PIL import Image, ImageDraw, ImageFont\nimport os\n\ndef add_watermark(image_path, watermark_text, output_path=None):\n    # 画像を開く\n    with Image.open(image_path) as img:\n        # 画像のサイズを取得\n        width, height = img.size\n        \n        # 透かし用の画像を作成\n        watermark = Image.new('RGBA', img.size, (0, 0, 0, 0))\n        draw = ImageDraw.Draw(watermark)\n        \n        # フォントを設定（デフォルトフォントを使用）\n        try:\n            font = ImageFont.truetype('arial.ttf', 36)\n        except:\n            font = ImageFont.load_default()\n        \n        # テキストのサイズを取得\n        bbox = draw.textbbox((0, 0), watermark_text, font=font)\n        text_width = bbox[2] - bbox[0]\n        text_height = bbox[3] - bbox[1]\n        \n        # テキストの位置を計算（右下に配置）\n        x = width - text_width - 20\n        y = height - text_height - 20\n        \n        # 透かしを描画\n        draw.text((x, y), watermark_text, font=font, fill=(255, 255, 255, 128))\n        \n        # 元画像と透かしを合成\n        result = Image.alpha_composite(img.convert('RGBA'), watermark)\n        \n        # 出力ファイル名を決定\n        if output_path is None:\n            name, ext = os.path.splitext(image_path)\n            output_path = f'{name}_watermarked{ext}'\n        \n        # 保存\n        result.save(output_path)\n        print(f'ウォーターマーク追加完了: {output_path}')\n\ndef batch_add_watermark(folder_path, watermark_text):\n    # フォルダ内の画像に一括でウォーターマークを追加\n    image_extensions = ['.jpg', '.jpeg', '.png', '.bmp']\n    \n    for filename in os.listdir(folder_path):\n        if any(filename.lower().endswith(ext) for ext in image_extensions):\n            image_path = os.path.join(folder_path, filename)\n            add_watermark(image_path, watermark_text)\n\n# 使用例\n# 単一画像\nadd_watermark('photo.jpg', '© 2024 Company Name')\n\n# 一括処理\n# batch_add_watermark('photos_folder', '© 2024 Company Name')",
+        "libraries": "Pillow (PIL)、os（標準ライブラリ）",
+        "explanation": "画像に自動でウォーターマークを追加することで、著作権保護やブランディングを効率化できます。",
+        "benefits": ["著作権保護", "ブランディング", "一括処理が可能"],
+        "time_required": "30分〜1時間",
+        "difficulty": "初級",
+        "ai_prompt": "Pythonで画像自動ウォーターマークのコードを作成してください。以下の条件でお願いします：\n\n1. Pillowライブラリを使う\n2. 画像にテキストのウォーターマークを追加する\n3. 右下に半透明で表示する\n4. フォルダ内の画像に一括で適用する\n5. 初心者でも理解できるようにコメントを詳しく書く\n\n対象画像: JPG、PNG、BMPファイル\nウォーターマーク: 指定したテキスト\n位置: 右下、半透明\n\nコピペ用プロンプト:\nPythonで画像自動ウォーターマークのコードを作成してください。Pillowライブラリを使って画像にテキストのウォーターマークを追加し、右下に半透明で表示してフォルダ内の画像に一括で適用するコードを書いてください。初心者でも理解できるようにコメントを詳しく書いてください。"
+    },
+    {
+        "id": 29,
+        "category": "データ処理・分析",
+        "number": "29/100",
+        "title": "データ自動検証", 
+        "desc": "データの整合性を自動でチェック",
+        "how_to": "pandasライブラリを使ってデータの整合性を自動でチェックし、エラーを検出します。",
+        "sample_code": "import pandas as pd\nimport numpy as np\nfrom datetime import datetime\n\ndef validate_data(data_file):\n    # データを読み込み\n    df = pd.read_csv(data_file)\n    \n    # 検証結果を格納\n    validation_results = {\n        'total_rows': len(df),\n        'errors': [],\n        'warnings': []\n    }\n    \n    # 1. 欠損値チェック\n    missing_data = df.isnull().sum()\n    for column, missing_count in missing_data.items():\n        if missing_count > 0:\n            validation_results['warnings'].append(\n                f'列「{column}」に{missing_count}件の欠損値があります'\n            )\n    \n    # 2. データ型チェック\n    for column in df.columns:\n        if '日付' in column or 'date' in column.lower():\n            try:\n                pd.to_datetime(df[column])\n            except:\n                validation_results['errors'].append(\n                    f'列「{column}」の日付形式が正しくありません'\n                )\n        \n        if '金額' in column or 'price' in column.lower():\n            if not pd.api.types.is_numeric_dtype(df[column]):\n                validation_results['errors'].append(\n                    f'列「{column}」が数値形式ではありません'\n                )\n    \n    # 3. 範囲チェック\n    if '年齢' in df.columns:\n        age_errors = df[(df['年齢'] < 0) | (df['年齢'] > 120)]\n        if len(age_errors) > 0:\n            validation_results['errors'].append(\n                f'年齢に不正な値が{len(age_errors)}件あります'\n            )\n    \n    # 4. 重複チェック\n    duplicates = df.duplicated().sum()\n    if duplicates > 0:\n        validation_results['warnings'].append(\n            f'重複データが{duplicates}件あります'\n        )\n    \n    # 結果を表示\n    print('=== データ検証結果 ===')\n    print(f'総行数: {validation_results[\"total_rows\"]:,}行')\n    print(f'エラー数: {len(validation_results[\"errors\"])}件')\n    print(f'警告数: {len(validation_results[\"warnings\"])}件')\n    \n    if validation_results['errors']:\n        print('\\n【エラー】')\n        for error in validation_results['errors']:\n            print(f'• {error}')\n    \n    if validation_results['warnings']:\n        print('\\n【警告】')\n        for warning in validation_results['warnings']:\n            print(f'• {warning}')\n    \n    # 結果をファイルに保存\n    with open('validation_report.txt', 'w', encoding='utf-8') as f:\n        f.write('データ検証レポート\\n')\n        f.write(f'検証日時: {datetime.now()}\\n')\n        f.write(f'総行数: {validation_results[\"total_rows\"]}\\n')\n        f.write(f'エラー数: {len(validation_results[\"errors\"])}\\n')\n        f.write(f'警告数: {len(validation_results[\"warnings\"])}\\n')\n        \n        if validation_results['errors']:\n            f.write('\\nエラー詳細:\\n')\n            for error in validation_results['errors']:\n                f.write(f'• {error}\\n')\n    \n    print('\\n検証レポートをvalidation_report.txtに保存しました')\n\n# 使用例\nvalidate_data('customer_data.csv')",
+        "libraries": "pandas、numpy、datetime（標準ライブラリ）",
+        "explanation": "データの整合性を自動でチェックすることで、データ品質の問題を早期に発見し、分析の精度を向上させます。",
+        "benefits": ["データ品質の向上", "エラーの早期発見", "分析精度の向上"],
+        "time_required": "30分〜1時間",
+        "difficulty": "初級",
+        "ai_prompt": "Pythonでデータ自動検証のコードを作成してください。以下の条件でお願いします：\n\n1. pandasライブラリを使う\n2. CSVファイルのデータを検証する\n3. 欠損値、データ型、範囲、重複をチェックする\n4. エラーと警告を分類して報告する\n5. 初心者でも理解できるようにコメントを詳しく書く\n\n対象ファイル: CSVファイル\n検証項目: 欠損値、データ型、範囲、重複\n出力: 検証レポートファイル\n\nコピペ用プロンプト:\nPythonでデータ自動検証のコードを作成してください。pandasライブラリを使ってCSVファイルのデータを検証し、欠損値、データ型、範囲、重複をチェックしてエラーと警告を分類して報告するコードを書いてください。初心者でも理解できるようにコメントを詳しく書いてください。"
+    },
+    {
+        "id": 30,
+        "category": "データ処理・分析",
+        "number": "30/100",
+        "title": "自動データクレンジング", 
+        "desc": "データを自動でクレンジング・整形",
+        "how_to": "pandasライブラリを使ってデータの前処理を自動化し、分析用のデータを整形します。",
+        "sample_code": "import pandas as pd\nimport numpy as np\nimport re\nfrom datetime import datetime\n\ndef clean_data(input_file, output_file):\n    # データを読み込み\n    df = pd.read_csv(input_file)\n    \n    print(f'元データ: {len(df)}行')\n    \n    # 1. 欠損値の処理\n    # 数値列は平均値で補完\n    numeric_columns = df.select_dtypes(include=[np.number]).columns\n    for col in numeric_columns:\n        if df[col].isnull().sum() > 0:\n            mean_value = df[col].mean()\n            df[col].fillna(mean_value, inplace=True)\n            print(f'列「{col}」の欠損値を平均値で補完')\n    \n    # 文字列列は最頻値で補完\n    string_columns = df.select_dtypes(include=['object']).columns\n    for col in string_columns:\n        if df[col].isnull().sum() > 0:\n            mode_value = df[col].mode()[0]\n            df[col].fillna(mode_value, inplace=True)\n            print(f'列「{col}」の欠損値を最頻値で補完')\n    \n    # 2. 文字列の正規化\n    for col in string_columns:\n        if df[col].dtype == 'object':\n            # 前後の空白を削除\n            df[col] = df[col].str.strip()\n            # 大文字小文字を統一\n            df[col] = df[col].str.lower()\n    \n    # 3. 異常値の処理\n    for col in numeric_columns:\n        # 外れ値を検出（3シグマ法）\n        mean = df[col].mean()\n        std = df[col].std()\n        lower_bound = mean - 3 * std\n        upper_bound = mean + 3 * std\n        \n        outliers = df[(df[col] < lower_bound) | (df[col] > upper_bound)]\n        if len(outliers) > 0:\n            # 外れ値を中央値で置換\n            median_value = df[col].median()\n            df.loc[(df[col] < lower_bound) | (df[col] > upper_bound), col] = median_value\n            print(f'列「{col}」の外れ値{len(outliers)}件を中央値で置換')\n    \n    # 4. 重複データの削除\n    initial_rows = len(df)\n    df.drop_duplicates(inplace=True)\n    removed_rows = initial_rows - len(df)\n    if removed_rows > 0:\n        print(f'重複データ{removed_rows}件を削除')\n    \n    # 5. データ型の最適化\n    # 日付列の変換\n    date_columns = [col for col in df.columns if '日付' in col or 'date' in col.lower()]\n    for col in date_columns:\n        try:\n            df[col] = pd.to_datetime(df[col])\n            print(f'列「{col}」を日付型に変換')\n        except:\n            pass\n    \n    # 結果を保存\n    df.to_csv(output_file, index=False, encoding='utf-8')\n    \n    print(f'\\nクレンジング完了！')\n    print(f'処理後データ: {len(df)}行')\n    print(f'保存先: {output_file}')\n    \n    # 処理サマリーを表示\n    print('\\n=== 処理サマリー ===')\n    print(f'• 欠損値補完: {len(numeric_columns) + len(string_columns)}列')\n    print(f'• 文字列正規化: {len(string_columns)}列')\n    print(f'• 異常値処理: {len(numeric_columns)}列')\n    print(f'• 重複削除: {removed_rows}件')\n    print(f'• データ型変換: {len(date_columns)}列')\n\n# 使用例\nclean_data('raw_data.csv', 'cleaned_data.csv')",
+        "libraries": "pandas、numpy、re、datetime（標準ライブラリ）",
+        "explanation": "データを自動でクレンジングすることで、分析の準備作業を効率化し、データ品質を向上させます。",
+        "benefits": ["データ品質の向上", "分析準備の自動化", "時間の大幅節約"],
+        "time_required": "1〜2時間",
+        "difficulty": "中級",
+        "ai_prompt": "Pythonで自動データクレンジングのコードを作成してください。以下の条件でお願いします：\n\n1. pandasライブラリを使う\n2. CSVファイルのデータをクレンジングする\n3. 欠損値補完、異常値処理、重複削除を行う\n4. 文字列の正規化とデータ型変換を行う\n5. 初心者でも理解できるようにコメントを詳しく書く\n\n対象ファイル: 生データのCSVファイル\n処理内容: 欠損値補完、異常値処理、重複削除、正規化\n出力ファイル: クレンジング済みCSVファイル\n\nコピペ用プロンプト:\nPythonで自動データクレンジングのコードを作成してください。pandasライブラリを使ってCSVファイルのデータをクレンジングし、欠損値補完、異常値処理、重複削除を行って文字列の正規化とデータ型変換を行うコードを書いてください。初心者でも理解できるようにコメントを詳しく書いてください。"
     }
 ]
+
+# 追加ツールを統合
+TOOLS = TOOLS + EXTRA_TOOLS
 
 @app.route('/')
 @app.route('/index')
