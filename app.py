@@ -1,4 +1,4 @@
-from flask import Flask, render_template, jsonify, request, redirect, url_for, flash
+from flask import Flask, render_template, jsonify, request, redirect, url_for, flash, session
 import os
 import logging
 import sys
@@ -9,6 +9,7 @@ import re
 from datetime import datetime
 from config import config
 from models import db, Tool
+import secrets
 
 # ログ設定
 logging.basicConfig(
@@ -118,7 +119,7 @@ TOOLS = [
         "title": "データ可視化グラフ作成", 
         "desc": "データをグラフで見やすく表示",
         "how_to": "matplotlibやplotlyを使ってデータをグラフ化し、見やすい図表を作成します。",
-        "sample_code": "import matplotlib.pyplot as plt\nimport pandas as pd\n\n# サンプルデータ\ndata = {\n    '月': ['1月', '2月', '3月', '4月', '5月', '6月'],\n    '売上': [100, 150, 200, 180, 250, 300]\n}\ndf = pd.DataFrame(data)\n\n# グラフ作成\nplt.figure(figsize=(10, 6))\nplt.plot(df['月'], df['売上'], marker='o', linewidth=2, markersize=8)\nplt.title('月次売上推移', fontsize=16)\nplt.xlabel('月')\nplt.ylabel('売上（万円）')\nplt.grid(True, alpha=0.3)\n\n# グラフ保存\nplt.savefig('sales_chart.png', dpi=300, bbox_inches='tight')\nplt.show()\nprint('グラフを保存しました')",
+        "sample_code": "import matplotlib\nmatplotlib.use('Agg')  # Web環境用のバックエンド\nimport matplotlib.pyplot as plt\nimport pandas as pd\nimport os\n\nprint('=== データ可視化グラフ作成 ===')\n\n# アップロードされたファイルを確認\nuploaded_files = [f for f in os.listdir('.') if f.endswith(('.csv', '.xlsx', '.xls'))]\n\nif uploaded_files:\n    # アップロードされたファイルを使用\n    filename = uploaded_files[0]\n    print(f'アップロードされたファイルを使用: {filename}')\n    \n    if filename.endswith('.csv'):\n        df = pd.read_csv(filename)\n    else:\n        df = pd.read_excel(filename)\n    \n    print(f'データ件数: {len(df)}件')\n    print(f'列名: {list(df.columns)}')\n    \n    # 数値列を自動検出\n    numeric_columns = df.select_dtypes(include=['number']).columns\n    if len(numeric_columns) > 0:\n        target_column = numeric_columns[0]\n        print(f'分析対象列: {target_column}')\n        \n        print(f'合計: {df[target_column].sum():,}')\n        print(f'平均: {df[target_column].mean():.1f}')\n        print(f'最大: {df[target_column].max():,}')\n        \n        # グラフ作成\n        plt.figure(figsize=(10, 6))\n        plt.plot(df.index, df[target_column], marker='o', linewidth=2, markersize=8, color='blue')\n        plt.title(f'{target_column}の推移', fontsize=16, fontweight='bold')\n        plt.xlabel('データ番号', fontsize=12)\n        plt.ylabel(target_column, fontsize=12)\n        plt.grid(True, alpha=0.3)\n        \n        # データラベルを追加\n        for i, v in enumerate(df[target_column]):\n            plt.text(i, v + df[target_column].max() * 0.01, f'{v:,.0f}', ha='center', va='bottom', fontsize=8)\n        \n        # グラフ保存\n        plt.savefig('data_chart.png', dpi=300, bbox_inches='tight')\n        print(f'\\n✅ グラフを保存しました: data_chart.png')\n    else:\n        print('数値データが見つかりませんでした。')\nelse:\n    # サンプルデータを使用\n    print('アップロードされたファイルがないため、サンプルデータを使用します。')\n    data = {\n        '月': ['1月', '2月', '3月', '4月', '5月', '6月'],\n        '売上': [100, 150, 200, 180, 250, 300]\n    }\n    df = pd.DataFrame(data)\n    \n    print(f'データ件数: {len(df)}件')\n    print(f'売上合計: {df[\"売上\"].sum():,}万円')\n    print(f'平均売上: {df[\"売上\"].mean():.1f}万円')\n    print(f'最大売上: {df[\"売上\"].max():,}万円（{df.loc[df[\"売上\"].idxmax(), \"月\"]}）')\n    \n    # グラフ作成\n    plt.figure(figsize=(10, 6))\n    plt.plot(df['月'], df['売上'], marker='o', linewidth=2, markersize=8, color='blue')\n    plt.title('月次売上推移', fontsize=16, fontweight='bold')\n    plt.xlabel('月', fontsize=12)\n    plt.ylabel('売上（万円）', fontsize=12)\n    plt.grid(True, alpha=0.3)\n    \n    # データラベルを追加\n    for i, v in enumerate(df['売上']):\n        plt.text(i, v + 10, f'{v:,}', ha='center', va='bottom', fontweight='bold')\n    \n    # グラフ保存\n    plt.savefig('sales_chart.png', dpi=300, bbox_inches='tight')\n    print('\\n✅ グラフを保存しました: sales_chart.png')\n\nprint('\\n=== グラフ作成完了 ===')\nprint('実際の使用時は、plt.show()でグラフを表示できます。')",
         "libraries": "matplotlib、pandas、plotly（オプション）",
         "explanation": "データをグラフで可視化することで、数字の意味を直感的に理解できます。プレゼンテーションやレポート作成に便利です。",
         "benefits": ["データの傾向が一目で分かる", "プレゼンが分かりやすくなる", "意思決定がスピードアップ"],
@@ -719,6 +720,15 @@ def execute_code():
             if pattern in code:
                 return jsonify({'error': f'Security: {pattern} is not allowed in web execution'}), 403
         
+        # アップロードされたファイルのパスをコードに追加
+        if 'uploaded_files' in session and session['uploaded_files']:
+            # ファイルパスを環境変数として設定
+            for file_id, file_info in session['uploaded_files'].items():
+                env_var_name = f"UPLOADED_{file_id.upper()}"
+                os.environ[env_var_name] = file_info['path']
+                # コード内のファイル名を実際のパスに置換
+                code = code.replace(file_info['filename'], file_info['path'])
+        
         # 一時ファイルにコードを保存
         with tempfile.NamedTemporaryFile(mode='w', suffix='.py', delete=False) as f:
             f.write(code)
@@ -776,6 +786,96 @@ def save_config():
     except Exception as e:
         logger.error(f"Error saving config: {e}")
         return jsonify({'error': str(e)}), 500
+
+# ファイルアップロード機能を追加
+@app.route('/api/upload-file', methods=['POST'])
+def upload_file():
+    try:
+        if 'file' not in request.files:
+            return jsonify({'error': 'ファイルが選択されていません'}), 400
+        
+        file = request.files['file']
+        if file.filename == '':
+            return jsonify({'error': 'ファイルが選択されていません'}), 400
+        
+        # ファイルの拡張子をチェック
+        allowed_extensions = {'csv', 'xlsx', 'xls', 'txt', 'json', 'jpg', 'jpeg', 'png', 'gif', 'pdf'}
+        if not file.filename.lower().endswith(tuple('.' + ext for ext in allowed_extensions)):
+            return jsonify({'error': '許可されていないファイル形式です'}), 400
+        
+        # 一時ファイルとして保存
+        import tempfile
+        import os
+        from werkzeug.utils import secure_filename
+        
+        filename = secure_filename(file.filename)
+        temp_dir = tempfile.mkdtemp()
+        file_path = os.path.join(temp_dir, filename)
+        file.save(file_path)
+        
+        # セッションにファイル情報を保存
+        if 'uploaded_files' not in session:
+            session['uploaded_files'] = {}
+        
+        file_id = f"file_{len(session['uploaded_files']) + 1}"
+        session['uploaded_files'][file_id] = {
+            'path': file_path,
+            'filename': filename,
+            'temp_dir': temp_dir
+        }
+        
+        return jsonify({
+            'success': True,
+            'file_id': file_id,
+            'filename': filename,
+            'message': f'ファイル "{filename}" をアップロードしました'
+        })
+        
+    except Exception as e:
+        logger.error(f"File upload error: {e}")
+        return jsonify({'error': 'ファイルのアップロードに失敗しました'}), 500
+
+# アップロードされたファイルの一覧を取得
+@app.route('/api/uploaded-files', methods=['GET'])
+def get_uploaded_files():
+    if 'uploaded_files' not in session:
+        return jsonify({'files': []})
+    
+    files = []
+    for file_id, file_info in session['uploaded_files'].items():
+        files.append({
+            'id': file_id,
+            'filename': file_info['filename']
+        })
+    
+    return jsonify({'files': files})
+
+# ファイルを削除
+@app.route('/api/delete-file/<file_id>', methods=['DELETE'])
+def delete_file(file_id):
+    try:
+        if 'uploaded_files' in session and file_id in session['uploaded_files']:
+            file_info = session['uploaded_files'][file_id]
+            
+            # ファイルを削除
+            if os.path.exists(file_info['path']):
+                os.unlink(file_info['path'])
+            
+            # 一時ディレクトリを削除
+            if os.path.exists(file_info['temp_dir']):
+                import shutil
+                shutil.rmtree(file_info['temp_dir'])
+            
+            # セッションから削除
+            del session['uploaded_files'][file_id]
+            
+            return jsonify({'success': True, 'message': 'ファイルを削除しました'})
+        else:
+            return jsonify({'error': 'ファイルが見つかりません'}), 404
+            
+    except Exception as e:
+        logger.error(f"File deletion error: {e}")
+        return jsonify({'error': 'ファイルの削除に失敗しました'}), 500
 
 if __name__ == '__main__':
     try:
