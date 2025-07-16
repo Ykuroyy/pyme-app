@@ -82,6 +82,20 @@
                 <div class="code-block">
                     <pre><code>{{ tool.sample_code }}</code></pre>
                 </div>
+                <div class="mt-3">
+                    <div class="d-grid gap-2">
+                        <a href="{{ url_for('wizard', tool_id=tool.id) }}" class="btn btn-warning btn-lg">
+                            ⚙️ 設定ウィザード
+                        </a>
+                        <a href="{{ url_for('execute_tool', tool_id=tool.id) }}" class="btn btn-success btn-lg">
+                            🤖 プロンプトで実行してみる
+                        </a>
+                    </div>
+                    <p class="text-muted mt-2">
+                        <strong>設定ウィザード:</strong> 対話形式で設定を入力できます<br>
+                        <strong>プロンプト実行:</strong> AIプロンプトからコードを生成して実行できます
+                    </p>
+                </div>
             </div>
         </div>
 

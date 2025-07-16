@@ -1,7 +1,12 @@
-from flask import Flask, render_template, jsonify
+from flask import Flask, render_template, jsonify, request, redirect, url_for, flash
 import os
 import logging
 import sys
+import subprocess
+import tempfile
+import json
+import re
+from datetime import datetime
 from config import config
 from models import db, Tool
 
@@ -143,7 +148,7 @@ TOOLS = [
         "title": "チャットボット作成", 
         "desc": "簡単な自動応答チャットボット",
         "how_to": "if文や辞書を使って応答パターンを定義し、ユーザーの入力に応じて自動で返答します。",
-        "sample_code": "# 簡単なチャットボット\nresponses = {\n    'こんにちは': 'こんにちは！お疲れ様です。',\n    '天気': '今日は晴れの予定です。',\n    '時間': '現在の時刻をお知らせします。',\n    'ありがとう': 'どういたしまして！',\n    'さようなら': 'お疲れ様でした。またお話ししましょう！'\n}\n\nprint('チャットボット: こんにちは！何かお手伝いできることはありますか？')\n\nwhile True:\n    user_input = input('あなた: ').strip()\n    \n    if user_input.lower() in ['終了', 'さようなら', 'bye']:\n        print('チャットボット: お疲れ様でした！')\n        break\n    \n    # 応答を探す\n    response = responses.get(user_input, 'すみません、その質問にはお答えできません。')\n    print(f'チャットボット: {response}')",
+        "sample_code": "# 簡単なチャットボット（Web実行用）\nresponses = {\n    'こんにちは': 'こんにちは！お疲れ様です。',\n    '天気': '今日は晴れの予定です。',\n    '時間': '現在の時刻をお知らせします。',\n    'ありがとう': 'どういたしまして！',\n    'さようなら': 'お疲れ様でした。またお話ししましょう！'\n}\n\nprint('チャットボット: こんにちは！何かお手伝いできることはありますか？')\nprint('\\n=== デモンストレーション ===')\n\n# サンプル会話を実行\nsample_inputs = ['こんにちは', '天気', 'ありがとう', 'さようなら']\n\nfor user_input in sample_inputs:\n    print(f'\\nあなた: {user_input}')\n    \n    if user_input.lower() in ['終了', 'さようなら', 'bye']:\n        print('チャットボット: お疲れ様でした！')\n        break\n    \n    # 応答を探す\n    response = responses.get(user_input, 'すみません、その質問にはお答えできません。')\n    print(f'チャットボット: {response}')\n\nprint('\\n=== チャットボットの動作確認完了 ===')\nprint('実際の使用時は、input()関数を使って対話形式で実行できます。')",
         "libraries": "標準ライブラリのみ使用",
         "explanation": "チャットボットは、よくある質問に自動で答えてくれる便利なツールです。カスタマーサポートや社内FAQに活用できます。",
         "benefits": ["24時間対応可能", "人件費を削減", "応答速度が速い"],
@@ -173,7 +178,7 @@ TOOLS = [
         "title": "定期レポート自動送信", 
         "desc": "定期的にレポートを自動送信",
         "how_to": "scheduleライブラリで定期実行を設定し、レポート作成とメール送信を自動化します。",
-        "sample_code": "import schedule\nimport time\nimport smtplib\nfrom email.mime.text import MIMEText\nfrom datetime import datetime\n\ndef create_daily_report():\n    today = datetime.now().strftime('%Y年%m月%d日')\n    report = f'''\n    日次レポート - {today}\n    \n    - 本日の売上: 150,000円\n    - 新規顧客数: 5名\n    - 処理件数: 25件\n    \n    Thank you for your work.\n    '''\n    return report\n\ndef send_report():\n    report = create_daily_report()\n    \n    # メール設定\n    sender_email = 'your_email@gmail.com'\n    sender_password = 'your_password'\n    receiver_email = 'boss@company.com'\n    \n    # メール作成\n    msg = MIMEText(report, 'plain')\n    msg['Subject'] = f'日次レポート - {datetime.now().strftime(\"%Y/%m/%d\")}'\n    msg['From'] = sender_email\n    msg['To'] = receiver_email\n    \n    # 送信\n    server = smtplib.SMTP('smtp.gmail.com', 587)\n    server.starttls()\n    server.login(sender_email, sender_password)\n    server.send_message(msg)\n    server.quit()\n    \n    print(f'レポート送信完了: {datetime.now()}')\n\n# 毎日18時に実行\nschedule.every().day.at('18:00').do(send_report)\n\n# スケジュール実行\nwhile True:\n    schedule.run_pending()\n    time.sleep(60)  # 1分ごとにチェック",
+        "sample_code": "import schedule\nimport time\nimport smtplib\nfrom email.mime.text import MIMEText\nfrom datetime import datetime\n\ndef create_daily_report():\n    today = datetime.now().strftime('%Y年%m月%d日')\n    report = f'''\n    日次レポート - {today}\n    \n    - 本日の売上: 150,000円\n    - 新規顧客数: 5名\n    - 処理件数: 25件\n    \n    Thank you for your work.\n    '''\n    return report\n\ndef send_report():\n    report = create_daily_report()\n    \n    # メール設定\n    sender_email = 'your_email@gmail.com'\n    sender_password = 'your_password'\n    receiver_email = 'boss@company.com'\n    \n    # メール作成\n    msg = MIMEText(report, 'plain')\n    msg['Subject'] = f'日次レポート - {datetime.now().strftime(\"%Y/%m/%d\")}'\n    msg['From'] = sender_email\n    msg['To'] = receiver_email\n    \n    # 送信\n    server = smtplib.SMTP('smtp.gmail.com', 587)\n    server.starttls()\n    server.login(sender_email, sender_password)\n    server.send_message(msg)\n    server.quit()\n    \n    print(f'レポート送信完了: {datetime.now()}')\n\n# 毎日18時に実行\nschedule.every().day.at('18:00').do(send_report)\n\n# スケジュール実行（デモ用）\nprint('スケジュール設定完了！')\nprint('実際の使用時は、以下のコードで定期実行されます：')\nprint('# while True:')\nprint('#     schedule.run_pending()')\nprint('#     time.sleep(60)  # 1分ごとにチェック')",
         "libraries": "schedule、smtplib（標準ライブラリ）、datetime（標準ライブラリ）",
         "explanation": "毎日のルーチンワークを自動化することで、時間を節約し、ミスを防げます。",
         "benefits": ["手作業が不要", "忘れることがない", "時間を大幅節約"],
@@ -188,7 +193,7 @@ TOOLS = [
         "title": "SNS自動投稿", 
         "desc": "Twitterなどに自動で投稿",
         "how_to": "tweepyライブラリを使ってTwitter APIに接続し、定期的に投稿を自動化します。",
-        "sample_code": "import tweepy\nimport schedule\nimport time\nfrom datetime import datetime\n\n# Twitter API認証\nconsumer_key = 'your_consumer_key'\nconsumer_secret = 'your_consumer_secret'\naccess_token = 'your_access_token'\naccess_token_secret = 'your_access_token_secret'\n\nauth = tweepy.OAuthHandler(consumer_key, consumer_secret)\nauth.set_access_token(access_token, access_token_secret)\napi = tweepy.API(auth)\n\ndef post_daily_tip():\n    # 毎日のTipsを投稿\n    tips = [\n        '今日のビジネスTips: 朝一番に重要なタスクから始めましょう！',\n        '効率化のコツ: 同じ作業は3回以上やったら自動化を検討してください。',\n        'コミュニケーション: 相手の立場に立って考えることが大切です。',\n        '時間管理: 15分単位でタスクを区切ると集中力が続きます。'\n    ]\n    \n    today = datetime.now().day\ntip = tips[today % len(tips)]\n    \n    try:\n        api.update_status(tip)\n        print(f'投稿完了: {tip}')\n    except Exception as e:\n        print(f'投稿エラー: {e}')\n\n# 毎日9時に投稿\nschedule.every().day.at('09:00').do(post_daily_tip)\n\n# スケジュール実行\nwhile True:\n    schedule.run_pending()\n    time.sleep(60)",
+        "sample_code": "import tweepy\nimport schedule\nimport time\nfrom datetime import datetime\n\n# Twitter API認証\nconsumer_key = 'your_consumer_key'\nconsumer_secret = 'your_consumer_secret'\naccess_token = 'your_access_token'\naccess_token_secret = 'your_access_token_secret'\n\nauth = tweepy.OAuthHandler(consumer_key, consumer_secret)\nauth.set_access_token(access_token, access_token_secret)\napi = tweepy.API(auth)\n\ndef post_daily_tip():\n    # 毎日のTipsを投稿\n    tips = [\n        '今日のビジネスTips: 朝一番に重要なタスクから始めましょう！',\n        '効率化のコツ: 同じ作業は3回以上やったら自動化を検討してください。',\n        'コミュニケーション: 相手の立場に立って考えることが大切です。',\n        '時間管理: 15分単位でタスクを区切ると集中力が続きます。'\n    ]\n    \n    today = datetime.now().day\ntip = tips[today % len(tips)]\n    \n    try:\n        api.update_status(tip)\n        print(f'投稿完了: {tip}')\n    except Exception as e:\n        print(f'投稿エラー: {e}')\n\n# 毎日9時に投稿\nschedule.every().day.at('09:00').do(post_daily_tip)\n\n# スケジュール実行（デモ用）\nprint('スケジュール設定完了！')\nprint('実際の使用時は、以下のコードで定期実行されます：')\nprint('# while True:')\nprint('#     schedule.run_pending()')\nprint('#     time.sleep(60)')",
         "libraries": "tweepy、schedule、datetime（標準ライブラリ）",
         "explanation": "SNSの投稿を自動化することで、ブランディングや情報発信を効率化できます。",
         "benefits": ["投稿を忘れることがない", "時間を節約", "一貫したブランディング"],
@@ -621,6 +626,156 @@ def database_test():
 @app.route('/favicon.ico')
 def favicon():
     return '', 204  # No content
+
+# 新しいルート: AIプロンプト実行ページ
+@app.route('/execute/<int:tool_id>')
+def execute_tool(tool_id):
+    tool = next((t for t in TOOLS if t['id'] == tool_id), None)
+    if not tool:
+        return redirect(url_for('index'))
+    return render_template('execute.html', tool=tool)
+
+# AIプロンプトからコードを生成するAPI
+@app.route('/api/generate-code', methods=['POST'])
+def generate_code():
+    try:
+        data = request.get_json()
+        tool_id = data.get('tool_id')
+        custom_prompt = data.get('custom_prompt', '')
+        
+        tool = next((t for t in TOOLS if t['id'] == tool_id), None)
+        if not tool:
+            return jsonify({'error': 'Tool not found'}), 404
+        
+        # デフォルトのプロンプトを使用
+        base_prompt = tool.get('ai_prompt', '')
+        
+        # カスタムプロンプトがある場合は使用
+        if custom_prompt:
+            final_prompt = custom_prompt
+        else:
+            final_prompt = base_prompt
+        
+        # OpenAI APIを使用してコードを生成（オプション）
+        openai_api_key = os.environ.get('OPENAI_API_KEY')
+        if openai_api_key:
+            try:
+                import openai
+                openai.api_key = openai_api_key
+                
+                response = openai.ChatCompletion.create(
+                    model="gpt-3.5-turbo",
+                    messages=[
+                        {"role": "system", "content": "あなたはPythonプログラミングの専門家です。ユーザーの要求に応じて、安全で実用的なPythonコードを生成してください。"},
+                        {"role": "user", "content": final_prompt}
+                    ],
+                    max_tokens=2000,
+                    temperature=0.7
+                )
+                
+                generated_code = response.choices[0].message.content
+                
+                # コードブロックからPythonコードを抽出
+                import re
+                code_match = re.search(r'```python\n(.*?)\n```', generated_code, re.DOTALL)
+                if code_match:
+                    generated_code = code_match.group(1)
+                
+            except Exception as e:
+                logger.warning(f"OpenAI API error: {e}, using sample code")
+                generated_code = tool.get('sample_code', '')
+        else:
+            # OpenAI APIキーがない場合はサンプルコードを使用
+            generated_code = tool.get('sample_code', '')
+        
+        return jsonify({
+            'success': True,
+            'code': generated_code,
+            'prompt': final_prompt
+        })
+        
+    except Exception as e:
+        logger.error(f"Error generating code: {e}")
+        return jsonify({'error': str(e)}), 500
+
+# コードを実行するAPI
+@app.route('/api/execute-code', methods=['POST'])
+def execute_code():
+    try:
+        data = request.get_json()
+        code = data.get('code', '')
+        tool_id = data.get('tool_id')
+        
+        if not code:
+            return jsonify({'error': 'No code provided'}), 400
+        
+        # セキュリティチェック（危険なコードを実行しない）
+        dangerous_patterns = [
+            'os.system', 'subprocess.call', 'subprocess.run', 'eval', 'exec', '__import__',
+            'input(', 'while True:', 'schedule.run_pending()', 'time.sleep(',
+            'open(', 'file(', 'import os', 'import subprocess'
+        ]
+        for pattern in dangerous_patterns:
+            if pattern in code:
+                return jsonify({'error': f'Security: {pattern} is not allowed in web execution'}), 403
+        
+        # 一時ファイルにコードを保存
+        with tempfile.NamedTemporaryFile(mode='w', suffix='.py', delete=False) as f:
+            f.write(code)
+            temp_file = f.name
+        
+        try:
+            # コードを実行（タイムアウト付き）
+            result = subprocess.run(
+                [sys.executable, temp_file],
+                capture_output=True,
+                text=True,
+                timeout=60  # 60秒に延長
+            )
+            
+            # 結果を返す
+            return jsonify({
+                'success': True,
+                'stdout': result.stdout,
+                'stderr': result.stderr,
+                'return_code': result.returncode
+            })
+            
+        finally:
+            # 一時ファイルを削除
+            os.unlink(temp_file)
+            
+    except subprocess.TimeoutExpired:
+        return jsonify({'error': 'Code execution timed out'}), 408
+    except Exception as e:
+        logger.error(f"Error executing code: {e}")
+        return jsonify({'error': str(e)}), 500
+
+# 設定ウィザードページ
+@app.route('/wizard/<int:tool_id>')
+def setup_wizard(tool_id):
+    tool = next((t for t in TOOLS if t['id'] == tool_id), None)
+    if not tool:
+        return redirect(url_for('index'))
+    return render_template('wizard.html', tool=tool)
+
+# 設定を保存するAPI
+@app.route('/api/save-config', methods=['POST'])
+def save_config():
+    try:
+        data = request.get_json()
+        tool_id = data.get('tool_id')
+        config_data = data.get('config', {})
+        
+        # 設定をセッションやファイルに保存
+        # ここでは簡単な例として、設定をログに出力
+        logger.info(f"Saved config for tool {tool_id}: {config_data}")
+        
+        return jsonify({'success': True, 'message': '設定を保存しました'})
+        
+    except Exception as e:
+        logger.error(f"Error saving config: {e}")
+        return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':
     try:

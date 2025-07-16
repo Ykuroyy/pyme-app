@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ tool.title }} - プロンプト実行 - Pythonでできるビジネス自動化</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/theme/monokai.min.css" rel="stylesheet">
+    <style>
+        body { background: #f8f9fa; }
+        .step-box { background: white; padding: 20px; border-radius: 10px; margin: 15px 0; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .CodeMirror { height: 300px; border: 1px solid #ddd; border-radius: 5px; }
+        .result-box { background: #f8f9fa; padding: 15px; border-radius: 5px; margin: 10px 0; font-family: monospace; }
+        .loading { display: none; }
+        .btn-execute { margin-top: 10px; }
+    </style>
+</head>
+<body>
+<div class="container py-5">
+    <div class="row">
+        <div class="col-12">
+            <a href="/" class="btn btn-outline-secondary mb-4">← 一覧に戻る</a>
+            
+            <div class="mb-3 d-flex align-items-center">
+                <span class="badge bg-secondary me-2">{{ tool.category }}</span>
+                <span class="badge bg-primary">{{ tool.id }}</span>
+            </div>
+            <h1 class="mb-4">🤖 {{ tool.title }} - プロンプト実行</h1>
+            <p class="lead">{{ tool.desc }}</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <!-- ステップ1: プロンプト入力 -->
+            <div class="step-box">
+                <h3>📝 ステップ1: AIプロンプトを確認・編集</h3>
+                <div class="mt-3">
+                    <div class="alert alert-info">
+                        <strong>自動生成プロンプト：</strong>
+                        <p class="mb-2">以下のプロンプトが自動で生成されました。必要に応じて編集してください。</p>
+                    </div>
+                    
+                    <textarea id="promptInput" class="form-control" rows="8" placeholder="AIプロンプトを入力してください...">{{ tool.ai_prompt or '' }}</textarea>
+                    
+                    <div class="mt-3">
+                        <button id="generateBtn" class="btn btn-primary btn-execute">
+                            <span class="spinner-border spinner-border-sm loading" role="status"></span>
+                            🤖 AIにコード生成を依頼
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ステップ2: 設定入力 -->
+            <div class="step-box">
+                <h3>⚙️ ステップ2: 設定を入力</h3>
+                <div class="mt-3">
+                    <div class="alert alert-warning">
+                        <strong>注意：</strong>
+                        <p class="mb-2">実際の使用時は、以下の設定を自分の環境に合わせて変更してください。</p>
+                    </div>
+                    
+                    <div id="configForm">
+                        <!-- 動的に設定フィールドが生成される -->
+                    </div>
+                    
+                    <div class="mt-3">
+                        <button id="saveConfigBtn" class="btn btn-success">
+                            💾 設定を保存
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <!-- ステップ3: コード表示・実行 -->
+            <div class="step-box">
+                <h3>💻 ステップ3: 生成されたコード</h3>
+                <div class="mt-3">
+                    <div id="codeContainer">
+                        <div class="alert alert-secondary">
+                            <strong>コード生成待ち：</strong>
+                            <p class="mb-0">左側の「AIにコード生成を依頼」ボタンを押してコードを生成してください。</p>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-3">
+                        <button id="executeBtn" class="btn btn-success btn-execute" disabled>
+                            <span class="spinner-border spinner-border-sm loading" role="status"></span>
+                            ▶️ コードを実行
+                        </button>
+                        <button id="downloadBtn" class="btn btn-outline-primary btn-execute" disabled>
+                            📥 コードをダウンロード
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ステップ4: 実行結果 -->
+            <div class="step-box">
+                <h3>📊 ステップ4: 実行結果</h3>
+                <div class="mt-3">
+                    <div id="resultContainer">
+                        <div class="alert alert-info">
+                            <strong>実行結果：</strong>
+                            <p class="mb-0">コードを実行すると、ここに結果が表示されます。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/python/python.min.js"></script>
+<script>
+let codeEditor = null;
+let generatedCode = '';
+
+// 設定フィールドを動的に生成
+function generateConfigFields() {
+    const configForm = document.getElementById('configForm');
+    const toolId = {{ tool.id }};
+    
+    // ツール別の設定フィールド
+    const configs = {
+        1: [ // メール自動送信
+            { name: 'sender_email', label: '送信者メールアドレス', type: 'email', placeholder: 'your_email@gmail.com' },
+            { name: 'receiver_email', label: '受信者メールアドレス', type: 'email', placeholder: 'receiver@example.com' },
+            { name: 'subject', label: '件名', type: 'text', placeholder: '自動送信メール' },
+            { name: 'message', label: 'メッセージ', type: 'textarea', placeholder: 'これは自動送信されたメールです。' }
+        ],
+        2: [ // Excel自動処理
+            { name: 'input_file', label: '入力ファイル名', type: 'text', placeholder: 'data.xlsx' },
+            { name: 'output_file', label: '出力ファイル名', type: 'text', placeholder: 'result.xlsx' },
+            { name: 'target_column', label: '集計対象列', type: 'text', placeholder: '売上' }
+        ],
+        6: [ // ファイル自動整理
+            { name: 'folder_path', label: '整理対象フォルダ', type: 'text', placeholder: 'C:/Users/YourName/Downloads' }
+        ]
+    };
+    
+    const fields = configs[toolId] || [
+        { name: 'custom_setting', label: 'カスタム設定', type: 'text', placeholder: '設定値を入力してください' }
+    ];
+    
+    configForm.innerHTML = fields.map(field => `
+        <div class="mb-3">
+            <label for="${field.name}" class="form-label">${field.label}</label>
+            ${field.type === 'textarea' 
+                ? `<textarea id="${field.name}" class="form-control" placeholder="${field.placeholder}"></textarea>`
+                : `<input type="${field.type}" id="${field.name}" class="form-control" placeholder="${field.placeholder}">`
+            }
+        </div>
+    `).join('');
+}
+
+// コード生成
+document.getElementById('generateBtn').addEventListener('click', async function() {
+    const btn = this;
+    const prompt = document.getElementById('promptInput').value;
+    
+    if (!prompt.trim()) {
+        alert('プロンプトを入力してください。');
+        return;
+    }
+    
+    btn.disabled = true;
+    btn.querySelector('.loading').style.display = 'inline-block';
+    
+    try {
+        const response = await fetch('/api/generate-code', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                tool_id: {{ tool.id }},
+                custom_prompt: prompt
+            })
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            generatedCode = data.code;
+            
+            // CodeMirrorエディタを初期化
+            if (codeEditor) {
+                codeEditor.setValue(generatedCode);
+            } else {
+                const textarea = document.createElement('textarea');
+                textarea.id = 'codeEditor';
+                document.getElementById('codeContainer').innerHTML = '';
+                document.getElementById('codeContainer').appendChild(textarea);
+                
+                codeEditor = CodeMirror.fromTextArea(textarea, {
+                    mode: 'python',
+                    theme: 'monokai',
+                    lineNumbers: true,
+                    readOnly: false
+                });
+                codeEditor.setValue(generatedCode);
+            }
+            
+            document.getElementById('executeBtn').disabled = false;
+            document.getElementById('downloadBtn').disabled = false;
+            
+        } else {
+            alert('エラー: ' + data.error);
+        }
+        
+    } catch (error) {
+        alert('エラーが発生しました: ' + error.message);
+    } finally {
+        btn.disabled = false;
+        btn.querySelector('.loading').style.display = 'none';
+    }
+});
+
+// コード実行
+document.getElementById('executeBtn').addEventListener('click', async function() {
+    const btn = this;
+    const code = codeEditor ? codeEditor.getValue() : generatedCode;
+    
+    if (!code.trim()) {
+        alert('実行するコードがありません。');
+        return;
+    }
+    
+    btn.disabled = true;
+    btn.querySelector('.loading').style.display = 'inline-block';
+    
+    try {
+        const response = await fetch('/api/execute-code', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                tool_id: {{ tool.id }},
+                code: code
+            })
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            let resultHtml = '<div class="alert alert-success"><strong>✅ 実行成功！</strong></div>';
+            
+            if (data.stdout) {
+                resultHtml += `<div class="result-box"><strong>出力:</strong><br>${data.stdout.replace(/\n/g, '<br>')}</div>`;
+            }
+            
+            if (data.stderr) {
+                resultHtml += `<div class="result-box text-danger"><strong>エラー:</strong><br>${data.stderr.replace(/\n/g, '<br>')}</div>`;
+            }
+            
+            document.getElementById('resultContainer').innerHTML = resultHtml;
+            
+        } else {
+            let errorMessage = data.error;
+            if (data.error.includes('Security:')) {
+                errorMessage = 'セキュリティ上の理由で、このコードはWeb実行環境では実行できません。ローカル環境で実行してください。';
+            } else if (data.error.includes('timed out')) {
+                errorMessage = 'コードの実行がタイムアウトしました。無限ループや長時間の処理がある可能性があります。';
+            }
+            document.getElementById('resultContainer').innerHTML = 
+                `<div class="alert alert-danger"><strong>❌ 実行エラー:</strong><br>${errorMessage}</div>`;
+        }
+        
+    } catch (error) {
+        document.getElementById('resultContainer').innerHTML = 
+            `<div class="alert alert-danger"><strong>❌ エラー:</strong><br>${error.message}</div>`;
+    } finally {
+        btn.disabled = false;
+        btn.querySelector('.loading').style.display = 'none';
+    }
+});
+
+// コードダウンロード
+document.getElementById('downloadBtn').addEventListener('click', function() {
+    const code = codeEditor ? codeEditor.getValue() : generatedCode;
+    
+    if (!code.trim()) {
+        alert('ダウンロードするコードがありません。');
+        return;
+    }
+    
+    const blob = new Blob([code], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = '{{ tool.title }}_code.py';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+});
+
+// 設定保存
+document.getElementById('saveConfigBtn').addEventListener('click', async function() {
+    const configData = {};
+    const configForm = document.getElementById('configForm');
+    const inputs = configForm.querySelectorAll('input, textarea');
+    
+    inputs.forEach(input => {
+        configData[input.id] = input.value;
+    });
+    
+    try {
+        const response = await fetch('/api/save-config', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                tool_id: {{ tool.id }},
+                config: configData
+            })
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            alert('設定を保存しました！');
+        } else {
+            alert('エラー: ' + data.error);
+        }
+        
+    } catch (error) {
+        alert('エラーが発生しました: ' + error.message);
+    }
+});
+
+// ページ読み込み時の初期化
+document.addEventListener('DOMContentLoaded', function() {
+    generateConfigFields();
+});
+</script>
+</body>
+</html> 
