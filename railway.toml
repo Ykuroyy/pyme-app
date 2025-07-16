@@ -12,4 +12,5 @@ restartPolicyMaxRetries = 10
 FLASK_ENV = "production"
 RENDER = "true"
 DATABASE_URL = "sqlite:///pyme_app.db"
-SECRET_KEY = "your-secret-key-change-in-production" 
+SECRET_KEY = "your-secret-key-change-in-production"
+PYTHON_VERSION = "3.11.9" 
