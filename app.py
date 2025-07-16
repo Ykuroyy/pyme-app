@@ -119,7 +119,7 @@ TOOLS = [
         "title": "データ可視化グラフ作成", 
         "desc": "データをグラフで見やすく表示",
         "how_to": "matplotlibやplotlyを使ってデータをグラフ化し、見やすい図表を作成します。",
-        "sample_code": "import matplotlib\nmatplotlib.use('Agg')  # Web環境用のバックエンド\nimport matplotlib.pyplot as plt\nimport pandas as pd\nimport os\n\nprint('=== データ可視化グラフ作成 ===')\n\n# アップロードされたファイルを確認\nuploaded_files = [f for f in os.listdir('.') if f.endswith(('.csv', '.xlsx', '.xls'))]\n\nif uploaded_files:\n    # アップロードされたファイルを使用\n    filename = uploaded_files[0]\n    print(f'アップロードされたファイルを使用: {filename}')\n    \n    if filename.endswith('.csv'):\n        df = pd.read_csv(filename)\n    else:\n        df = pd.read_excel(filename)\n    \n    print(f'データ件数: {len(df)}件')\n    print(f'列名: {list(df.columns)}')\n    \n    # 数値列を自動検出\n    numeric_columns = df.select_dtypes(include=['number']).columns\n    if len(numeric_columns) > 0:\n        target_column = numeric_columns[0]\n        print(f'分析対象列: {target_column}')\n        \n        print(f'合計: {df[target_column].sum():,}')\n        print(f'平均: {df[target_column].mean():.1f}')\n        print(f'最大: {df[target_column].max():,}')\n        \n        # グラフ作成\n        plt.figure(figsize=(10, 6))\n        plt.plot(df.index, df[target_column], marker='o', linewidth=2, markersize=8, color='blue')\n        plt.title(f'{target_column}の推移', fontsize=16, fontweight='bold')\n        plt.xlabel('データ番号', fontsize=12)\n        plt.ylabel(target_column, fontsize=12)\n        plt.grid(True, alpha=0.3)\n        \n        # データラベルを追加\n        for i, v in enumerate(df[target_column]):\n            plt.text(i, v + df[target_column].max() * 0.01, f'{v:,.0f}', ha='center', va='bottom', fontsize=8)\n        \n        # グラフ保存\n        plt.savefig('data_chart.png', dpi=300, bbox_inches='tight')\n        print(f'\\n✅ グラフを保存しました: data_chart.png')\n    else:\n        print('数値データが見つかりませんでした。')\nelse:\n    # サンプルデータを使用\n    print('アップロードされたファイルがないため、サンプルデータを使用します。')\n    data = {\n        '月': ['1月', '2月', '3月', '4月', '5月', '6月'],\n        '売上': [100, 150, 200, 180, 250, 300]\n    }\n    df = pd.DataFrame(data)\n    \n    print(f'データ件数: {len(df)}件')\n    print(f'売上合計: {df[\"売上\"].sum():,}万円')\n    print(f'平均売上: {df[\"売上\"].mean():.1f}万円')\n    print(f'最大売上: {df[\"売上\"].max():,}万円（{df.loc[df[\"売上\"].idxmax(), \"月\"]}）')\n    \n    # グラフ作成\n    plt.figure(figsize=(10, 6))\n    plt.plot(df['月'], df['売上'], marker='o', linewidth=2, markersize=8, color='blue')\n    plt.title('月次売上推移', fontsize=16, fontweight='bold')\n    plt.xlabel('月', fontsize=12)\n    plt.ylabel('売上（万円）', fontsize=12)\n    plt.grid(True, alpha=0.3)\n    \n    # データラベルを追加\n    for i, v in enumerate(df['売上']):\n        plt.text(i, v + 10, f'{v:,}', ha='center', va='bottom', fontweight='bold')\n    \n    # グラフ保存\n    plt.savefig('sales_chart.png', dpi=300, bbox_inches='tight')\n    print('\\n✅ グラフを保存しました: sales_chart.png')\n\nprint('\\n=== グラフ作成完了 ===')\nprint('実際の使用時は、plt.show()でグラフを表示できます。')",
+        "sample_code": "import matplotlib\nmatplotlib.use('Agg')  # Web環境用のバックエンド\nimport matplotlib.pyplot as plt\nimport pandas as pd\nimport os\n\nprint('=== データ可視化グラフ作成 ===')\n\n# アップロードされたファイルを確認\nuploaded_files = [f for f in os.listdir('.') if f.endswith(('.csv', '.xlsx', '.xls'))]\n\nif uploaded_files:\n    # アップロードされたファイルを使用\n    filename = uploaded_files[0]\n    print(f'アップロードされたファイルを使用: {filename}')\n    \n    if filename.endswith('.csv'):\n        df = pd.read_csv(filename)\n    else:\n        df = pd.read_excel(filename)\n    \n    print(f'データ件数: {len(df)}件')\n    print(f'列名: {list(df.columns)}')\n    \n    # 数値列を自動検出\n    numeric_columns = df.select_dtypes(include=['number']).columns\n    if len(numeric_columns) > 0:\n        target_column = numeric_columns[0]\n        print(f'分析対象列: {target_column}')\n        \n        print(f'合計: {df[target_column].sum():,}')\n        print(f'平均: {df[target_column].mean():.1f}')\n        print(f'最大: {df[target_column].max():,}')\n        \n        # グラフ作成\n        plt.figure(figsize=(10, 6))\n        plt.plot(df.index, df[target_column], marker='o', linewidth=2, markersize=8, color='blue')\n        plt.title(f'{target_column}の推移', fontsize=16, fontweight='bold')\n        plt.xlabel('データ番号', fontsize=12)\n        plt.ylabel(target_column, fontsize=12)\n        plt.grid(True, alpha=0.3)\n        \n        # データラベルを追加\n        for i, v in enumerate(df[target_column]):\n            plt.text(i, v + df[target_column].max() * 0.01, f'{v:,.0f}', ha='center', va='bottom', fontsize=8)\n        \n        # グラフ保存\n        plt.savefig('data_chart.png', dpi=300, bbox_inches='tight')\n        print(f'\\n✅ グラフを保存しました: data_chart.png')\n    else:\n        print('数値データが見つかりません。')\nelse:\n    # サンプルデータを使用\n    print('アップロードされたファイルがないため、サンプルデータを使用します。')\n    data = {\n        '月': ['1月', '2月', '3月', '4月', '5月', '6月'],\n        '売上': [100, 150, 200, 180, 250, 300]\n    }\n    df = pd.DataFrame(data)\n    \n    print(f'データ件数: {len(df)}件')\n    print(f'売上合計: {df[\"売上\"].sum():,}万円')\n    print(f'平均売上: {df[\"売上\"].mean():.1f}万円')\n    print(f'最大売上: {df[\"売上\"].max():,}万円（{df.loc[df[\"売上\"].idxmax(), \"月\"]}）')\n    \n    # グラフ作成\n    plt.figure(figsize=(10, 6))\n    plt.plot(df['月'], df['売上'], marker='o', linewidth=2, markersize=8, color='blue')\n    plt.title('月次売上推移', fontsize=16, fontweight='bold')\n    plt.xlabel('月', fontsize=12)\n    plt.ylabel('売上（万円）', fontsize=12)\n    plt.grid(True, alpha=0.3)\n    \n    # データラベルを追加\n    for i, v in enumerate(df['売上']):\n        plt.text(i, v + 10, f'{v:,}', ha='center', va='bottom', fontweight='bold')\n    \n    # グラフ保存\n    plt.savefig('sales_chart.png', dpi=300, bbox_inches='tight')\n    print('\\n✅ グラフを保存しました: sales_chart.png')\n\nprint('\\n=== グラフ作成完了 ===')\nprint('実際の使用時は、plt.show()でグラフを表示できます。')",
         "libraries": "matplotlib、pandas、plotly（オプション）",
         "explanation": "データをグラフで可視化することで、数字の意味を直感的に理解できます。プレゼンテーションやレポート作成に便利です。",
         "benefits": ["データの傾向が一目で分かる", "プレゼンが分かりやすくなる", "意思決定がスピードアップ"],
@@ -507,6 +507,186 @@ TOOLS = [
 # 追加ツールを統合
 TOOLS = TOOLS + EXTRA_TOOLS
 
+# エラーメッセージの日本語翻訳辞書
+ERROR_TRANSLATIONS = {
+    # 一般的なエラー
+    'No code provided': 'コードが入力されていません',
+    'Code execution timed out': 'コードの実行がタイムアウトしました（60秒を超過）',
+    'Tool not found': 'ツールが見つかりません',
+    'Security: os.system is not allowed in web execution': 'セキュリティ上の理由で、os.systemはWeb実行では使用できません',
+    'Security: subprocess.call is not allowed in web execution': 'セキュリティ上の理由で、subprocess.callはWeb実行では使用できません',
+    'Security: subprocess.run is not allowed in web execution': 'セキュリティ上の理由で、subprocess.runはWeb実行では使用できません',
+    'Security: eval is not allowed in web execution': 'セキュリティ上の理由で、evalはWeb実行では使用できません',
+    'Security: exec is not allowed in web execution': 'セキュリティ上の理由で、execはWeb実行では使用できません',
+    'Security: __import__ is not allowed in web execution': 'セキュリティ上の理由で、__import__はWeb実行では使用できません',
+    'Security: input( is not allowed in web execution': 'Web実行では対話的な入力（input）は使用できません',
+    'Security: while True: is not allowed in web execution': '無限ループ（while True）はWeb実行では使用できません',
+    'Security: schedule.run_pending() is not allowed in web execution': 'スケジュール実行はWeb実行では使用できません',
+    'Security: time.sleep( is not allowed in web execution': 'time.sleepはWeb実行では使用できません',
+    'Security: open( is not allowed in web execution': 'ファイル操作（open）はWeb実行では使用できません',
+    'Security: file( is not allowed in web execution': 'ファイル操作（file）はWeb実行では使用できません',
+    'Security: import os is not allowed in web execution': 'セキュリティ上の理由で、osモジュールのインポートはWeb実行では使用できません',
+    'Security: import subprocess is not allowed in web execution': 'セキュリティ上の理由で、subprocessモジュールのインポートはWeb実行では使用できません',
+    
+    # ファイル関連エラー
+    'ファイルが選択されていません': 'ファイルが選択されていません',
+    '許可されていないファイル形式です': '許可されていないファイル形式です。CSV、Excel、テキスト、画像、PDFファイルのみアップロード可能です',
+    'ファイルのアップロードに失敗しました': 'ファイルのアップロードに失敗しました',
+    'ファイルが見つかりません': 'ファイルが見つかりません',
+    'ファイルの削除に失敗しました': 'ファイルの削除に失敗しました',
+    
+    # Python実行エラー
+    'SyntaxError': 'コードの文法エラーがあります',
+    'IndentationError': 'インデント（字下げ）のエラーがあります',
+    'NameError': '未定義の変数や関数を使用しています',
+    'ImportError': '存在しないモジュールをインポートしようとしています',
+    'ModuleNotFoundError': '指定されたモジュールが見つかりません',
+    'AttributeError': '存在しない属性やメソッドにアクセスしようとしています',
+    'TypeError': 'データ型のエラーがあります',
+    'ValueError': '値のエラーがあります',
+    'FileNotFoundError': '指定されたファイルが見つかりません',
+    'PermissionError': 'ファイルやディレクトリへのアクセス権限がありません',
+    'ZeroDivisionError': 'ゼロで割り算しようとしています',
+    'IndexError': 'リストや配列の範囲外のインデックスにアクセスしています',
+    'KeyError': '辞書に存在しないキーにアクセスしています',
+    'RuntimeError': '実行時エラーが発生しました',
+    'MemoryError': 'メモリ不足です',
+    'OverflowError': '数値が大きすぎます',
+    'RecursionError': '再帰が深すぎます',
+    'TimeoutError': '処理がタイムアウトしました',
+    'ConnectionError': 'ネットワーク接続エラーが発生しました',
+    'OSError': 'オペレーティングシステムエラーが発生しました',
+    'IOError': '入出力エラーが発生しました',
+    
+    # ライブラリ固有のエラー
+    'pandas': 'pandasライブラリがインストールされていません',
+    'matplotlib': 'matplotlibライブラリがインストールされていません',
+    'openpyxl': 'openpyxlライブラリがインストールされていません',
+    'requests': 'requestsライブラリがインストールされていません',
+    'beautifulsoup4': 'beautifulsoup4ライブラリがインストールされていません',
+    'pillow': 'Pillowライブラリがインストールされていません',
+    'reportlab': 'reportlabライブラリがインストールされていません',
+    'schedule': 'scheduleライブラリがインストールされていません',
+    'tweepy': 'tweepyライブラリがインストールされていません',
+    'opencv-python': 'opencv-pythonライブラリがインストールされていません',
+    'pytesseract': 'pytesseractライブラリがインストールされていません',
+    'google-auth': 'google-authライブラリがインストールされていません',
+    'google-api-python-client': 'google-api-python-clientライブラリがインストールされていません',
+    
+    # データ処理関連エラー
+    'No numeric data': '数値データが見つかりません',
+    'Empty DataFrame': 'データフレームが空です',
+    'Column not found': '指定された列が見つかりません',
+    'Invalid file format': 'ファイル形式が正しくありません',
+    'File is corrupted': 'ファイルが破損しています',
+    'Encoding error': '文字エンコーディングエラーが発生しました',
+    
+    # メール関連エラー
+    'SMTPAuthenticationError': 'メール認証に失敗しました。メールアドレスとパスワードを確認してください',
+    'SMTPConnectError': 'メールサーバーに接続できません',
+    'SMTPRecipientsRefused': '受信者のメールアドレスが拒否されました',
+    'SMTPSenderRefused': '送信者のメールアドレスが拒否されました',
+    'SMTPDataError': 'メールデータエラーが発生しました',
+    'SMTPNotSupportedError': 'このメールサーバーはサポートされていません',
+    
+    # Webスクレイピング関連エラー
+    'Connection timeout': 'Webサイトへの接続がタイムアウトしました',
+    'HTTP Error': 'HTTPエラーが発生しました',
+    'SSL Certificate Error': 'SSL証明書エラーが発生しました',
+    'Robot.txt violation': 'Webサイトの利用規約に違反しています',
+    'Rate limit exceeded': 'アクセス頻度が制限を超えました',
+    
+    # 画像処理関連エラー
+    'Image file is corrupted': '画像ファイルが破損しています',
+    'Unsupported image format': 'サポートされていない画像形式です',
+    'Image size too large': '画像サイズが大きすぎます',
+    'OCR failed': '文字認識に失敗しました',
+    
+    # データベース関連エラー
+    'Database connection failed': 'データベース接続に失敗しました',
+    'Table not found': 'テーブルが見つかりません',
+    'Column not found': '列が見つかりません',
+    'Duplicate entry': '重複するエントリがあります',
+    'Foreign key constraint': '外部キー制約エラーが発生しました',
+    
+    # API関連エラー
+    'API key is invalid': 'APIキーが無効です',
+    'API rate limit exceeded': 'API利用制限を超えました',
+    'API endpoint not found': 'APIエンドポイントが見つかりません',
+    'API authentication failed': 'API認証に失敗しました',
+    'API request failed': 'APIリクエストに失敗しました',
+    
+    # 設定関連エラー
+    'Configuration file not found': '設定ファイルが見つかりません',
+    'Invalid configuration': '設定が無効です',
+    'Missing required parameter': '必要なパラメータが不足しています',
+    'Invalid parameter value': 'パラメータの値が無効です',
+    
+    # 権限関連エラー
+    'Permission denied': 'アクセス権限がありません',
+    'Read-only file system': 'ファイルシステムが読み取り専用です',
+    'Insufficient privileges': '権限が不足しています',
+    'Access denied': 'アクセスが拒否されました',
+    
+    # ネットワーク関連エラー
+    'Network unreachable': 'ネットワークに到達できません',
+    'DNS resolution failed': 'DNS解決に失敗しました',
+    'Connection refused': '接続が拒否されました',
+    'Host unreachable': 'ホストに到達できません',
+    'Port not available': 'ポートが利用できません',
+    
+    # システム関連エラー
+    'Out of memory': 'メモリ不足です',
+    'Disk space full': 'ディスク容量が不足しています',
+    'Process limit exceeded': 'プロセス数の制限を超えました',
+    'File descriptor limit': 'ファイルディスクリプタの制限に達しました',
+    'System resource exhausted': 'システムリソースが不足しています'
+}
+
+def translate_error_message(error_msg):
+    """
+    英語のエラーメッセージを日本語に翻訳する
+    """
+    # 完全一致をチェック
+    if error_msg in ERROR_TRANSLATIONS:
+        return ERROR_TRANSLATIONS[error_msg]
+    
+    # 部分一致をチェック（エラータイプの検出）
+    for english_pattern, japanese_msg in ERROR_TRANSLATIONS.items():
+        if english_pattern in error_msg:
+            return japanese_msg
+    
+    # 一般的なPythonエラーの検出
+    if 'SyntaxError' in error_msg:
+        return 'コードの文法エラーがあります。括弧の対応やインデントを確認してください'
+    elif 'IndentationError' in error_msg:
+        return 'インデント（字下げ）のエラーがあります。タブとスペースの混在を確認してください'
+    elif 'NameError' in error_msg:
+        return '未定義の変数や関数を使用しています。変数名や関数名のスペルを確認してください'
+    elif 'ImportError' in error_msg or 'ModuleNotFoundError' in error_msg:
+        return '存在しないモジュールをインポートしようとしています。ライブラリ名を確認してください'
+    elif 'AttributeError' in error_msg:
+        return '存在しない属性やメソッドにアクセスしようとしています'
+    elif 'TypeError' in error_msg:
+        return 'データ型のエラーがあります。文字列と数値の演算などを確認してください'
+    elif 'ValueError' in error_msg:
+        return '値のエラーがあります。入力値の形式を確認してください'
+    elif 'FileNotFoundError' in error_msg:
+        return '指定されたファイルが見つかりません。ファイルパスを確認してください'
+    elif 'PermissionError' in error_msg:
+        return 'ファイルやディレクトリへのアクセス権限がありません'
+    elif 'ZeroDivisionError' in error_msg:
+        return 'ゼロで割り算しようとしています。分母が0になっていないか確認してください'
+    elif 'IndexError' in error_msg:
+        return 'リストや配列の範囲外のインデックスにアクセスしています'
+    elif 'KeyError' in error_msg:
+        return '辞書に存在しないキーにアクセスしています'
+    elif 'TimeoutError' in error_msg:
+        return '処理がタイムアウトしました。処理時間を短縮するか、タイムアウト時間を延長してください'
+    
+    # デフォルトメッセージ
+    return f'エラーが発生しました: {error_msg}'
+
 @app.route('/')
 @app.route('/index')
 @app.route('/index.html')
@@ -646,7 +826,7 @@ def generate_code():
         
         tool = next((t for t in TOOLS if t['id'] == tool_id), None)
         if not tool:
-            return jsonify({'error': 'Tool not found'}), 404
+            return jsonify({'error': translate_error_message('Tool not found')}), 404
         
         # デフォルトのプロンプトを使用
         base_prompt = tool.get('ai_prompt', '')
@@ -697,7 +877,7 @@ def generate_code():
         
     except Exception as e:
         logger.error(f"Error generating code: {e}")
-        return jsonify({'error': str(e)}), 500
+        return jsonify({'error': translate_error_message(str(e))}), 500
 
 # コードを実行するAPI
 @app.route('/api/execute-code', methods=['POST'])
@@ -708,7 +888,7 @@ def execute_code():
         tool_id = data.get('tool_id')
         
         if not code:
-            return jsonify({'error': 'No code provided'}), 400
+            return jsonify({'error': translate_error_message('No code provided')}), 400
         
         # セキュリティチェック（危険なコードを実行しない）
         dangerous_patterns = [
@@ -718,7 +898,8 @@ def execute_code():
         ]
         for pattern in dangerous_patterns:
             if pattern in code:
-                return jsonify({'error': f'Security: {pattern} is not allowed in web execution'}), 403
+                error_msg = f'Security: {pattern} is not allowed in web execution'
+                return jsonify({'error': translate_error_message(error_msg)}), 403
         
         # アップロードされたファイルのパスをコードに追加
         if 'uploaded_files' in session and session['uploaded_files']:
@@ -756,10 +937,10 @@ def execute_code():
             os.unlink(temp_file)
             
     except subprocess.TimeoutExpired:
-        return jsonify({'error': 'Code execution timed out'}), 408
+        return jsonify({'error': translate_error_message('Code execution timed out')}), 408
     except Exception as e:
         logger.error(f"Error executing code: {e}")
-        return jsonify({'error': str(e)}), 500
+        return jsonify({'error': translate_error_message(str(e))}), 500
 
 # 設定ウィザードページ
 @app.route('/wizard/<int:tool_id>')
@@ -785,23 +966,23 @@ def save_config():
         
     except Exception as e:
         logger.error(f"Error saving config: {e}")
-        return jsonify({'error': str(e)}), 500
+        return jsonify({'error': translate_error_message(str(e))}), 500
 
 # ファイルアップロード機能を追加
 @app.route('/api/upload-file', methods=['POST'])
 def upload_file():
     try:
         if 'file' not in request.files:
-            return jsonify({'error': 'ファイルが選択されていません'}), 400
+            return jsonify({'error': translate_error_message('ファイルが選択されていません')}), 400
         
         file = request.files['file']
         if file.filename == '':
-            return jsonify({'error': 'ファイルが選択されていません'}), 400
+            return jsonify({'error': translate_error_message('ファイルが選択されていません')}), 400
         
         # ファイルの拡張子をチェック
         allowed_extensions = {'csv', 'xlsx', 'xls', 'txt', 'json', 'jpg', 'jpeg', 'png', 'gif', 'pdf'}
         if not file.filename.lower().endswith(tuple('.' + ext for ext in allowed_extensions)):
-            return jsonify({'error': '許可されていないファイル形式です'}), 400
+            return jsonify({'error': translate_error_message('許可されていないファイル形式です')}), 400
         
         # 一時ファイルとして保存
         import tempfile
@@ -833,7 +1014,7 @@ def upload_file():
         
     except Exception as e:
         logger.error(f"File upload error: {e}")
-        return jsonify({'error': 'ファイルのアップロードに失敗しました'}), 500
+        return jsonify({'error': translate_error_message('ファイルのアップロードに失敗しました')}), 500
 
 # アップロードされたファイルの一覧を取得
 @app.route('/api/uploaded-files', methods=['GET'])
@@ -871,11 +1052,11 @@ def delete_file(file_id):
             
             return jsonify({'success': True, 'message': 'ファイルを削除しました'})
         else:
-            return jsonify({'error': 'ファイルが見つかりません'}), 404
+            return jsonify({'error': translate_error_message('ファイルが見つかりません')}), 404
             
     except Exception as e:
         logger.error(f"File deletion error: {e}")
-        return jsonify({'error': 'ファイルの削除に失敗しました'}), 500
+        return jsonify({'error': translate_error_message('ファイルの削除に失敗しました')}), 500
 
 if __name__ == '__main__':
     try:
