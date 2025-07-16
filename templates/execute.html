@@ -69,7 +69,7 @@
             <div class="step-box mb-4">
                 <h3>🧑‍💻 使い方ガイド</h3>
                 <ol class="mb-2">
-                    <li>左側の「AIプロンプト」を確認・編集します（自動生成された内容をそのまま使ってもOK）。</li>
+                    <li>右側の「AIプロンプト」を確認・編集します（自動生成された内容をそのまま使ってもOK）。</li>
                     <li>必要に応じてファイルをアップロードします（CSVや画像など）。</li>
                     <li>設定欄にAPIキーやメールアドレスなどを入力します。</li>
                     <li>「AIにコード生成を依頼」ボタンを押して、Pythonコードを自動生成します。</li>
@@ -77,7 +77,7 @@
                     <li>実行結果やグラフが右側に表示されます。</li>
                 </ol>
                 <div class="alert alert-info mb-0">
-                    <strong>ヒント：</strong> サンプルファイルを使って動作確認できます。エラーが出た場合は下部の「よくあるエラーと対処法」もご覧ください。
+                    <strong>ヒント：</strong> サンプルファイルを使って動作確認できます。エラーが出た場合は下部の「よくある質問（FAQ）」もご覧ください。
                 </div>
             </div>
 
@@ -107,7 +107,7 @@
                 <div class="accordion" id="faqAccordion">
                     <div class="accordion-item">
                         <h2 class="accordion-header" id="faq1">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse1">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse1" aria-expanded="false" aria-controls="faqCollapse1">
                                 Q. ファイルはどこに保存されますか？
                             </button>
                         </h2>
@@ -119,7 +119,7 @@
                     </div>
                     <div class="accordion-item">
                         <h2 class="accordion-header" id="faq2">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse2">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse2" aria-expanded="false" aria-controls="faqCollapse2">
                                 Q. APIキーやパスワードは安全ですか？
                             </button>
                         </h2>
@@ -131,7 +131,7 @@
                     </div>
                     <div class="accordion-item">
                         <h2 class="accordion-header" id="faq3">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse3">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse3" aria-expanded="false" aria-controls="faqCollapse3">
                                 Q. エラーが出た場合はどうすればいいですか？
                             </button>
                         </h2>
@@ -143,13 +143,47 @@
                     </div>
                     <div class="accordion-item">
                         <h2 class="accordion-header" id="faq4">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse4">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse4" aria-expanded="false" aria-controls="faqCollapse4">
                                 Q. どんなデータ形式に対応していますか？
                             </button>
                         </h2>
                         <div id="faqCollapse4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
                             <div class="accordion-body">
                                 CSV、Excel（.xlsx, .xls）、テキスト、画像（jpg, png, gif）、PDFなどに対応しています。ツールによっては特定の形式のみ対応の場合もあります。
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="faq5">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse5" aria-expanded="false" aria-controls="faqCollapse5">
+                                Q. よくあるエラーと対処法は？
+                            </button>
+                        </h2>
+                        <div id="faqCollapse5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <h6>🔧 設定関連</h6>
+                                        <ul class="small">
+                                            <li><strong>APIキーエラー</strong>: 正しいAPIキーを入力してください</li>
+                                            <li><strong>ファイルが見つからない</strong>: ファイルをアップロードしてください</li>
+                                            <li><strong>権限エラー</strong>: 管理者に連絡してください</li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <h6>💻 コード関連</h6>
+                                        <ul class="small">
+                                            <li><strong>構文エラー</strong>: コードの文法を確認してください</li>
+                                            <li><strong>タイムアウト</strong>: 処理が重すぎます。データ量を減らしてください</li>
+                                            <li><strong>メモリ不足</strong>: 大きなファイルは分割してください</li>
+                                            <li><strong>ライブラリ不足</strong>: 必要なライブラリがインストールされていません</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="mt-3">
+                                    <h6>📞 サポート</h6>
+                                    <p class="small mb-0">エラーが解決しない場合は、エラーメッセージをコピーして管理者にお問い合わせください。</p>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -274,45 +308,9 @@
     </div>
 </div>
 
-<!-- エラーハンドリングガイド -->
-<div class="mt-4">
-    <div class="accordion" id="errorGuide">
-        <div class="accordion-item">
-            <h2 class="accordion-header" id="headingOne">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne">
-                    ❓ よくあるエラーと対処法
-                </button>
-            </h2>
-            <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#errorGuide">
-                <div class="accordion-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <h6>🔧 設定関連</h6>
-                            <ul class="small">
-                                <li><strong>APIキーエラー</strong>: 正しいAPIキーを入力してください</li>
-                                <li><strong>ファイルが見つからない</strong>: ファイルをアップロードしてください</li>
-                                <li><strong>権限エラー</strong>: 管理者に連絡してください</li>
-                            </ul>
-                        </div>
-                        <div class="col-md-6">
-                            <h6>💻 コード関連</h6>
-                            <ul class="small">
-                                <li><strong>構文エラー</strong>: コードの文法を確認してください</li>
-                                <li><strong>タイムアウト</strong>: 処理が重すぎます。データ量を減らしてください</li>
-                                <li><strong>メモリ不足</strong>: 大きなファイルは分割してください</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="mt-3">
-                        <h6>📞 サポート</h6>
-                        <p class="small mb-0">エラーが解決しない場合は、エラーメッセージをコピーして管理者にお問い合わせください。</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/python/python.min.js"></script>
 <script>
@@ -444,14 +442,18 @@ document.getElementById('executeBtn').addEventListener('click', async function()
         const data = await response.json();
         
         if (data.success) {
-            let resultHtml = '<div class="alert alert-success"><strong>✅ 実行成功！</strong></div>';
+            let resultHtml = '';
+            
+            // エラーがある場合は失敗として扱う
+            if (data.stderr && data.stderr.trim()) {
+                resultHtml = '<div class="alert alert-danger"><strong>❌ 実行エラー</strong></div>';
+                resultHtml += `<div class="result-box text-danger"><strong>エラー:</strong><br>${data.stderr.replace(/\n/g, '<br>')}</div>`;
+            } else {
+                resultHtml = '<div class="alert alert-success"><strong>✅ 実行成功！</strong></div>';
+            }
             
             if (data.stdout) {
                 resultHtml += `<div class="result-box"><strong>出力:</strong><br>${data.stdout.replace(/\n/g, '<br>')}</div>`;
-            }
-            
-            if (data.stderr) {
-                resultHtml += `<div class="result-box text-danger"><strong>エラー:</strong><br>${data.stderr.replace(/\n/g, '<br>')}</div>`;
             }
             
             document.getElementById('resultContainer').innerHTML = resultHtml;
