@@ -81,6 +81,26 @@
                 </div>
             </div>
 
+            <!-- ステップ1: AIプロンプト入力 -->
+            <div class="step-box mb-4">
+                <h3>📝 ステップ1: AIプロンプトを確認・編集</h3>
+                <div class="mt-3">
+                    <div class="alert alert-info">
+                        <strong>自動生成プロンプト：</strong>
+                        <p class="mb-2">以下のプロンプトが自動で生成されました。必要に応じて編集してください。</p>
+                    </div>
+                    
+                    <textarea id="promptInput" class="form-control" rows="8" placeholder="AIプロンプトを入力してください...">{{ tool.ai_prompt or '' }}</textarea>
+                    
+                    <div class="mt-3">
+                        <button id="generateBtn" class="btn btn-primary btn-execute">
+                            <span class="spinner-border spinner-border-sm loading" role="status"></span>
+                            🤖 AIにコード生成を依頼
+                        </button>
+                    </div>
+                </div>
+            </div>
+
             <!-- よくある質問（FAQ） -->
             <div class="step-box mb-4">
                 <h3>❓ よくある質問（FAQ）</h3>
