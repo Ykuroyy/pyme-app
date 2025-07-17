@@ -6,7 +6,7 @@ EXTRA_TOOLS = [
         "title": "PDF一括結合",
         "desc": "複数のPDFファイルを自動で1つに結合",
         "how_to": "PyPDF2ライブラリを使って、複数のPDFファイルを1つのファイルにまとめます。",
-        "sample_code": "from PyPDF2 import PdfMerger\nimport os\n\npdf_files = ['file1.pdf', 'file2.pdf', 'file3.pdf']\nmerger = PdfMerger()\nfor pdf in pdf_files:\n    merger.append(pdf)\nmerger.write('merged.pdf')\nmerger.close()\nprint('PDF結合完了！')",
+        "sample_code": "import os\nfrom PyPDF2 import PdfMerger\n\n# --- ユーザーが変更する箇所 ---\n# 結合したいPDFファイルのリストを指定してください。\n# 例: ['dummy_data/file1.pdf', 'dummy_data/file2.pdf']\n# dummy_dataフォルダにダミーファイルが生成されています。\npdf_files = ['dummy_data/file1.pdf', 'dummy_data/file2.pdf', 'dummy_data/file3.pdf']\n\n# 出力するPDFファイル名を指定してください。\noutput_pdf = 'dummy_data/merged_output.pdf'\n# ------------------------------\n\n# PDF結合処理\ntry:\n    merger = PdfMerger()\n    for pdf in pdf_files:\n        if not os.path.exists(pdf):\n            print(f\"エラー: ファイル '{pdf}' が見つかりません。スキップします。\")\n            continue\n        merger.append(pdf)\n    \n    if not merger.pages:\n        print(\"エラー: 結合できるPDFファイルが見つかりませんでした。\")\n    else:\n        merger.write(output_pdf)\n        merger.close()\n        print(f'PDF結合完了！出力ファイル: {output_pdf}')\nexcept Exception as e:\n    print(f\"エラーが発生しました: {e}\")",
         "libraries": "PyPDF2、os（標準ライブラリ）",
         "explanation": "複数のPDFを一括で結合することで、資料整理や提出が効率化できます。",
         "benefits": ["手作業が不要", "一括結合", "資料整理が簡単"],
@@ -21,7 +21,28 @@ EXTRA_TOOLS = [
         "title": "フォルダ自動圧縮",
         "desc": "指定フォルダを自動でZIP圧縮",
         "how_to": "shutilライブラリを使って、指定したフォルダをZIPファイルに圧縮します。",
-        "sample_code": "import shutil\nfolder_path = 'target_folder'\nshutil.make_archive(folder_path, 'zip', folder_path)\nprint('圧縮完了！')",
+        "sample_code": "import shutil
+import os
+
+# --- ユーザーが変更する箇所 ---
+# 圧縮したいフォルダのパスを指定してください。
+# dummy_dataフォルダにダミーファイルが生成されています。
+folder_to_compress = 'dummy_data/target_folder'
+
+# 出力するZIPファイル名を指定してください。
+# 例: 'my_archive' とすると 'my_archive.zip' が作成されます。
+output_zip_name = 'dummy_data/compressed_folder'
+# ------------------------------
+
+# フォルダ圧縮処理
+try:
+    if not os.path.exists(folder_to_compress):
+        print(f"エラー: フォルダ '{folder_to_compress}' が見つかりません。")
+    else:
+        shutil.make_archive(output_zip_name, 'zip', folder_to_compress)
+        print(f'圧縮完了！出力ファイル: {output_zip_name}.zip')
+except Exception as e:
+    print(f"エラーが発生しました: {e}"),
         "libraries": "shutil（標準ライブラリ）",
         "explanation": "フォルダを自動で圧縮することで、バックアップやメール添付が簡単になります。",
         "benefits": ["バックアップが簡単", "メール添付が楽", "手作業が不要"],
@@ -36,7 +57,7 @@ EXTRA_TOOLS = [
         "title": "画像一括リネーム",
         "desc": "画像ファイルを自動で連番リネーム",
         "how_to": "osライブラリを使って、フォルダ内の画像ファイルを連番でリネームします。",
-        "sample_code": "import os\nfolder = 'images'\nfor i, filename in enumerate(os.listdir(folder), 1):\n    if filename.lower().endswith(('.jpg', '.jpeg', '.png')):\n        new_name = f'image_{i:03d}' + os.path.splitext(filename)[1]\n        os.rename(os.path.join(folder, filename), os.path.join(folder, new_name))\n        print(f'{filename} → {new_name}')\nprint('リネーム完了！')",
+        "sample_code": "import os\n\n# --- ユーザーが変更する箇所 ---\n# リネームしたい画像ファイルがあるフォルダのパスを指定してください。\n# dummy_data/imagesフォルダにダミー画像が生成されています。\nimage_folder = 'dummy_data/images'\n\n# リネーム後のファイル名のプレフィックスを指定してください。\n# 例: 'photo_' とすると 'photo_001.jpg', 'photo_002.png' のようになります。\nnew_name_prefix = 'renamed_image_'\n# ------------------------------\n\n# 画像ファイルリネーム処理\ntry:\n    if not os.path.exists(image_folder):\n        print(f\"エラー: フォルダ '{image_folder}' が見つかりません。\")\n    else:\n        image_files = [f for f in os.listdir(image_folder) if f.lower().endswith(('.jpg', '.jpeg', '.png', '.gif', '.bmp'))]\n        if not image_files:\n            print(f\"フォルダ '{image_folder}' に画像ファイルが見つかりません。\")\n        else:\n            print(f\"フォルダ '{image_folder}' 内の画像をリネーム中...\")\n            for i, filename in enumerate(sorted(image_files), 1):\n                old_path = os.path.join(image_folder, filename)\n                file_extension = os.path.splitext(filename)[1]\n                new_name = f'{new_name_prefix}{i:03d}{file_extension}'\n                new_path = os.path.join(image_folder, new_name)\n                os.rename(old_path, new_path)\n                print(f'{filename} → {new_name}')\n            print('リネーム完了！')\nexcept Exception as e:\n    print(f\"エラーが発生しました: {e}\")",
         "libraries": "os（標準ライブラリ）",
         "explanation": "大量の画像を一括でリネームすることで、整理や管理が簡単になります。",
         "benefits": ["整理が簡単", "一括処理", "手作業が不要"],
@@ -51,7 +72,7 @@ EXTRA_TOOLS = [
         "title": "売上データ自動分析",
         "desc": "売上データを自動で分析・レポート化",
         "how_to": "CSV売上データを自動で分析し、月次・商品別レポートを作成します。",
-        "sample_code": "import pandas as pd\nimport matplotlib.pyplot as plt\ndf = pd.read_csv('sales.csv')\nmonthly = df.groupby('月')['売上'].sum()\nmonthly.plot(kind='line')\nplt.savefig('monthly_sales.png')\nprint('分析完了！')",
+        "sample_code": "import pandas as pd\nimport matplotlib.pyplot as plt\nimport os\n\n# 日本語フォントの設定 (グラフに日本語を表示するため)\n# ご自身の環境に合わせて適切なフォントパスを指定してください。\n# Windowsの場合の例: 'C:/Windows/Fonts/meiryo.ttc'\n# macOSの場合の例: '/System/Library/Fonts/ヒラギノ角ゴシック W3.ttc'\n# Linuxの場合の例: '/usr/share/fonts/truetype/takao-gothic/TakaoPGothic.ttf'\n# フォントが見つからない場合は、デフォルトのフォントが使用されます。\ntry:\n    plt.rcParams['font.family'] = ['Hiragino Sans', 'Yu Gothic', 'Meiryo', 'Takao', 'IPAexGothic', 'IPAPGothic', 'VL PGothic', 'Noto Sans CJK JP']\n    plt.rcParams['axes.unicode_minus'] = False # マイナス記号を正しく表示するため\nexcept Exception as e:\n    print(f\"警告: 日本語フォントの設定に失敗しました。グラフの日本語が正しく表示されない可能性があります。エラー: {e}\")\n\n# --- ユーザーが変更する箇所 ---\n# 入力CSVファイルのパスを指定してください。\n# dummy_dataフォルダにダミーファイルが生成されています。\ninput_csv_path = 'dummy_data/sales.csv'\n\n# 出力するグラフ画像ファイルのパスを指定してください。\noutput_image_path = 'dummy_data/monthly_sales.png'\n# ------------------------------\n\n# 売上データ分析処理\ntry:\n    if not os.path.exists(input_csv_path):\n        print(f\"エラー: 入力ファイル '{input_csv_path}' が見つかりません。\")\n    else:\n        df = pd.read_csv(input_csv_path, encoding='utf-8')\n        \n        # 必要な列が存在するか確認\n        if '月' not in df.columns or '売上' not in df.columns:\n            print(\"エラー: CSVファイルに '月' または '売上' 列が見つかりません。\")\n            print(\"CSVファイルのヘッダーを確認してください。\")\n        else:\n            # 月ごとの売上を集計\n            monthly_sales = df.groupby('月')['売上'].sum()\n            \n            # グラフを作成して保存\n            plt.figure(figsize=(10, 6))\n            monthly_sales.plot(kind='line', marker='o')\n            plt.title('月次売上推移')\n            plt.xlabel('月')\n            plt.ylabel('売上')\n            plt.grid(True)\n            plt.tight_layout()\n            plt.savefig(output_image_path)\n            plt.close()\n            print(f'分析完了！グラフ画像: {output_image_path}')\nexcept Exception as e:\n    print(f\"エラーが発生しました: {e}\")"},
         "libraries": "pandas、matplotlib",
         "explanation": "売上データを自動で分析。月次・商品別の傾向が一目で分かる。",
         "benefits": ["分析が楽", "グラフも自動", "戦略立案に活用"],
@@ -66,7 +87,57 @@ EXTRA_TOOLS = [
         "title": "ファイル自動分類",
         "desc": "ファイルを拡張子別に自動分類・整理",
         "how_to": "指定フォルダ内のファイルを拡張子別に自動分類し、整理します。",
-        "sample_code": "import os\nimport shutil\nfor file in os.listdir('.'):\n    if file.endswith('.pdf'):\n        shutil.move(file, 'pdfs/')\n    elif file.endswith('.jpg'):\n        shutil.move(file, 'images/')\nprint('分類完了！')",
+        "sample_code": "import os
+import shutil
+
+# --- ユーザーが変更する箇所 ---
+# 分類したいファイルがあるフォルダのパスを指定してください。
+# dummy_dataフォルダにダミーファイルが生成されています。
+input_folder = 'dummy_data'
+
+# 分類先のフォルダ名を指定してください。
+# 存在しない場合は自動で作成されます。
+output_base_folder = 'dummy_data/classified_files'
+# ------------------------------
+
+# 分類ルールを定義
+# 拡張子と分類先のフォルダ名のマッピング
+classification_rules = {
+    '.pdf': 'pdfs',
+    '.jpg': 'images',
+    '.jpeg': 'images',
+    '.png': 'images',
+    '.txt': 'documents',
+    '.xlsx': 'documents',
+    '.docx': 'documents',
+    '.mp4': 'videos',
+    '.mp3': 'audios',
+}
+
+# ファイル自動分類処理
+try:
+    if not os.path.exists(input_folder):
+        print(f\"エラー: 入力フォルダ '{input_folder}' が見つかりません。\")
+    else:
+        print(f\"フォルダ '{input_folder}' 内のファイルを分類中...\")
+        for filename in os.listdir(input_folder):
+            file_path = os.path.join(input_folder, filename)
+            if os.path.isfile(file_path): # ファイルのみを対象とする
+                file_extension = os.path.splitext(filename)[1].lower()
+                
+                # 分類ルールに基づいて移動先フォルダを決定
+                destination_folder_name = classification_rules.get(file_extension, 'others')
+                destination_path = os.path.join(output_base_folder, destination_folder_name)
+                
+                # 移動先フォルダが存在しない場合は作成
+                os.makedirs(destination_path, exist_ok=True)
+                
+                # ファイルを移動
+                shutil.move(file_path, os.path.join(destination_path, filename))
+                print(f'{filename} → {destination_folder_name}/')
+        print('分類完了！')
+except Exception as e:
+    print(f\"エラーが発生しました: {e}")"},
         "libraries": "os、shutil",
         "explanation": "ファイルを自動で分類。探しやすく、整理も楽に。",
         "benefits": ["整理が楽", "探しやすい", "自動化"],
@@ -81,7 +152,7 @@ EXTRA_TOOLS = [
         "title": "レポート自動生成",
         "desc": "データからレポートを自動生成・PDF化",
         "how_to": "CSVデータから月次レポートを自動生成し、PDF化します。",
-        "sample_code": "import pandas as pd\nfrom reportlab.pdfgen import canvas\ndf = pd.read_csv('data.csv')\ntotal = df['売上'].sum()\nc = canvas.Canvas('report.pdf')\nc.drawString(100, 750, f'月次レポート\\n総売上: {total:,}円')\nc.save()\nprint('レポート作成完了！')",
+        "sample_code": "import pandas as pd\nfrom reportlab.pdfgen import canvas\nfrom reportlab.lib.pagesizes import A4\nfrom reportlab.pdfbase import pdfmetrics\nfrom reportlab.pdfbase.ttfonts import TTFont\nimport os\n\n# 日本語フォントの設定（利用可能なフォントを試行）\ntry:\n    # macOS用\n    pdfmetrics.registerFont(TTFont('Hiragino', '/System/Library/Fonts/ヒラギノ角ゴシック W3.ttc'))\n    FONT_NAME = 'Hiragino'\nexcept:\n    try:\n        # Windows用\n        pdfmetrics.registerFont(TTFont('YuGothic', 'C:/Windows/Fonts/YuGothic.ttf'))\n        FONT_NAME = 'YuGothic'\n    except:\n        # フォールバック\n        FONT_NAME = 'Helvetica'\n\n# --- ユーザーが変更する箇所 ---\n# 入力CSVファイルのパスを指定してください。\n# dummy_dataフォルダにダミーファイルが生成されています。\ninput_csv_path = 'dummy_data/data.csv'\n\n# 出力するPDFレポートファイルのパスを指定してください。\noutput_pdf_path = 'dummy_data/monthly_report.pdf'\n\n# レポートのタイトルと期間を設定してください。\nreport_title = '月次売上レポート'\nreport_period = '2024年7月'\n# ------------------------------\n\n# レポート自動生成処理\ntry:\n    if not os.path.exists(input_csv_path):\n        print(f\"エラー: 入力ファイル '{input_csv_path}' が見つかりません。\")\n    else:\n        df = pd.read_csv(input_csv_path, encoding='utf-8')\n        \n        # 必要な列が存在するか確認\n        if '売上' not in df.columns:\n            print(\"エラー: CSVファイルに '売上' 列が見つかりません。\")\n            print(\"CSVファイルのヘッダーを確認してください。\")\n        else:\n            total_sales = df['売上'].sum()\n            \n            c = canvas.Canvas(output_pdf_path, pagesize=A4)\n            c.setFont(FONT_NAME, 24)\n            c.drawString(50, 750, report_title)\n            \n            c.setFont(FONT_NAME, 14)\n            c.drawString(50, 720, f'期間: {report_period}')\n            c.drawString(50, 680, f'総売上: {total_sales:,}円')\n            \n            c.save()\n            print(f'レポート作成完了！出力ファイル: {output_pdf_path}')\nexcept Exception as e:\n    print(f\"エラーが発生しました: {e}\")",
         "libraries": "pandas、reportlab",
         "explanation": "レポートを自動で生成。手作業不要で、毎月の報告も楽に。",
         "benefits": ["手作業不要", "PDF化", "時短"],
@@ -96,7 +167,7 @@ EXTRA_TOOLS = [
         "title": "顧客データ自動分析",
         "desc": "顧客データを自動で分析・セグメント化",
         "how_to": "CSV顧客データを自動で分析し、顧客セグメントを作成します。",
-        "sample_code": "import pandas as pd\ndf = pd.read_csv('customers.csv')\ndf['購入頻度'] = df.groupby('顧客ID')['購入回数'].transform('sum')\ndf.to_excel('customer_analysis.xlsx', index=False)\nprint('顧客分析完了！')",
+        "sample_code": "import pandas as pd\nimport os\n\n# --- ユーザーが変更する箇所 ---\n# 入力CSVファイルのパスを指定してください。\n# dummy_dataフォルダにダミーファイルが生成されています。\ninput_csv_path = 'dummy_data/customers.csv'\n\n# 出力するExcelファイルのパスを指定してください。\noutput_excel_path = 'dummy_data/customer_analysis.xlsx'\n# ------------------------------\n\n# 顧客データ分析処理\ntry:\n    if not os.path.exists(input_csv_path):\n        print(f\"エラー: 入力ファイル '{input_csv_path}' が見つかりません。\")\n    else:\n        df = pd.read_csv(input_csv_path, encoding='utf-8')\n        \n        # 必要な列が存在するか確認\n        required_columns = ['顧客ID', '購入日', '購入金額']\n        if not all(col in df.columns for col in required_columns):\n            print(f\"エラー: CSVファイルに {required_columns} のいずれかの列が見つかりません。\")\n            print(\"CSVファイルのヘッダーを確認してください。\")\n        else:\n            # 購入日をdatetime型に変換\n            df['購入日'] = pd.to_datetime(df['購入日'])\n            \n            # 顧客ごとの購入頻度と合計購入金額を計算\n            customer_summary = df.groupby('顧客ID').agg(\n                purchase_frequency=('購入日', 'count'),\n                total_purchase_amount=('購入金額', 'sum'),\n                last_purchase_date=('購入日', 'max')\n            ).reset_index()\n            \n            # 顧客をセグメントに分類 (例: 購入頻度と金額に基づく)\n            def classify_customer(row):\n                if row['purchase_frequency'] >= 5 and row['total_purchase_amount'] >= 50000:\n                    return 'VIP'\n                elif row['purchase_frequency'] >= 2:\n                    return '一般'\n                else:\n                    return '新規/休眠'\n            \n            customer_summary['顧客セグメント'] = customer_summary.apply(classify_customer, axis=1)\n            \n            customer_summary.to_excel(output_excel_path, index=False)\n            print(f'顧客分析完了！出力ファイル: {output_excel_path}')\nexcept Exception as e:\n    print(f\"エラーが発生しました: {e}\")",
         "libraries": "pandas",
         "explanation": "顧客データを自動で分析。セグメント化で営業戦略に活用。",
         "benefits": ["分析が楽", "セグメント化", "営業戦略に活用"],
@@ -111,7 +182,7 @@ EXTRA_TOOLS = [
         "title": "社員スキル管理",
         "desc": "社員のスキル情報を自動で管理・Excel化",
         "how_to": "CSVや手入力データから社員スキル情報を自動でExcel化します。",
-        "sample_code": "import pandas as pd\ndata = [\n    {'氏名': '田中', 'スキル': 'Python', 'レベル': '上級'},\n    {'氏名': '佐藤', 'スキル': 'Excel', 'レベル': '中級'}\n]\npd.DataFrame(data).to_excel('skills.xlsx', index=False)\nprint('スキル管理完了！')",
+        "sample_code": "import pandas as pd\nimport os\n\n# --- ユーザーが変更する箇所 ---\n# スキルデータを直接入力するか、CSVファイルから読み込むか選択してください。\n# CSVファイルから読み込む場合は、input_csv_pathにパスを指定してください。\n# 直接入力する場合は、sample_skills_dataを編集してください。\n\n# CSVファイルから読み込む場合 (こちらを有効にする場合は下の sample_skills_data をコメントアウト)\ninput_csv_path = 'dummy_data/skills.csv' # dummy_dataフォルダにダミーファイルが生成されています。\nuse_csv = True\n\n# 直接入力する場合 (こちらを有効にする場合は上の input_csv_path と use_csv をコメントアウト)\n# use_csv = False\n# sample_skills_data = [\n#     {'氏名': '山田太郎', 'スキル': 'Python', 'レベル': '上級', '取得日': '2023-01-15'},\n#     {'氏名': '佐藤花子', 'スキル': 'Excel', 'レベル': '中級', '取得日': '2023-03-20'},\n#     {'氏名': '鈴木一郎', 'スキル': 'プレゼンテーション', 'レベル': '初級', '取得日': '2023-06-01'},\n# ]\n\n# 出力するExcelファイルのパスを指定してください。\noutput_excel_path = 'dummy_data/employee_skills.xlsx'\n# ------------------------------\n\n# 社員スキル管理処理\ntry:\n    if use_csv:\n        if not os.path.exists(input_csv_path):\n            print(f\"エラー: 入力ファイル '{input_csv_path}' が見つかりません。\")\n            print(\"CSVファイルを作成するか、コード内のサンプルデータを直接編集してください。\")\n            exit()\n        df = pd.read_csv(input_csv_path, encoding='utf-8')\n    else:\n        df = pd.DataFrame(sample_skills_data)\n    \n    # 必要な列が存在するか確認\n    required_columns = ['氏名', 'スキル', 'レベル']\n    if not all(col in df.columns for col in required_columns):\n        print(f\"エラー: データに {required_columns} のいずれかの列が見つかりません。\")\n        print(\"データを確認してください。\")\n        exit()\n\n    # スキル別・レベル別の集計\n    skill_summary = df.groupby(['スキル', 'レベル']).size().unstack(fill_value=0)\n    \n    # Excelファイルに保存\n    with pd.ExcelWriter(output_excel_path, engine='openpyxl') as writer:\n        df.to_excel(writer, sheet_name='社員スキル一覧', index=False)\n        skill_summary.to_excel(writer, sheet_name='スキル別集計')\n    \n    print(f'スキル管理完了！出力ファイル: {output_excel_path}')\nexcept Exception as e:\n    print(f\"エラーが発生しました: {e}\")"},
         "libraries": "pandas",
         "explanation": "社員スキルを自動で管理。人材配置や研修計画に活用。",
         "benefits": ["人材配置が楽", "Excel化", "研修計画に活用"],
@@ -126,7 +197,7 @@ EXTRA_TOOLS = [
         "title": "在庫アラート自動通知",
         "desc": "在庫不足時に自動でアラート通知",
         "how_to": "在庫データをチェックし、不足時に自動でメール通知します。",
-        "sample_code": "import pandas as pd\nimport smtplib\ndf = pd.read_csv('inventory.csv')\nlow_stock = df[df['在庫数'] < 10]\nif len(low_stock) > 0:\n    print('在庫不足商品があります！')\nprint('チェック完了！')",
+        "sample_code": "import pandas as pd\nimport smtplib\nfrom email.mime.text import MIMEText\nfrom email.header import Header\nimport os\n\n# --- ユーザーが変更する箇所 ---\n# 入力CSVファイルのパスを指定してください。\n# dummy_dataフォルダにダミーファイルが生成されています。\ninput_csv_path = 'dummy_data/inventory.csv'\n\n# 在庫アラートの閾値を設定してください。\nlow_stock_threshold = 10\n\n# メール設定 (ダミー情報です。実際にメールを送信するには、ご自身のSMTPサーバー情報を設定してください。)\n# Gmailの場合の例:\n# SMTP_SERVER = 'smtp.gmail.com'\n# SMTP_PORT = 587 # または 465 (SSL)\n# SENDER_EMAIL = 'your_email@gmail.com' # 送信元メールアドレス\n# SENDER_PASSWORD = 'your_app_password' # Gmailのアプリパスワード (通常のパスワードではありません)\n# RECIPIENT_EMAIL = 'recipient@example.com' # 送信先メールアドレス\n\nSMTP_SERVER = 'smtp.example.com' # ダミーのSMTPサーバー\nSMTP_PORT = 587 # ダミーのポート\nSENDER_EMAIL = 'dummy_sender@example.com' # ダミーの送信元メールアドレス\nSENDER_PASSWORD = 'dummy_password' # ダミーのパスワード\nRECIPIENT_EMAIL = 'dummy_recipient@example.com' # ダミーの送信先メールアドレス\n\n# ------------------------------\n\n# 在庫アラート自動通知処理\ntry:\n    if not os.path.exists(input_csv_path):\n        print(f\"エラー: 入力ファイル '{input_csv_path}' が見つかりません。\")\n    else:\n        df = pd.read_csv(input_csv_path, encoding='utf-8')\n        \n        # 必要な列が存在するか確認\n        if '商品名' not in df.columns or '在庫数' not in df.columns:\n            print(\"エラー: CSVファイルに '商品名' または '在庫数' 列が見つかりません。\")\n            print(\"CSVファイルのヘッダーを確認してください。\")\n        else:\n            low_stock_items = df[df['在庫数'] < low_stock_threshold]\n            \n            if not low_stock_items.empty:\n                alert_message = '以下の商品が在庫不足です:\n\n'\n                for index, row in low_stock_items.iterrows():\n                    alert_message += f\"- {row['商品名']}: 現在在庫数 {row['在庫数']}\n\"\n                \n                print('在庫不足商品があります！メールを送信します...\n')\n                print(alert_message)\n                \n                # メール送信 (ダミーのため、実際には送信されません)\n                msg = MIMEText(alert_message, 'plain', 'utf-8')\n                msg['Subject'] = Header('在庫不足アラート', 'utf-8')\n                msg['From'] = SENDER_EMAIL\n                msg['To'] = RECIPIENT_EMAIL\n                \n                try:\n                    # SMTPサーバーへの接続 (ダミーのため、接続は失敗します)\n                    # 実際の運用では、SMTPサーバーの認証情報を正しく設定してください。\n                    # 例: server = smtplib.SMTP_SSL(SMTP_SERVER, SMTP_PORT) # SSLの場合\n                    # server.login(SENDER_EMAIL, SENDER_PASSWORD)\n                    # server.send_message(msg)\n                    # server.quit()\n                    print(\"メール送信シミュレーション: 以下の内容でメールが送信されました。\")\n                    print(f\"From: {SENDER_EMAIL}\")\n                    print(f\"To: {RECIPIENT_EMAIL}\")\n                    print(f\"Subject: {msg['Subject']}\")\n                    print(f\"Body:\n{alert_message}\")\n                    print("\n注意: これはシミュレーションです。実際にメールを送信するには、コード内のメール設定を正しく設定してください。\")\n                except Exception as mail_e:\n                    print(f\"メール送信エラー: {mail_e}\")\n                    print(\"メール設定（SMTPサーバー、ポート、送信元/送信先メールアドレス、パスワード）が正しいか確認してください。\")\n            else:\n                print('在庫不足の商品はありません。チェック完了！')\nexcept Exception as e:\n    print(f\"エラーが発生しました: {e}\")"},
         "libraries": "pandas、smtplib",
         "explanation": "在庫不足を自動で検知。発注漏れを防止。",
         "benefits": ["発注漏れ防止", "自動化", "在庫管理が楽"],
@@ -141,7 +212,7 @@ EXTRA_TOOLS = [
         "title": "データ自動クレンジング",
         "desc": "データの欠損値・重複を自動で処理",
         "how_to": "CSVデータの欠損値や重複を自動で検出・処理します。",
-        "sample_code": "import pandas as pd\ndf = pd.read_csv('data.csv')\ndf = df.dropna()\ndf = df.drop_duplicates()\ndf.to_csv('cleaned_data.csv', index=False)\nprint('クレンジング完了！')",
+        "sample_code": "import pandas as pd\nimport os\n\n# --- ユーザーが変更する箇所 ---\n# 入力CSVファイルのパスを指定してください。\n# dummy_dataフォルダにダミーファイルが生成されています。\ninput_csv_path = 'dummy_data/data.csv'\n\n# 出力するクレンジング済みCSVファイルのパスを指定してください。\noutput_csv_path = 'dummy_data/cleaned_data.csv'\n# ------------------------------\n\n# データ自動クレンジング処理\ntry:\n    if not os.path.exists(input_csv_path):\n        print(f\"エラー: 入力ファイル '{input_csv_path}' が見つかりません。\")\n    else:\n        df = pd.read_csv(input_csv_path, encoding='utf-8')\n        \n        print('元のデータ:\n', df)\n        \n        # 欠損値の処理 (NaNを含む行を削除)\n        df_cleaned_na = df.dropna()\n        print('\n欠損値処理後のデータ:\n', df_cleaned_na)\n        \n        # 重複行の削除\n        df_cleaned_duplicates = df_cleaned_na.drop_duplicates()\n        print('\n重複削除後のデータ:\n', df_cleaned_duplicates)\n        \n        # クレンジング後のデータをCSVに保存\n        df_cleaned_duplicates.to_csv(output_csv_path, index=False, encoding='utf-8')\n        print(f'\nクレンジング完了！出力ファイル: {output_csv_path}')\nexcept Exception as e:\n    print(f\"エラーが発生しました: {e}\")",
         "libraries": "pandas",
         "explanation": "データを自動でクレンジング。分析の精度向上。",
         "benefits": ["データ品質向上", "分析精度向上", "自動化"],
@@ -156,7 +227,7 @@ EXTRA_TOOLS = [
         "title": "契約書自動生成",
         "desc": "契約書のテンプレートを自動生成・PDF化",
         "how_to": "契約内容を入力するだけで契約書を自動生成しPDF化します。",
-        "sample_code": "from reportlab.pdfgen import canvas\nc = canvas.Canvas('contract.pdf')\nc.drawString(100, 750, '契約書')\nc.drawString(100, 700, '契約者: 株式会社サンプル')\nc.drawString(100, 650, '契約内容: システム開発')\nc.save()\nprint('契約書作成完了！')",
+        "sample_code": "from reportlab.pdfgen import canvas\nfrom reportlab.lib.pagesizes import A4\nfrom reportlab.pdfbase import pdfmetrics\nfrom reportlab.pdfbase.ttfonts import TTFont\nimport os\n\n# 日本語フォントの設定（利用可能なフォントを試行）\ntry:\n    # macOS用\n    pdfmetrics.registerFont(TTFont('Hiragino', '/System/Library/Fonts/ヒラギノ角ゴシック W3.ttc'))\n    FONT_NAME = 'Hiragino'\nexcept:\n    try:\n        # Windows用\n        pdfmetrics.registerFont(TTFont('YuGothic', 'C:/Windows/Fonts/YuGothic.ttf'))\n        FONT_NAME = 'YuGothic'\n    except:\n        # フォールバック\n        FONT_NAME = 'Helvetica'\n\n# --- ユーザーが変更する箇所 ---\n# 出力するPDF契約書ファイルのパスを指定してください。\noutput_pdf_path = 'dummy_data/contract.pdf'\n\n# 契約書の情報を設定してください。\ncontract_info = {\n    'title': '業務委託契約書',\n    'contractor': '株式会社サンプル',\n    'contractee': '株式会社ダミー',\n    'content': 'システム開発業務一式',\n    'amount': 1000000, # 円\n    'period': '2024年8月1日 〜 2025年7月31日',\n    'date': '2024年7月17日'\n}\n# ------------------------------\n\n# 契約書自動生成処理\ntry:\n    c = canvas.Canvas(output_pdf_path, pagesize=A4)\n    \n    # タイトル\n    c.setFont(FONT_NAME, 24)\n    c.drawCentredString(A4[0]/2, 750, contract_info['title'])\n    \n    # 日付\n    c.setFont(FONT_NAME, 12)\n    c.drawString(400, 720, f'作成日: {contract_info['date']}')\n    \n    # 契約者情報\n    c.setFont(FONT_NAME, 14)\n    c.drawString(50, 680, f'甲: {contract_info['contractor']}')\n    c.drawString(50, 660, f'乙: {contract_info['contractee']}')\n    \n    # 契約内容\n    c.setFont(FONT_NAME, 12)\n    c.drawString(50, 620, '以下の通り契約を締結する。')\n    c.drawString(70, 600, f'1. 契約内容: {contract_info['content']}')\n    c.drawString(70, 580, f'2. 契約金額: {contract_info['amount']:,}円 (税抜)')\n    c.drawString(70, 560, f'3. 契約期間: {contract_info['period']}')\n    \n    # 署名欄\n    c.drawString(50, 400, '上記契約内容に同意し、本書を締結する.\n')\n    c.drawString(50, 350, f'甲: {contract_info['contractor']}\n')\n    c.drawString(50, 330, '署名: ____________________\n')\n    c.drawString(50, 280, f'乙: {contract_info['contractee']}\n')\n    c.drawString(50, 260, '署名: ____________________\n')\n    \n    c.save()\n    print(f'契約書作成完了！出力ファイル: {output_pdf_path}')\nexcept Exception as e:\n    print(f"エラーが発生しました: {e}")"},
         "libraries": "reportlab",
         "explanation": "契約書を自動で生成。手書き・転記不要。",
         "benefits": ["手書き不要", "PDF化", "時短"],
@@ -171,7 +242,7 @@ EXTRA_TOOLS = [
         "title": "顧客フォローアップ自動化",
         "desc": "顧客フォローアップを自動でスケジュール・通知",
         "how_to": "顧客データからフォローアップ予定を自動でスケジュールし、通知します。",
-        "sample_code": "import pandas as pd\nfrom datetime import datetime, timedelta\ndf = pd.read_csv('customers.csv')\ntoday = datetime.now()\ndf['次回連絡日'] = today + timedelta(days=30)\ndf.to_excel('followup_schedule.xlsx', index=False)\nprint('フォローアップ予定作成完了！')",
+        "sample_code": "import pandas as pd\nfrom datetime import datetime, timedelta\nimport os\n\n# --- ユーザーが変更する箇所 ---\n# 入力CSVファイルのパスを指定してください。\n# dummy_dataフォルダにダミーファイルが生成されています。\ninput_csv_path = 'dummy_data/customers.csv'\n\n# 出力するExcelファイルのパスを指定してください。\noutput_excel_path = 'dummy_data/followup_schedule.xlsx'\n\n# 次回連絡までの日数を設定してください。\ndays_until_next_contact = 30\n# ------------------------------\n\n# 顧客フォローアップ自動化処理\ntry:\n    if not os.path.exists(input_csv_path):\n        print(f\"エラー: 入力ファイル '{input_csv_path}' が見つかりません。\")\n    else:\n        df = pd.read_csv(input_csv_path, encoding='utf-8')\n        \n        # 必要な列が存在するか確認\n        if '最終連絡日' not in df.columns:\n            print(\"エラー: CSVファイルに '最終連絡日' 列が見つかりません。\")\n            print(\"CSVファイルのヘッダーを確認してください。\")\n        else:\n            # 最終連絡日をdatetime型に変換\n            df['最終連絡日'] = pd.to_datetime(df['最終連絡日'])\n            \n            # 次回連絡日を計算\n            df['次回連絡日'] = df['最終連絡日'] + timedelta(days=days_until_next_contact)\n            \n            # Excelファイルに保存\n            df.to_excel(output_excel_path, index=False)\n            print(f'フォローアップ予定作成完了！出力ファイル: {output_excel_path}')\nexcept Exception as e:\n    print(f\"エラーが発生しました: {e}\")",
         "libraries": "pandas、datetime",
         "explanation": "顧客フォローアップを自動化。営業機会の逃しを防止。",
         "benefits": ["営業機会確保", "自動化", "顧客満足度向上"],
@@ -186,7 +257,7 @@ EXTRA_TOOLS = [
         "title": "社員評価自動集計",
         "desc": "社員評価データを自動で集計・レポート化",
         "how_to": "CSV評価データを自動で集計し、社員別評価レポートを作成します。",
-        "sample_code": "import pandas as pd\ndf = pd.read_csv('evaluations.csv')\nresults = df.groupby('社員名')['評価点'].mean()\nresults.to_excel('evaluation_report.xlsx')\nprint('評価集計完了！')",
+        "sample_code": "import pandas as pd\nimport os\n\n# --- ユーザーが変更する箇所 ---\n# 入力CSVファイルのパスを指定してください。\n# dummy_dataフォルダにダミーファイルが生成されています。\ninput_csv_path = 'dummy_data/evaluations.csv'\n\n# 出力するExcelファイルのパスを指定してください。\noutput_excel_path = 'dummy_data/evaluation_report.xlsx'\n# ------------------------------\n\n# 社員評価自動集計処理\ntry:\n    if not os.path.exists(input_csv_path):\n        print(f\"エラー: 入力ファイル '{input_csv_path}' が見つかりません。\")\n    else:\n        df = pd.read_csv(input_csv_path, encoding='utf-8')\n        \n        # 必要な列が存在するか確認\n        if '社員名' not in df.columns or '評価点' not in df.columns:\n            print(\"エラー: CSVファイルに '社員名' または '評価点' 列が見つかりません。\")\n            print(\"CSVファイルのヘッダーを確認してください。\")\n        else:\n            # 社員ごとの平均評価点を計算\n            results = df.groupby('社員名')['評価点'].mean().reset_index()\n            results.rename(columns={'評価点': '平均評価点'}, inplace=True)\n            \n            # Excelファイルに保存\n            results.to_excel(output_excel_path, index=False)\n            print(f'評価集計完了！出力ファイル: {output_excel_path}')\nexcept Exception as e:\n    print(f\"エラーが発生しました: {e}\")",
         "libraries": "pandas",
         "explanation": "社員評価を自動で集計。人事評価も楽に。",
         "benefits": ["評価が楽", "Excel化", "人事評価に活用"],
@@ -201,7 +272,7 @@ EXTRA_TOOLS = [
         "title": "売上予測自動分析",
         "desc": "過去データから売上を自動で予測・分析",
         "how_to": "過去の売上データから将来の売上を自動で予測します。",
-        "sample_code": "import pandas as pd\nimport numpy as np\ndf = pd.read_csv('sales_history.csv')\n# 簡単な移動平均で予測\nprediction = df['売上'].rolling(window=3).mean().iloc[-1]\nprint(f'予測売上: {prediction:,.0f}円')",
+        "sample_code": "import pandas as pd\nimport numpy as np\nimport os\n\n# --- ユーザーが変更する箇所 ---\n# 入力CSVファイルのパスを指定してください。\n# dummy_dataフォルダにダミーファイルが生成されています。\ninput_csv_path = 'dummy_data/sales_history.csv'\n\n# 出力するExcelファイルのパスを指定してください。\noutput_excel_path = 'dummy_data/sales_prediction.xlsx'\n\n# 予測に使用する移動平均の期間を設定してください。\nmoving_average_window = 3\n# ------------------------------\n\n# 売上予測自動分析処理\ntry:\n    if not os.path.exists(input_csv_path):\n        print(f\"エラー: 入力ファイル '{input_csv_path}' が見つかりません。\")\n    else:\n        df = pd.read_csv(input_csv_path, encoding='utf-8')\n        \n        # 必要な列が存在するか確認\n        if '売上' not in df.columns:\n            print(\"エラー: CSVファイルに '売上' 列が見つかりません。\")\n            print(\"CSVファイルのヘッダーを確認してください。\")\n        else:\n            # 簡単な移動平均で予測\n            # 実際の予測にはより高度な時系列分析モデルが使用されます。\n            df['予測売上'] = df['売上'].rolling(window=moving_average_window).mean().shift(1)\n            \n            # 最新の予測値を取得\n            prediction = df['予測売上'].iloc[-1]\n            \n            df.to_excel(output_excel_path, index=False)\n            print(f'予測売上: {prediction:,.0f}円')\n            print(f'分析完了！出力ファイル: {output_excel_path}')\nexcept Exception as e:\n    print(f\"エラーが発生しました: {e}\")",
         "libraries": "pandas、numpy",
         "explanation": "売上を自動で予測。経営計画や予算策定に活用。",
         "benefits": ["予測が楽", "経営計画に活用", "予算策定に活用"],

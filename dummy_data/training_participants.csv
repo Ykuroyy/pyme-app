@@ -1,0 +1,4 @@
+研修ID,氏名,部署,メールアドレス,参加日時,研修名
+T001,山田太郎,営業部,yamada@example.com,2024-07-01 09:00,Python基礎
+T001,佐藤花子,開発部,sato@example.com,2024-07-01 09:00,Python基礎
+T002,鈴木一郎,総務部,suzuki@example.com,2024-07-05 13:00,Excel応用
