@@ -1074,8 +1074,4 @@ if __name__ == '__main__':
         logger.error(f"Error details: {type(e).__name__}: {e}")
         logger.error(f"Current working directory: {os.getcwd()}")
         logger.error(f"Files in current directory: {os.listdir('.')}")
-        sys.exit(1) 
-
-if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 10000))
-    app.run(host="0.0.0.0", port=port)
+        sys.exit(1)
