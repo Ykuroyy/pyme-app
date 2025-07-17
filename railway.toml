@@ -8,7 +8,7 @@ builder = "nixpacks"
 # dockerfilePath = "Dockerfile"
 
 [deploy]
-startCommand = "gunicorn app:app --bind 0.0.0.0:$PORT --workers 2 --timeout 120"
+startCommand = "gunicorn app:app --bind 0.0.0.0:${PORT:-8000} --workers 2 --timeout 120"
 healthcheckPath = "/health"
 healthcheckTimeout = 30
 restartPolicyType = "ON_FAILURE"
@@ -20,3 +20,4 @@ RENDER = "true"
 DATABASE_URL = "sqlite:///pyme_app.db"
 SECRET_KEY = "your-secret-key-change-in-production"
 PYTHON_VERSION = "3.11.9"
+PORT = "8000"
