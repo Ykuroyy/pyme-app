@@ -81,28 +81,6 @@
                 </div>
             </div>
 
-            <!-- 実行環境について -->
-            <div class="step-box mb-4">
-                <h3>🔧 実行環境について</h3>
-                <div class="alert alert-warning">
-                    <strong>⚠️ 重要な注意事項：</strong>
-                    <ul class="mb-2">
-                        <li><strong>サンプルデータでの実行：</strong> 実際のファイルがない場合は、サンプルデータを使用して処理を実行します</li>
-                        <li><strong>セキュリティ制限：</strong> Web環境では、ファイル操作やネットワーク接続に制限があります</li>
-                        <li><strong>実際の使用：</strong> 本格的な自動化には、ローカル環境での実行をお勧めします</li>
-                    </ul>
-                </div>
-                <div class="alert alert-success">
-                    <strong>✅ この環境でできること：</strong>
-                    <ul class="mb-0">
-                        <li>データ分析とグラフ作成（サンプルデータ使用）</li>
-                        <li>PDFレポート生成（サンプルデータ使用）</li>
-                        <li>コードの動作確認とテスト</li>
-                        <li>生成されたコードのダウンロード</li>
-                    </ul>
-                </div>
-            </div>
-
             <!-- ステップ1: AIプロンプト入力 -->
             <div class="step-box mb-4">
                 <h3>📝 ステップ1: AIプロンプトを確認・編集</h3>
@@ -339,61 +317,6 @@
 let codeEditor = null;
 let generatedCode = '';
 
-// Pythonエラーメッセージを日本語に翻訳する関数
-function translatePythonError(errorMessage) {
-    // 一般的なPythonエラーの翻訳
-    const errorTranslations = {
-        'FileNotFoundError': '指定されたファイルが見つかりません',
-        'No such file or directory': 'ファイルまたはディレクトリが見つかりません',
-        'PermissionError': 'ファイルやディレクトリへのアクセス権限がありません',
-        'ImportError': '存在しないモジュールをインポートしようとしています',
-        'ModuleNotFoundError': '指定されたモジュールが見つかりません',
-        'SyntaxError': 'コードの文法エラーがあります',
-        'IndentationError': 'インデント（字下げ）のエラーがあります',
-        'NameError': '未定義の変数や関数を使用しています',
-        'AttributeError': '存在しない属性やメソッドにアクセスしようとしています',
-        'TypeError': 'データ型のエラーがあります',
-        'ValueError': '値のエラーがあります',
-        'ZeroDivisionError': 'ゼロで割り算しようとしています',
-        'IndexError': 'リストや配列の範囲外のインデックスにアクセスしています',
-        'KeyError': '辞書に存在しないキーにアクセスしています',
-        'RuntimeError': '実行時エラーが発生しました',
-        'MemoryError': 'メモリ不足です',
-        'OverflowError': '数値が大きすぎます',
-        'RecursionError': '再帰が深すぎます',
-        'TimeoutError': '処理がタイムアウトしました',
-        'ConnectionError': 'ネットワーク接続エラーが発生しました',
-        'OSError': 'オペレーティングシステムエラーが発生しました',
-        'IOError': '入出力エラーが発生しました'
-    };
-    
-    // エラーメッセージを解析して翻訳
-    let translatedMessage = errorMessage;
-    
-    // エラータイプを検出して翻訳
-    for (const [englishError, japaneseError] of Object.entries(errorTranslations)) {
-        if (errorMessage.includes(englishError)) {
-            translatedMessage = japaneseError;
-            break;
-        }
-    }
-    
-    // 具体的なエラーメッセージの翻訳
-    if (errorMessage.includes('No such file or directory')) {
-        translatedMessage = '指定されたファイルが見つかりません。ファイル名やパスを確認してください。';
-    } else if (errorMessage.includes('Permission denied')) {
-        translatedMessage = 'ファイルへのアクセス権限がありません。';
-    } else if (errorMessage.includes('No module named')) {
-        translatedMessage = '必要なライブラリがインストールされていません。';
-    } else if (errorMessage.includes('invalid syntax')) {
-        translatedMessage = 'コードの文法エラーがあります。括弧の対応やインデントを確認してください。';
-    } else if (errorMessage.includes('division by zero')) {
-        translatedMessage = 'ゼロで割り算しようとしています。分母が0になっていないか確認してください。';
-    }
-    
-    return translatedMessage;
-}
-
 // 設定フィールドを動的に生成
 function generateConfigFields() {
     const configForm = document.getElementById('configForm');
@@ -524,18 +447,7 @@ document.getElementById('executeBtn').addEventListener('click', async function()
             // エラーがある場合は失敗として扱う
             if (data.stderr && data.stderr.trim()) {
                 resultHtml = '<div class="alert alert-danger"><strong>❌ 実行エラー</strong></div>';
-                
-                // エラーメッセージを日本語に翻訳
-                const translatedError = translatePythonError(data.stderr);
-                resultHtml += `<div class="result-box text-danger"><strong>エラー:</strong><br>${translatedError.replace(/\n/g, '<br>')}</div>`;
-                
-                // 元の英語エラーメッセージも折りたたみで表示
-                resultHtml += `
-                    <details class="mt-2">
-                        <summary class="text-muted small">📋 詳細なエラー情報（英語）</summary>
-                        <div class="result-box text-muted small mt-2">${data.stderr.replace(/\n/g, '<br>')}</div>
-                    </details>
-                `;
+                resultHtml += `<div class="result-box text-danger"><strong>エラー:</strong><br>${data.stderr.replace(/\n/g, '<br>')}</div>`;
             } else {
                 resultHtml = '<div class="alert alert-success"><strong>✅ 実行成功！</strong></div>';
             }

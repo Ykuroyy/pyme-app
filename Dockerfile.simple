@@ -1,0 +1,22 @@
+# シンプルなDockerfile（Dockerfileが問題の場合の代替案）
+FROM python:3.11-slim
+
+WORKDIR /app
+
+# システムパッケージを更新
+RUN apt-get update && apt-get install -y \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Python依存関係をインストール
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# アプリケーションコードをコピー
+COPY . .
+
+# ポートを公開
+EXPOSE 8000
+
+# アプリケーションを起動
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "--workers", "2", "--timeout", "120", "app:app"] 
