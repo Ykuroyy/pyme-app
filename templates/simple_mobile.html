@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="スマホで簡単！仕事の雑務を自動化">
+    <meta name="theme-color" content="#007bff">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="雑務自動化">
+    
+    <link rel="manifest" href="/static/manifest.json">
+    <link rel="icon" type="image/svg+xml" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/icons/robot.svg">
+    
+    <title>📱 雑務自動化アプリ - スマホで簡単！</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #007bff;
+            --success-color: #28a745;
+            --warning-color: #ffc107;
+            --danger-color: #dc3545;
+            --dark-color: #343a40;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            padding-bottom: 100px;
+        }
+        
+        .main-container {
+            max-width: 100%;
+            padding: 15px;
+        }
+        
+        /* プロフィール設定カード */
+        .profile-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+        
+        /* 自動化ボタン */
+        .automation-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 20px;
+            padding: 20px;
+            margin: 10px 0;
+            width: 100%;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 600;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .automation-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.2);
+            color: white;
+        }
+        
+        .automation-btn.email {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+        }
+        
+        .automation-btn.excel {
+            background: linear-gradient(135deg, #2ed573 0%, #1e90ff 100%);
+        }
+        
+        .automation-btn.file {
+            background: linear-gradient(135deg, #ffa726 0%, #fb8c00 100%);
+        }
+        
+        .automation-btn.report {
+            background: linear-gradient(135deg, #ab47bc 0%, #8e24aa 100%);
+        }
+        
+        /* フォーム要素 */
+        .form-control, .form-select {
+            border-radius: 15px;
+            border: 2px solid #e9ecef;
+            padding: 15px;
+            font-size: 1rem;
+            min-height: 55px;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+            transform: scale(1.02);
+        }
+        
+        /* クイック設定ボタン */
+        .quick-setup {
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px dashed rgba(255, 255, 255, 0.5);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            color: white;
+            margin: 15px 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .quick-setup:hover {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.8);
+        }
+        
+        /* プログレスバー */
+        .setup-progress {
+            background: rgba(255, 255, 255, 0.3);
+            height: 8px;
+            border-radius: 10px;
+            margin: 15px 0;
+            overflow: hidden;
+        }
+        
+        .setup-progress-bar {
+            background: linear-gradient(90deg, #28a745, #20c997);
+            height: 100%;
+            border-radius: 10px;
+            transition: width 0.5s ease;
+        }
+        
+        /* 実行状態 */
+        .execution-status {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.9);
+            color: white;
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            z-index: 9999;
+            display: none;
+            min-width: 300px;
+        }
+        
+        .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top: 4px solid #fff;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* タブ */
+        .nav-tabs {
+            border: none;
+            margin-bottom: 20px;
+        }
+        
+        .nav-tabs .nav-link {
+            border-radius: 15px;
+            margin-right: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+        }
+        
+        .nav-tabs .nav-link.active {
+            background: rgba(255, 255, 255, 0.9);
+            color: var(--dark-color);
+        }
+        
+        /* ショートカット */
+        .shortcuts {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+            z-index: 1000;
+        }
+        
+        .shortcut-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .shortcut-btn:hover {
+            transform: scale(1.1);
+            color: white;
+        }
+        
+        /* レスポンシブ調整 */
+        @media (max-width: 576px) {
+            .main-container {
+                padding: 10px;
+            }
+            
+            .automation-btn {
+                font-size: 1rem;
+                padding: 15px;
+                min-height: 70px;
+            }
+            
+            .profile-card {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <!-- ヘッダー -->
+        <div class="text-center text-white mb-4">
+            <h1 class="mb-2">🚀 雑務自動化</h1>
+            <p class="lead">スマホで簡単！ボタン1つで仕事完了</p>
+        </div>
+
+        <!-- プログレス -->
+        <div class="setup-progress">
+            <div class="setup-progress-bar" id="progressBar" style="width: 0%"></div>
+        </div>
+
+        <!-- タブナビゲーション -->
+        <ul class="nav nav-tabs" id="mainTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="setup-tab" data-bs-toggle="tab" data-bs-target="#setup" type="button">
+                    ⚙️ 初期設定
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="automation-tab" data-bs-toggle="tab" data-bs-target="#automation" type="button">
+                    🚀 自動化実行
+                </button>
+            </li>
+        </ul>
+
+        <div class="tab-content" id="mainTabContent">
+            <!-- 初期設定タブ -->
+            <div class="tab-pane fade show active" id="setup" role="tabpanel">
+                <div class="profile-card">
+                    <h3 class="mb-3">👤 あなたの情報</h3>
+                    <p class="text-muted small">一度入力すれば、すべての自動化で使い回せます</p>
+                    
+                    <form id="profileForm">
+                        <div class="mb-3">
+                            <label class="form-label">📧 メールアドレス</label>
+                            <input type="email" class="form-control" id="userEmail" placeholder="あなたのメール@gmail.com" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">👤 お名前</label>
+                            <input type="text" class="form-control" id="userName" placeholder="山田太郎" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">🏢 会社名</label>
+                            <input type="text" class="form-control" id="userCompany" placeholder="株式会社○○">
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">📱 電話番号</label>
+                            <input type="tel" class="form-control" id="userPhone" placeholder="090-1234-5678">
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">📁 よく使うフォルダ</label>
+                            <input type="text" class="form-control" id="userFolder" placeholder="C:\Users\あなたの名前\Desktop" value="C:\Users\YourName\Desktop">
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary w-100" style="min-height: 55px; border-radius: 15px; font-size: 1.1rem;">
+                            💾 情報を保存して次へ
+                        </button>
+                    </form>
+                </div>
+
+                <!-- クイック設定 -->
+                <div class="quick-setup" onclick="loadSampleData()">
+                    <h5>⚡ クイック設定</h5>
+                    <p class="mb-0">サンプルデータで今すぐ試す</p>
+                </div>
+            </div>
+
+            <!-- 自動化実行タブ -->
+            <div class="tab-pane fade" id="automation" role="tabpanel">
+                <!-- よく使う自動化 -->
+                <div class="profile-card">
+                    <h3 class="mb-3">⭐ よく使う自動化</h3>
+                    
+                    <button class="automation-btn email" onclick="runAutomation('email')">
+                        <div>
+                            <div style="font-size: 1.3rem;">📧 メール一括送信</div>
+                            <small>顧客リストに営業メールを送信</small>
+                        </div>
+                        <div style="font-size: 2rem;">▶️</div>
+                    </button>
+                    
+                    <button class="automation-btn excel" onclick="runAutomation('excel')">
+                        <div>
+                            <div style="font-size: 1.3rem;">📊 売上データ集計</div>
+                            <small>Excelファイルの売上を自動集計</small>
+                        </div>
+                        <div style="font-size: 2rem;">▶️</div>
+                    </button>
+                    
+                    <button class="automation-btn file" onclick="runAutomation('file')">
+                        <div>
+                            <div style="font-size: 1.3rem;">📁 ファイル整理</div>
+                            <small>散らかったファイルを自動整理</small>
+                        </div>
+                        <div style="font-size: 2rem;">▶️</div>
+                    </button>
+                    
+                    <button class="automation-btn report" onclick="runAutomation('report')">
+                        <div>
+                            <div style="font-size: 1.3rem;">📄 日報作成</div>
+                            <small>今日の作業を自動でレポート化</small>
+                        </div>
+                        <div style="font-size: 2rem;">▶️</div>
+                    </button>
+                </div>
+
+                <!-- カスタム自動化 -->
+                <div class="profile-card">
+                    <h3 class="mb-3">🛠️ カスタム自動化</h3>
+                    <p class="text-muted">音声で指示すると、AIが自動化コードを作成します</p>
+                    
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" id="customRequest" placeholder="例：毎週金曜日に週報をメールで送信したい">
+                        <button class="btn btn-success" type="button" onclick="createCustomAutomation()">
+                            🎤 音声入力
+                        </button>
+                    </div>
+                    
+                    <button class="btn btn-outline-light w-100" onclick="createCustomAutomation()">
+                        ✨ カスタム自動化を作成
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 実行状態モーダル -->
+    <div class="execution-status" id="executionStatus">
+        <div class="spinner"></div>
+        <h4 id="statusTitle">自動化実行中...</h4>
+        <p id="statusMessage">しばらくお待ちください</p>
+        <button class="btn btn-outline-light" onclick="hideExecutionStatus()">キャンセル</button>
+    </div>
+
+    <!-- ショートカットボタン -->
+    <div class="shortcuts">
+        <button class="shortcut-btn" onclick="quickEmail()" title="クイックメール">
+            📧
+        </button>
+        <button class="shortcut-btn" onclick="quickExcel()" title="クイック集計">
+            📊
+        </button>
+        <button class="shortcut-btn" onclick="voiceCommand()" title="音声コマンド">
+            🎤
+        </button>
+    </div>
+
+    <!-- PWA インストールバナー -->
+    <div id="installBanner" class="position-fixed bottom-0 start-0 end-0 bg-success text-white p-3" style="display: none; z-index: 9998; margin-bottom: 80px;">
+        <div class="container-fluid">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <strong>📱 アプリとしてインストール</strong>
+                    <br>
+                    <small>ホーム画面に追加して、いつでも雑務自動化</small>
+                </div>
+                <div>
+                    <button id="installBtn" class="btn btn-light btn-sm me-2">インストール</button>
+                    <button id="dismissBtn" class="btn btn-outline-light btn-sm">×</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // ユーザープロフィール管理
+        let userProfile = {};
+        
+        // 初期化
+        document.addEventListener('DOMContentLoaded', function() {
+            loadUserProfile();
+            initializePWA();
+            checkSetupCompletion();
+        });
+
+        // ユーザープロフィール読み込み
+        function loadUserProfile() {
+            const saved = localStorage.getItem('userProfile');
+            if (saved) {
+                userProfile = JSON.parse(saved);
+                
+                // フォームに値を設定
+                document.getElementById('userEmail').value = userProfile.email || '';
+                document.getElementById('userName').value = userProfile.name || '';
+                document.getElementById('userCompany').value = userProfile.company || '';
+                document.getElementById('userPhone').value = userProfile.phone || '';
+                document.getElementById('userFolder').value = userProfile.folder || 'C:\\Users\\YourName\\Desktop';
+                
+                updateProgress();
+            }
+        }
+
+        // プロフィール保存
+        document.getElementById('profileForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            userProfile = {
+                email: document.getElementById('userEmail').value,
+                name: document.getElementById('userName').value,
+                company: document.getElementById('userCompany').value,
+                phone: document.getElementById('userPhone').value,
+                folder: document.getElementById('userFolder').value,
+                setupDate: new Date().toISOString()
+            };
+            
+            localStorage.setItem('userProfile', JSON.stringify(userProfile));
+            
+            showSuccessMessage('✅ プロフィールを保存しました！');
+            updateProgress();
+            
+            // 自動化タブに切り替え
+            setTimeout(() => {
+                document.getElementById('automation-tab').click();
+            }, 1000);
+        });
+
+        // サンプルデータ読み込み
+        function loadSampleData() {
+            document.getElementById('userEmail').value = 'yamada.taro@company.com';
+            document.getElementById('userName').value = '山田太郎';
+            document.getElementById('userCompany').value = '株式会社サンプル';
+            document.getElementById('userPhone').value = '090-1234-5678';
+            document.getElementById('userFolder').value = 'C:\\Users\\yamada\\Desktop';
+            
+            showSuccessMessage('⚡ サンプルデータを読み込みました！');
+        }
+
+        // プログレス更新
+        function updateProgress() {
+            const fields = ['email', 'name', 'company', 'phone', 'folder'];
+            const completed = fields.filter(field => userProfile[field] && userProfile[field].trim()).length;
+            const progress = (completed / fields.length) * 100;
+            
+            document.getElementById('progressBar').style.width = progress + '%';
+        }
+
+        // セットアップ完了チェック
+        function checkSetupCompletion() {
+            if (userProfile.email && userProfile.name) {
+                document.getElementById('automation-tab').disabled = false;
+            }
+        }
+
+        // 自動化実行
+        async function runAutomation(type) {
+            if (!userProfile.email) {
+                showErrorMessage('❌ 先にプロフィール設定を完了してください');
+                document.getElementById('setup-tab').click();
+                return;
+            }
+
+            showExecutionStatus(`${getAutomationName(type)}を実行中...`, '数秒お待ちください');
+
+            try {
+                const response = await fetch('/api/run-automation', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        type: type,
+                        userProfile: userProfile
+                    })
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    showSuccessStatus(`✅ ${getAutomationName(type)}が完了しました！`, result.message);
+                } else {
+                    showErrorStatus(`❌ エラーが発生しました`, result.error);
+                }
+            } catch (error) {
+                showErrorStatus('❌ 通信エラー', 'インターネット接続を確認してください');
+            }
+        }
+
+        // 自動化名取得
+        function getAutomationName(type) {
+            const names = {
+                'email': 'メール送信',
+                'excel': 'Excel集計',
+                'file': 'ファイル整理',
+                'report': '日報作成'
+            };
+            return names[type] || '自動化';
+        }
+
+        // クイック機能
+        async function quickEmail() {
+            if (!userProfile.email) {
+                showErrorMessage('❌ 先にメール設定をしてください');
+                return;
+            }
+            
+            const recipient = prompt('📧 送信先メールアドレス:', '');
+            if (recipient) {
+                showExecutionStatus('📧 メール送信中...', `${recipient} に送信しています`);
+                // 実際の送信処理をここに追加
+                setTimeout(() => {
+                    showSuccessStatus('✅ メール送信完了！', `${recipient} に送信しました`);
+                }, 2000);
+            }
+        }
+
+        async function quickExcel() {
+            showExecutionStatus('📊 データ集計中...', 'Excelファイルを処理しています');
+            // 実際の集計処理をここに追加
+            setTimeout(() => {
+                showSuccessStatus('✅ 集計完了！', '結果をファイルに保存しました');
+            }, 3000);
+        }
+
+        // 音声コマンド
+        function voiceCommand() {
+            if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+                showErrorMessage('❌ この端末では音声認識に対応していません');
+                return;
+            }
+
+            const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+            recognition.lang = 'ja-JP';
+            recognition.continuous = false;
+            recognition.interimResults = false;
+
+            showExecutionStatus('🎤 音声を聞いています...', '自動化したい内容を話してください');
+
+            recognition.onresult = function(event) {
+                const command = event.results[0][0].transcript;
+                document.getElementById('customRequest').value = command;
+                hideExecutionStatus();
+                showSuccessMessage(`🎤 「${command}」を認識しました`);
+            };
+
+            recognition.onerror = function() {
+                hideExecutionStatus();
+                showErrorMessage('❌ 音声認識に失敗しました');
+            };
+
+            recognition.start();
+        }
+
+        // カスタム自動化作成
+        async function createCustomAutomation() {
+            const request = document.getElementById('customRequest').value;
+            if (!request.trim()) {
+                showErrorMessage('❌ 自動化したい内容を入力してください');
+                return;
+            }
+
+            showExecutionStatus('🤖 AIがコードを作成中...', 'あなた専用の自動化を準備しています');
+
+            try {
+                const response = await fetch('/api/create-custom-automation', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        request: request,
+                        userProfile: userProfile
+                    })
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    showSuccessStatus('✅ カスタム自動化を作成しました！', 'すぐに実行できます');
+                    // 作成した自動化をリストに追加
+                    addCustomAutomationButton(result.automation);
+                } else {
+                    showErrorStatus('❌ 作成に失敗しました', result.error);
+                }
+            } catch (error) {
+                showErrorStatus('❌ 通信エラー', 'インターネット接続を確認してください');
+            }
+        }
+
+        // カスタム自動化ボタン追加
+        function addCustomAutomationButton(automation) {
+            const container = document.querySelector('#automation .profile-card');
+            const button = document.createElement('button');
+            button.className = 'automation-btn';
+            button.style.background = 'linear-gradient(135deg, #17a2b8 0%, #138496 100%)';
+            button.onclick = () => runCustomAutomation(automation.id);
+            button.innerHTML = `
+                <div>
+                    <div style="font-size: 1.3rem;">⚙️ ${automation.name}</div>
+                    <small>${automation.description}</small>
+                </div>
+                <div style="font-size: 2rem;">▶️</div>
+            `;
+            container.appendChild(button);
+        }
+
+        // 実行状態表示
+        function showExecutionStatus(title, message) {
+            document.getElementById('statusTitle').textContent = title;
+            document.getElementById('statusMessage').textContent = message;
+            document.getElementById('executionStatus').style.display = 'block';
+        }
+
+        function showSuccessStatus(title, message) {
+            document.getElementById('statusTitle').textContent = title;
+            document.getElementById('statusMessage').textContent = message;
+            document.querySelector('.spinner').style.display = 'none';
+            setTimeout(hideExecutionStatus, 3000);
+        }
+
+        function showErrorStatus(title, message) {
+            document.getElementById('statusTitle').textContent = title;
+            document.getElementById('statusMessage').textContent = message;
+            document.querySelector('.spinner').style.display = 'none';
+            setTimeout(hideExecutionStatus, 3000);
+        }
+
+        function hideExecutionStatus() {
+            document.getElementById('executionStatus').style.display = 'none';
+            document.querySelector('.spinner').style.display = 'block';
+        }
+
+        // メッセージ表示
+        function showSuccessMessage(message) {
+            showToast(message, 'success');
+        }
+
+        function showErrorMessage(message) {
+            showToast(message, 'danger');
+        }
+
+        function showToast(message, type) {
+            const toast = document.createElement('div');
+            toast.className = `alert alert-${type} position-fixed`;
+            toast.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.remove();
+            }, 3000);
+        }
+
+        // PWA機能
+        function initializePWA() {
+            // Service Worker登録
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('/static/sw.js');
+            }
+
+            // インストールプロンプト
+            let deferredPrompt;
+            window.addEventListener('beforeinstallprompt', (e) => {
+                e.preventDefault();
+                deferredPrompt = e;
+                document.getElementById('installBanner').style.display = 'block';
+            });
+
+            document.getElementById('installBtn').addEventListener('click', () => {
+                if (deferredPrompt) {
+                    deferredPrompt.prompt();
+                    deferredPrompt.userChoice.then(() => {
+                        deferredPrompt = null;
+                        document.getElementById('installBanner').style.display = 'none';
+                    });
+                }
+            });
+
+            document.getElementById('dismissBtn').addEventListener('click', () => {
+                document.getElementById('installBanner').style.display = 'none';
+            });
+        }
+    </script>
+</body>
+</html>

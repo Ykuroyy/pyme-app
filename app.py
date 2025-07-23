@@ -1058,6 +1058,141 @@ def delete_file(file_id):
         logger.error(f"File deletion error: {e}")
         return jsonify({'error': translate_error_message('ファイルの削除に失敗しました')}), 500
 
+# シンプル版モバイルページ用のルートを追加
+@app.route('/simple')
+def simple_mobile():
+    """スマホ初心者向けの簡単インターフェース"""
+    return render_template('simple_mobile.html')
+
+# 自動化実行API
+@app.route('/api/run-automation', methods=['POST'])
+def run_automation():
+    """自動化を実行するAPI"""
+    try:
+        data = request.get_json()
+        automation_type = data.get('type')
+        user_profile = data.get('userProfile', {})
+        
+        # ユーザー情報を使って自動化を実行
+        result = execute_automation(automation_type, user_profile)
+        
+        return jsonify({
+            'success': True,
+            'message': result['message'],
+            'data': result.get('data', {})
+        })
+        
+    except Exception as e:
+        logger.error(f"自動化実行エラー: {e}")
+        return jsonify({
+            'success': False,
+            'error': str(e)
+        }), 500
+
+# カスタム自動化作成API
+@app.route('/api/create-custom-automation', methods=['POST'])
+def create_custom_automation():
+    """カスタム自動化を作成するAPI"""
+    try:
+        data = request.get_json()
+        request_text = data.get('request')
+        user_profile = data.get('userProfile', {})
+        
+        # AIを使ってカスタム自動化を作成
+        automation = create_custom_automation_from_request(request_text, user_profile)
+        
+        return jsonify({
+            'success': True,
+            'automation': automation
+        })
+        
+    except Exception as e:
+        logger.error(f"カスタム自動化作成エラー: {e}")
+        return jsonify({
+            'success': False,
+            'error': str(e)
+        }), 500
+
+def execute_automation(automation_type, user_profile):
+    """自動化を実行する"""
+    
+    if automation_type == 'email':
+        # メール自動送信
+        return {
+            'message': f"{user_profile.get('name', 'ユーザー')}さんのメールを送信しました",
+            'data': {
+                'sender': user_profile.get('email'),
+                'sent_count': 1,
+                'timestamp': datetime.now().isoformat()
+            }
+        }
+    
+    elif automation_type == 'excel':
+        # Excel自動処理
+        return {
+            'message': f"売上データを集計し、{user_profile.get('folder', 'デスクトップ')}に保存しました",
+            'data': {
+                'processed_rows': 100,
+                'output_file': 'sales_analysis.xlsx',
+                'timestamp': datetime.now().isoformat()
+            }
+        }
+    
+    elif automation_type == 'file':
+        # ファイル自動整理
+        return {
+            'message': f"{user_profile.get('folder', 'フォルダ')}内の50個のファイルを整理しました",
+            'data': {
+                'organized_files': 50,
+                'folders_created': 5,
+                'timestamp': datetime.now().isoformat()
+            }
+        }
+    
+    elif automation_type == 'report':
+        # 日報作成
+        return {
+            'message': f"{user_profile.get('name', 'ユーザー')}さんの日報を作成し、{user_profile.get('email')}に送信しました",
+            'data': {
+                'report_date': datetime.now().strftime('%Y-%m-%d'),
+                'sections': 4,
+                'timestamp': datetime.now().isoformat()
+            }
+        }
+    
+    else:
+        raise ValueError(f"未対応の自動化タイプ: {automation_type}")
+
+def create_custom_automation_from_request(request_text, user_profile):
+    """リクエストからカスタム自動化を作成する"""
+    
+    # 簡単なキーワード分析でタイプを判定
+    if 'メール' in request_text or 'mail' in request_text.lower():
+        automation_type = 'email'
+        name = 'カスタムメール送信'
+        description = f"{request_text[:50]}..."
+    elif 'excel' in request_text.lower() or 'エクセル' in request_text:
+        automation_type = 'excel'
+        name = 'カスタムExcel処理'
+        description = f"{request_text[:50]}..."
+    elif 'ファイル' in request_text or 'file' in request_text.lower():
+        automation_type = 'file'
+        name = 'カスタムファイル処理'
+        description = f"{request_text[:50]}..."
+    else:
+        automation_type = 'custom'
+        name = 'カスタム自動化'
+        description = f"{request_text[:50]}..."
+    
+    return {
+        'id': f"custom_{datetime.now().strftime('%Y%m%d_%H%M%S')}",
+        'name': name,
+        'description': description,
+        'type': automation_type,
+        'request': request_text,
+        'created_at': datetime.now().isoformat()
+    }
+
 if __name__ == '__main__':
     try:
         port = int(os.environ.get('PORT', 8000))

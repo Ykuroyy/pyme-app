@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📱 スマホでアクセス - 自動化ツール100選</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            min-height: 100vh;
+        }
+        .container {
+            background: rgba(255,255,255,0.1);
+            padding: 30px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            text-align: center;
+        }
+        .qr-code {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            display: inline-block;
+        }
+        .url-box {
+            background: rgba(0,0,0,0.3);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            word-break: break-all;
+            font-family: monospace;
+        }
+        .btn {
+            background: #28a745;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 10px;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .btn:hover {
+            background: #218838;
+        }
+        .step {
+            background: rgba(255,255,255,0.1);
+            margin: 15px 0;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: left;
+        }
+        .device-icons {
+            font-size: 2rem;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📱 スマホでアクセス</h1>
+        <p>自動化ツール100選をスマートフォンで確認しましょう！</p>
+        
+        <div class="device-icons">
+            📱 📲 🔍
+        </div>
+
+        <!-- QRコード -->
+        <div class="qr-code">
+            <div id="qr-code-container"></div>
+        </div>
+        
+        <!-- URLボックス -->
+        <div class="url-box">
+            <strong>📋 アクセスURL:</strong><br>
+            <span id="access-url">http://192.0.0.2:8000</span>
+        </div>
+
+        <button class="btn" onclick="copyUrl()">📋 URLをコピー</button>
+        <a href="http://192.0.0.2:8000" class="btn" target="_blank">🚀 PCで開く</a>
+
+        <h2>📋 アクセス手順</h2>
+        
+        <div class="step">
+            <strong>1️⃣ QRコードでアクセス</strong><br>
+            スマホのカメラでQRコードを読み取ってください
+        </div>
+
+        <div class="step">
+            <strong>2️⃣ 手動でURLを入力</strong><br>
+            スマホのブラウザで上記URLを入力してください
+        </div>
+
+        <div class="step">
+            <strong>3️⃣ ホーム画面に追加</strong><br>
+            ブラウザメニューから「ホーム画面に追加」を選択すると、アプリのように使用できます
+        </div>
+
+        <div class="step">
+            <strong>4️⃣ 新機能を試してみよう</strong><br>
+            🎤 音声入力<br>
+            📷 カメラ撮影<br>
+            ⚡ プリセット機能<br>
+            📱 PWAインストール
+        </div>
+
+        <hr style="margin: 30px 0; opacity: 0.3;">
+        
+        <h3>🔧 開発者向け情報</h3>
+        <div class="step">
+            <strong>サーバー情報:</strong><br>
+            IP: 192.0.0.2<br>
+            Port: 8000<br>
+            Status: <span id="server-status">確認中...</span>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+    <script>
+        const url = 'http://192.0.0.2:8000';
+        
+        // QRコード生成
+        QRCode.toCanvas(document.getElementById('qr-code-container'), url, {
+            width: 200,
+            margin: 2,
+            color: {
+                dark: '#000000',
+                light: '#FFFFFF'
+            }
+        }, function (error) {
+            if (error) console.error(error);
+            console.log('QRコード生成完了');
+        });
+
+        // URLコピー機能
+        function copyUrl() {
+            navigator.clipboard.writeText(url).then(() => {
+                alert('📋 URLをコピーしました！');
+            }).catch(() => {
+                // フォールバック
+                const textarea = document.createElement('textarea');
+                textarea.value = url;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                alert('📋 URLをコピーしました！');
+            });
+        }
+
+        // サーバー状態確認
+        async function checkServerStatus() {
+            try {
+                const response = await fetch(url, { method: 'HEAD' });
+                document.getElementById('server-status').textContent = '🟢 稼働中';
+                document.getElementById('server-status').style.color = '#28a745';
+            } catch (error) {
+                document.getElementById('server-status').textContent = '🔴 停止中';
+                document.getElementById('server-status').style.color = '#dc3545';
+            }
+        }
+
+        // ページ読み込み時にサーバー状態確認
+        checkServerStatus();
+        setInterval(checkServerStatus, 30000); // 30秒ごとに確認
+    </script>
+</body>
+</html>

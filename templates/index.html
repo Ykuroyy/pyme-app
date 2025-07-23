@@ -3,11 +3,174 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="誰でもAIを使って仕事を自動化！プログラミング未経験者向けのビジネス自動化ツール集">
+    <meta name="keywords" content="Python,自動化,ビジネス,AI,プログラミング,初心者">
+    <meta name="author" content="自動化ツール100選">
+    
+    <!-- PWA関連メタタグ -->
+    <meta name="theme-color" content="#007bff">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="自動化100選">
+    <meta name="mobile-web-app-capable" content="yes">
+    
+    <!-- PWA マニフェスト -->
+    <link rel="manifest" href="/static/manifest.json">
+    
+    <!-- アイコン -->
+    <link rel="icon" type="image/svg+xml" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/icons/robot.svg">
+    <link rel="apple-touch-icon" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/icons/robot.svg">
+    
     <title>Pythonでできるビジネス自動化100選 - 誰でもAIを使って仕事を自動化！</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body { background: #f8f9fa; }
         .tool-btn { margin-bottom: 20px; font-size: 1.2rem; }
+        
+        /* モバイルファーストのタッチ最適化 */
+        @media (max-width: 768px) {
+            /* モバイル用の大きなボタン */
+            .btn {
+                min-height: 60px;
+                font-size: 1.1rem;
+                padding: 15px 20px;
+                border-radius: 12px;
+                font-weight: 600;
+                touch-action: manipulation;
+                -webkit-tap-highlight-color: transparent;
+            }
+            
+            .btn-lg {
+                min-height: 70px;
+                font-size: 1.3rem;
+                padding: 20px 25px;
+            }
+            
+            /* カードのタッチ最適化 */
+            .card {
+                border-radius: 15px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+                margin-bottom: 20px;
+                transition: transform 0.2s ease, box-shadow 0.2s ease;
+            }
+            
+            .card:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+            }
+            
+            /* タイトルとテキストのモバイル最適化 */
+            h1 {
+                font-size: 1.8rem;
+                line-height: 1.3;
+                margin-bottom: 1rem;
+            }
+            
+            h2 {
+                font-size: 1.4rem;
+                line-height: 1.4;
+            }
+            
+            h3 {
+                font-size: 1.2rem;
+                line-height: 1.4;
+            }
+            
+            /* カード内のコンテンツ調整 */
+            .card-body {
+                padding: 1.5rem;
+            }
+            
+            .card-title {
+                font-size: 1.1rem;
+                font-weight: 700;
+                margin-bottom: 0.8rem;
+                line-height: 1.3;
+            }
+            
+            .card-text {
+                font-size: 0.95rem;
+                line-height: 1.5;
+                color: #6c757d;
+            }
+            
+            /* バッジのタッチ最適化 */
+            .badge {
+                font-size: 0.8rem;
+                padding: 6px 12px;
+                border-radius: 20px;
+            }
+            
+            /* コンテナの調整 */
+            .container {
+                padding-left: 15px;
+                padding-right: 15px;
+            }
+            
+            /* グリッドの調整 */
+            .col-md-6, .col-lg-4 {
+                margin-bottom: 1rem;
+            }
+        }
+        
+        /* タブレット用の調整 */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .btn {
+                min-height: 55px;
+                font-size: 1.05rem;
+                padding: 12px 18px;
+            }
+            
+            .btn-lg {
+                min-height: 65px;
+                font-size: 1.2rem;
+                padding: 18px 22px;
+            }
+        }
+        
+        /* すべてのデバイスでのタッチ改善 */
+        .btn {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.3s ease, height 0.3s ease;
+        }
+        
+        .btn:active::before {
+            width: 300px;
+            height: 300px;
+        }
+        
+        /* アクセシビリティ向上 */
+        .btn:focus {
+            box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.25);
+            outline: none;
+        }
+        
+        /* スムーズスクロール */
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        /* タッチフィードバック */
+        .card, .btn {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
     </style>
 </head>
 <body>
@@ -102,5 +265,79 @@
     </div>
     {% endfor %}
 </div>
+
+<!-- PWA インストールバナー -->
+<div id="installBanner" class="position-fixed bottom-0 start-0 end-0 bg-primary text-white p-3" style="display: none; z-index: 9999;">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <strong>📱 アプリとしてインストール</strong>
+                <br>
+                <small>ホーム画面に追加して、より便利に使用できます</small>
+            </div>
+            <div>
+                <button id="installBtn" class="btn btn-light btn-sm me-2">インストール</button>
+                <button id="dismissBtn" class="btn btn-outline-light btn-sm">×</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Service Worker登録
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/static/sw.js')
+            .then((registration) => {
+                console.log('SW registered: ', registration);
+            })
+            .catch((registrationError) => {
+                console.log('SW registration failed: ', registrationError);
+            });
+    });
+}
+
+// PWAインストール機能
+let deferredPrompt;
+const installBanner = document.getElementById('installBanner');
+const installBtn = document.getElementById('installBtn');
+const dismissBtn = document.getElementById('dismissBtn');
+
+window.addEventListener('beforeinstallprompt', (e) => {
+    // デフォルトのインストールプロンプトを防ぐ
+    e.preventDefault();
+    deferredPrompt = e;
+    
+    // カスタムインストールバナーを表示
+    installBanner.style.display = 'block';
+});
+
+installBtn.addEventListener('click', () => {
+    installBanner.style.display = 'none';
+    
+    if (deferredPrompt) {
+        deferredPrompt.prompt();
+        
+        deferredPrompt.userChoice.then((choiceResult) => {
+            if (choiceResult.outcome === 'accepted') {
+                console.log('ユーザーがPWAインストールを承認しました');
+            } else {
+                console.log('ユーザーがPWAインストールを拒否しました');
+            }
+            deferredPrompt = null;
+        });
+    }
+});
+
+dismissBtn.addEventListener('click', () => {
+    installBanner.style.display = 'none';
+});
+
+// アプリがインストールされた時
+window.addEventListener('appinstalled', () => {
+    console.log('PWAがインストールされました');
+    installBanner.style.display = 'none';
+});
+</script>
 </body>
 </html> 

@@ -46,6 +46,292 @@
             margin-right: 10px; 
             font-size: 1.2rem; 
         }
+        
+        /* モバイルファーストのタッチ最適化 */
+        @media (max-width: 768px) {
+            /* モバイル用の大きなボタン */
+            .btn {
+                min-height: 60px;
+                font-size: 1.1rem;
+                padding: 15px 20px;
+                border-radius: 12px;
+                font-weight: 600;
+                touch-action: manipulation;
+                -webkit-tap-highlight-color: transparent;
+                margin: 8px 4px;
+            }
+            
+            .btn-lg {
+                min-height: 70px;
+                font-size: 1.3rem;
+                padding: 20px 25px;
+            }
+            
+            .btn-sm {
+                min-height: 50px;
+                font-size: 1rem;
+                padding: 12px 16px;
+            }
+            
+            /* ステップボックスのモバイル最適化 */
+            .step-box {
+                padding: 20px 15px;
+                margin: 10px 0;
+                border-radius: 15px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            }
+            
+            /* フォーム要素のタッチ最適化 */
+            .form-control, textarea {
+                min-height: 50px;
+                font-size: 1rem;
+                padding: 15px;
+                border-radius: 10px;
+                border: 2px solid #dee2e6;
+                transition: all 0.3s ease;
+            }
+            
+            .form-control:focus, textarea:focus {
+                border-color: #007bff;
+                box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.25);
+                transform: scale(1.02);
+            }
+            
+            textarea {
+                min-height: 120px;
+                resize: vertical;
+            }
+            
+            /* アップロードゾーンのタッチ最適化 */
+            .upload-zone {
+                padding: 40px 20px;
+                border-radius: 15px;
+                border-width: 3px;
+                min-height: 150px;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                cursor: pointer;
+                transition: all 0.3s ease;
+            }
+            
+            .upload-zone:hover, .upload-zone.dragover {
+                transform: scale(1.02);
+                border-color: #007bff;
+                background: #e3f2fd;
+            }
+            
+            /* アップロードされたファイルのタッチ最適化 */
+            .uploaded-file {
+                padding: 15px;
+                border-radius: 10px;
+                margin: 10px 0;
+                min-height: 60px;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+                transition: all 0.3s ease;
+            }
+            
+            .uploaded-file:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            }
+            
+            /* コードエディターのモバイル最適化 */
+            .CodeMirror {
+                height: 250px;
+                border-radius: 10px;
+                border: 2px solid #dee2e6;
+                font-size: 0.9rem;
+            }
+            
+            /* 結果ボックスの最適化 */
+            .result-box {
+                padding: 20px;
+                border-radius: 10px;
+                font-size: 0.9rem;
+                line-height: 1.5;
+                max-height: 300px;
+                overflow-y: auto;
+            }
+            
+            /* アラートの最適化 */
+            .alert {
+                padding: 15px 20px;
+                border-radius: 10px;
+                font-size: 0.95rem;
+                margin-bottom: 15px;
+            }
+            
+            /* アコーディオンボタンの最適化 */
+            .accordion-button {
+                min-height: 60px;
+                font-size: 1.05rem;
+                padding: 15px 20px;
+                border-radius: 10px !important;
+            }
+            
+            /* タイトルの調整 */
+            h1 {
+                font-size: 1.6rem;
+                line-height: 1.3;
+                margin-bottom: 1rem;
+            }
+            
+            h2 {
+                font-size: 1.3rem;
+                line-height: 1.4;
+            }
+            
+            h3 {
+                font-size: 1.15rem;
+                line-height: 1.4;
+                margin-bottom: 1rem;
+            }
+            
+            /* コンテナの調整 */
+            .container {
+                padding-left: 15px;
+                padding-right: 15px;
+            }
+            
+            /* レスポンシブグリッド */
+            .col-md-6 {
+                margin-bottom: 1rem;
+            }
+            
+            /* バッジの最適化 */
+            .badge {
+                font-size: 0.8rem;
+                padding: 8px 14px;
+                border-radius: 20px;
+                margin: 2px;
+            }
+        }
+        
+        /* タブレット用の調整 */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .btn {
+                min-height: 55px;
+                font-size: 1.05rem;
+                padding: 12px 18px;
+            }
+            
+            .form-control, textarea {
+                min-height: 45px;
+                font-size: 0.95rem;
+            }
+        }
+        
+        /* すべてのデバイスでのタッチ改善 */
+        .btn {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.3s ease, height 0.3s ease;
+        }
+        
+        .btn:active::before {
+            width: 300px;
+            height: 300px;
+        }
+        
+        /* アクセシビリティ向上 */
+        .btn:focus, .form-control:focus {
+            box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.25);
+            outline: none;
+        }
+        
+        /* スムーズスクロール */
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        /* タッチフィードバック */
+        .btn, .card, .upload-zone, .uploaded-file {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+        
+        /* ローディング状態の改善 */
+        .btn:disabled {
+            opacity: 0.7;
+            transform: scale(0.98);
+        }
+        
+        .loading {
+            margin-right: 8px;
+        }
+        
+        /* 音声入力機能のスタイル */
+        .voice-btn {
+            min-width: 60px;
+            font-size: 1.2rem;
+            border-left: none;
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+        }
+        
+        .voice-btn.recording {
+            background: #dc3545;
+            color: white;
+            animation: pulse 1s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .voice-indicator {
+            animation: voice-wave 0.8s infinite;
+        }
+        
+        @keyframes voice-wave {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+        
+        .input-group textarea {
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+        
+        /* カメラ機能のスタイル */
+        .camera-preview {
+            max-width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        
+        .camera-controls {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .document-preview {
+            max-width: 100%;
+            max-height: 300px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
     </style>
 </head>
 <body>
@@ -79,6 +365,9 @@
                 <div class="alert alert-info mb-0">
                     <strong>ヒント：</strong> サンプルファイルを使って動作確認できます。エラーが出た場合は下部の「よくある質問（FAQ）」もご覧ください。
                 </div>
+                <div class="alert alert-warning mt-2 mb-0">
+                    <strong>⚠️ 重要：</strong> Web実行環境ではファイルの保存が制限されています。ファイル保存が必要な場合は開発環境（ローカル）で実行してください。
+                </div>
             </div>
 
             <!-- ステップ1: AIプロンプト入力 -->
@@ -90,76 +379,45 @@
                         <p class="mb-2">以下のプロンプトが自動で生成されました。必要に応じて編集してください。</p>
                     </div>
                     
-                    <textarea id="promptInput" class="form-control" rows="8" placeholder="AIプロンプトを入力してください...">{{ tool.ai_prompt or '' }}</textarea>
+                    <div class="input-group">
+                        <textarea id="promptInput" class="form-control" rows="8" placeholder="AIプロンプトを入力してください...">{{ tool.ai_prompt or '' }}</textarea>
+                        <div class="input-group-append">
+                            <button id="voiceBtn" class="btn btn-outline-secondary voice-btn" type="button" title="音声入力">
+                                🎤
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div id="voiceStatus" class="mt-2 text-center" style="display: none;">
+                        <div class="alert alert-info">
+                            <span class="voice-indicator">🎙️</span>
+                            <span id="voiceText">音声を認識中...</span>
+                            <button id="stopVoiceBtn" class="btn btn-sm btn-outline-danger ms-2">停止</button>
+                        </div>
+                    </div>
                     
                     <div class="mt-3">
                         <button id="generateBtn" class="btn btn-primary btn-execute">
                             <span class="spinner-border spinner-border-sm loading" role="status"></span>
                             🤖 AIにコード生成を依頼
                         </button>
+                        <button id="clearBtn" class="btn btn-outline-secondary btn-execute">
+                            🗑️ クリア
+                        </button>
                     </div>
                 </div>
             </div>
 
             <!-- よくある質問（FAQ） -->
-            <div class="step-box mb-4">
-                <h3>❓ よくある質問（FAQ）</h3>
+            <div class="mt-4">
                 <div class="accordion" id="faqAccordion">
                     <div class="accordion-item">
-                        <h2 class="accordion-header" id="faq1">
+                        <h2 class="accordion-header" id="faqHeading1">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse1" aria-expanded="false" aria-controls="faqCollapse1">
-                                Q. ファイルはどこに保存されますか？
+                                ❓ よくある質問（FAQ）
                             </button>
                         </h2>
                         <div id="faqCollapse1" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-                            <div class="accordion-body">
-                                アップロードしたファイルは一時的にサーバー上に保存され、セッション終了時に自動削除されます。個人情報や機密データはアップロードしないでください。
-                            </div>
-                        </div>
-                    </div>
-                    <div class="accordion-item">
-                        <h2 class="accordion-header" id="faq2">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse2" aria-expanded="false" aria-controls="faqCollapse2">
-                                Q. APIキーやパスワードは安全ですか？
-                            </button>
-                        </h2>
-                        <div id="faqCollapse2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-                            <div class="accordion-body">
-                                入力したAPIキーやパスワードはセッション中のみ利用され、サーバーには保存されません。安全のため、不要になったらページを閉じてください。
-                            </div>
-                        </div>
-                    </div>
-                    <div class="accordion-item">
-                        <h2 class="accordion-header" id="faq3">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse3" aria-expanded="false" aria-controls="faqCollapse3">
-                                Q. エラーが出た場合はどうすればいいですか？
-                            </button>
-                        </h2>
-                        <div id="faqCollapse3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-                            <div class="accordion-body">
-                                実行結果エリアのエラーメッセージや、下部の「よくあるエラーと対処法」をご確認ください。解決しない場合は管理者にご相談ください。
-                            </div>
-                        </div>
-                    </div>
-                    <div class="accordion-item">
-                        <h2 class="accordion-header" id="faq4">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse4" aria-expanded="false" aria-controls="faqCollapse4">
-                                Q. どんなデータ形式に対応していますか？
-                            </button>
-                        </h2>
-                        <div id="faqCollapse4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-                            <div class="accordion-body">
-                                CSV、Excel（.xlsx, .xls）、テキスト、画像（jpg, png, gif）、PDFなどに対応しています。ツールによっては特定の形式のみ対応の場合もあります。
-                            </div>
-                        </div>
-                    </div>
-                    <div class="accordion-item">
-                        <h2 class="accordion-header" id="faq5">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse5" aria-expanded="false" aria-controls="faqCollapse5">
-                                Q. よくあるエラーと対処法は？
-                            </button>
-                        </h2>
-                        <div id="faqCollapse5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
                             <div class="accordion-body">
                                 <div class="row">
                                     <div class="col-md-6">
@@ -167,38 +425,60 @@
                                         <ul class="small">
                                             <li><strong>APIキーエラー</strong>: 正しいAPIキーを入力してください</li>
                                             <li><strong>ファイルが見つからない</strong>: ファイルをアップロードしてください</li>
-                                            <li><strong>権限エラー</strong>: 管理者に連絡してください</li>
+                                            <li><strong>メモリ不足</strong>: 大きなファイルは分割して処理してください</li>
                                         </ul>
-                                    </div>
+                            </div>
                                     <div class="col-md-6">
-                                        <h6>💻 コード関連</h6>
+                                        <h6>💻 実行環境</h6>
                                         <ul class="small">
-                                            <li><strong>構文エラー</strong>: コードの文法を確認してください</li>
-                                            <li><strong>タイムアウト</strong>: 処理が重すぎます。データ量を減らしてください</li>
-                                            <li><strong>メモリ不足</strong>: 大きなファイルは分割してください</li>
-                                            <li><strong>ライブラリ不足</strong>: 必要なライブラリがインストールされていません</li>
+                                            <li><strong>ファイル操作エラー</strong>: Web実行ではファイル書き込みが制限されています</li>
+                                            <li><strong>ライブラリ不足</strong>: 必要なライブラリがインストールされていない可能性があります</li>
+                                            <li><strong>タイムアウト</strong>: 長時間の処理は開発環境で実行してください</li>
                                         </ul>
-                                    </div>
-                                </div>
+                        </div>
+                    </div>
+                                
                                 <div class="mt-3">
-                                    <h6>📞 サポート</h6>
-                                    <p class="small mb-0">エラーが解決しない場合は、エラーメッセージをコピーして管理者にお問い合わせください。</p>
-                                </div>
+                                    <h6>📁 ファイル操作について</h6>
+                                    <div class="alert alert-warning">
+                                        <strong>Web実行環境の制限:</strong><br>
+                                        • ファイルの書き込み・保存はできません<br>
+                                        • グラフやCSVファイルの保存は制限されています<br>
+                                        • データベースの作成・更新はできません<br><br>
+                                        <strong>解決策:</strong><br>
+                                        • 開発環境（ローカル）で実行してください<br>
+                                        • 結果は画面に表示されます（ファイル保存はできません）<br>
+                                        • 必要な場合は、表示された結果を手動でコピーしてください
+                        </div>
+                    </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- ステップ2: ファイルアップロード -->
+            <!-- ステップ2: ファイルアップロード・カメラ撮影 -->
             <div class="step-box">
-                <h3>📁 ステップ2: ファイルをアップロード（必要な場合）</h3>
+                <h3>📁 ステップ2: ファイルをアップロード・カメラで撮影（必要な場合）</h3>
                 <div class="mt-3">
                     <div class="alert alert-info">
                         <strong>ファイルが必要な場合：</strong>
-                        <p class="mb-2">この自動化ツールで使用するファイル（CSV、Excel、画像など）をアップロードしてください。</p>
+                        <p class="mb-2">この自動化ツールで使用するファイル（CSV、Excel、画像など）をアップロード、またはカメラで文書を撮影してください。</p>
                     </div>
                     
+                    <!-- アップロード方法選択 -->
+                    <div class="mb-3">
+                        <div class="btn-group w-100" role="group">
+                            <button type="button" class="btn btn-outline-primary active" id="uploadModeBtn">
+                                📁 ファイル選択
+                            </button>
+                            <button type="button" class="btn btn-outline-primary" id="cameraModeBtn">
+                                📷 カメラ撮影
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- ファイルアップロードモード -->
                     <div class="upload-area" id="uploadArea">
                         <div class="upload-zone" id="uploadZone">
                             <i class="fas fa-cloud-upload-alt" style="font-size: 2rem; color: #6c757d;"></i>
@@ -207,6 +487,41 @@
                             <button class="btn btn-outline-primary mt-2" onclick="document.getElementById('fileInput').click()">
                                 📁 ファイルを選択
                             </button>
+                        </div>
+                    </div>
+                    
+                    <!-- カメラ撮影モード -->
+                    <div class="camera-area" id="cameraArea" style="display: none;">
+                        <div class="text-center">
+                            <video id="cameraPreview" class="camera-preview" style="display: none;" autoplay></video>
+                            <canvas id="captureCanvas" style="display: none;"></canvas>
+                            <div id="capturedImage" class="mt-3" style="display: none;">
+                                <img id="documentPreview" class="document-preview" alt="撮影された文書">
+                            </div>
+                            
+                            <div class="camera-controls">
+                                <button id="startCameraBtn" class="btn btn-success">
+                                    📷 カメラを開始
+                                </button>
+                                <button id="captureBtn" class="btn btn-primary" style="display: none;">
+                                    📸 撮影
+                                </button>
+                                <button id="retakeBtn" class="btn btn-warning" style="display: none;">
+                                    🔄 再撮影
+                                </button>
+                                <button id="stopCameraBtn" class="btn btn-secondary" style="display: none;">
+                                    ⏹️ カメラ停止
+                                </button>
+                                <button id="usePhotoBtn" class="btn btn-success" style="display: none;">
+                                    ✅ この写真を使用
+                                </button>
+                            </div>
+                            
+                            <div class="mt-3">
+                                <small class="text-muted">
+                                    💡 ヒント: 文書全体が画面に収まるように撮影し、明るい場所で撮影してください
+                                </small>
+                            </div>
                         </div>
                     </div>
                     
@@ -220,6 +535,35 @@
             <div class="step-box">
                 <h3>⚙️ ステップ3: 設定を入力</h3>
                 <div class="mt-3">
+                    <!-- プリセット選択 -->
+                    <div class="mb-4">
+                        <div class="alert alert-success">
+                            <strong>🚀 クイックスタート：</strong>
+                            <p class="mb-2">よく使う設定をプリセットから選択できます</p>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="presetSelect" class="form-label">📋 プリセット設定</label>
+                            <select id="presetSelect" class="form-control">
+                                <option value="">カスタム設定</option>
+                                <option value="email-basic">📧 メール送信（基本）</option>
+                                <option value="excel-analysis">📊 Excel分析（売上集計）</option>
+                                <option value="file-organizer">📁 ファイル整理（ダウンロード）</option>
+                                <option value="report-generator">📄 レポート生成（月次）</option>
+                                <option value="data-scraping">🕷️ データ収集（EC価格）</option>
+                            </select>
+                        </div>
+                        
+                        <div class="text-center">
+                            <button id="loadPresetBtn" class="btn btn-info" disabled>
+                                ⚡ プリセットを読み込み
+                            </button>
+                            <button id="savePresetBtn" class="btn btn-outline-success">
+                                💾 現在の設定をプリセット保存
+                            </button>
+                        </div>
+                    </div>
+                    
                     <div class="alert alert-warning">
                         <strong>注意：</strong>
                         <p class="mb-2">実際の使用時は、以下の設定を自分の環境に合わせて変更してください。</p>
@@ -681,6 +1025,387 @@ function showAlert(type, message) {
 document.addEventListener('DOMContentLoaded', function() {
     generateConfigFields();
     updateUploadedFilesList();
+    initializeVoiceInput();
+    initializeCameraFeature();
+    initializePresets();
+    initializePWA();
+});
+
+// 音声入力機能
+let recognition = null;
+let isRecording = false;
+
+function initializeVoiceInput() {
+    if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+        document.getElementById('voiceBtn').style.display = 'none';
+        return;
+    }
+    
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    recognition = new SpeechRecognition();
+    
+    recognition.lang = 'ja-JP';
+    recognition.continuous = true;
+    recognition.interimResults = true;
+    
+    const voiceBtn = document.getElementById('voiceBtn');
+    const voiceStatus = document.getElementById('voiceStatus');
+    const voiceText = document.getElementById('voiceText');
+    const stopVoiceBtn = document.getElementById('stopVoiceBtn');
+    const promptInput = document.getElementById('promptInput');
+    
+    voiceBtn.addEventListener('click', startVoiceInput);
+    stopVoiceBtn.addEventListener('click', stopVoiceInput);
+    
+    recognition.onstart = () => {
+        isRecording = true;
+        voiceBtn.classList.add('recording');
+        voiceStatus.style.display = 'block';
+        voiceText.textContent = '音声を認識中...';
+    };
+    
+    recognition.onresult = (event) => {
+        let finalTranscript = '';
+        let interimTranscript = '';
+        
+        for (let i = event.resultIndex; i < event.results.length; i++) {
+            const transcript = event.results[i][0].transcript;
+            if (event.results[i].isFinal) {
+                finalTranscript += transcript;
+            } else {
+                interimTranscript += transcript;
+            }
+        }
+        
+        if (finalTranscript) {
+            const currentText = promptInput.value;
+            promptInput.value = currentText + (currentText ? ' ' : '') + finalTranscript;
+        }
+        
+        voiceText.textContent = interimTranscript || '音声を認識中...';
+    };
+    
+    recognition.onerror = (event) => {
+        console.error('音声認識エラー:', event.error);
+        voiceText.textContent = 'エラーが発生しました: ' + event.error;
+        setTimeout(stopVoiceInput, 2000);
+    };
+    
+    recognition.onend = () => {
+        stopVoiceInput();
+    };
+}
+
+function startVoiceInput() {
+    if (recognition && !isRecording) {
+        recognition.start();
+    }
+}
+
+function stopVoiceInput() {
+    if (recognition && isRecording) {
+        recognition.stop();
+        isRecording = false;
+        document.getElementById('voiceBtn').classList.remove('recording');
+        document.getElementById('voiceStatus').style.display = 'none';
+    }
+}
+
+// カメラ機能
+let currentStream = null;
+
+function initializeCameraFeature() {
+    const uploadModeBtn = document.getElementById('uploadModeBtn');
+    const cameraModeBtn = document.getElementById('cameraModeBtn');
+    const uploadArea = document.getElementById('uploadArea');
+    const cameraArea = document.getElementById('cameraArea');
+    const startCameraBtn = document.getElementById('startCameraBtn');
+    const captureBtn = document.getElementById('captureBtn');
+    const retakeBtn = document.getElementById('retakeBtn');
+    const stopCameraBtn = document.getElementById('stopCameraBtn');
+    const usePhotoBtn = document.getElementById('usePhotoBtn');
+    const cameraPreview = document.getElementById('cameraPreview');
+    const captureCanvas = document.getElementById('captureCanvas');
+    const documentPreview = document.getElementById('documentPreview');
+    const capturedImage = document.getElementById('capturedImage');
+    
+    // モード切り替え
+    uploadModeBtn.addEventListener('click', () => {
+        uploadModeBtn.classList.add('active');
+        cameraModeBtn.classList.remove('active');
+        uploadArea.style.display = 'block';
+        cameraArea.style.display = 'none';
+        stopCamera();
+    });
+    
+    cameraModeBtn.addEventListener('click', () => {
+        cameraModeBtn.classList.add('active');
+        uploadModeBtn.classList.remove('active');
+        uploadArea.style.display = 'none';
+        cameraArea.style.display = 'block';
+    });
+    
+    // カメラ制御
+    startCameraBtn.addEventListener('click', startCamera);
+    captureBtn.addEventListener('click', capturePhoto);
+    retakeBtn.addEventListener('click', retakePhoto);
+    stopCameraBtn.addEventListener('click', stopCamera);
+    usePhotoBtn.addEventListener('click', useCurrentPhoto);
+}
+
+async function startCamera() {
+    try {
+        const constraints = {
+            video: {
+                facingMode: 'environment', // 背面カメラを優先
+                width: { ideal: 1920 },
+                height: { ideal: 1080 }
+            }
+        };
+        
+        currentStream = await navigator.mediaDevices.getUserMedia(constraints);
+        const cameraPreview = document.getElementById('cameraPreview');
+        const startCameraBtn = document.getElementById('startCameraBtn');
+        const captureBtn = document.getElementById('captureBtn');
+        const stopCameraBtn = document.getElementById('stopCameraBtn');
+        
+        cameraPreview.srcObject = currentStream;
+        cameraPreview.style.display = 'block';
+        startCameraBtn.style.display = 'none';
+        captureBtn.style.display = 'inline-block';
+        stopCameraBtn.style.display = 'inline-block';
+        
+    } catch (error) {
+        console.error('カメラアクセスエラー:', error);
+        alert('カメラにアクセスできませんでした。ブラウザの設定を確認してください。');
+    }
+}
+
+function capturePhoto() {
+    const cameraPreview = document.getElementById('cameraPreview');
+    const captureCanvas = document.getElementById('captureCanvas');
+    const documentPreview = document.getElementById('documentPreview');
+    const capturedImage = document.getElementById('capturedImage');
+    const captureBtn = document.getElementById('captureBtn');
+    const retakeBtn = document.getElementById('retakeBtn');
+    const usePhotoBtn = document.getElementById('usePhotoBtn');
+    
+    const context = captureCanvas.getContext('2d');
+    captureCanvas.width = cameraPreview.videoWidth;
+    captureCanvas.height = cameraPreview.videoHeight;
+    
+    context.drawImage(cameraPreview, 0, 0);
+    
+    const imageDataUrl = captureCanvas.toDataURL('image/jpeg', 0.8);
+    documentPreview.src = imageDataUrl;
+    
+    cameraPreview.style.display = 'none';
+    capturedImage.style.display = 'block';
+    captureBtn.style.display = 'none';
+    retakeBtn.style.display = 'inline-block';
+    usePhotoBtn.style.display = 'inline-block';
+}
+
+function retakePhoto() {
+    const cameraPreview = document.getElementById('cameraPreview');
+    const capturedImage = document.getElementById('capturedImage');
+    const captureBtn = document.getElementById('captureBtn');
+    const retakeBtn = document.getElementById('retakeBtn');
+    const usePhotoBtn = document.getElementById('usePhotoBtn');
+    
+    cameraPreview.style.display = 'block';
+    capturedImage.style.display = 'none';
+    captureBtn.style.display = 'inline-block';
+    retakeBtn.style.display = 'none';
+    usePhotoBtn.style.display = 'none';
+}
+
+function stopCamera() {
+    if (currentStream) {
+        currentStream.getTracks().forEach(track => track.stop());
+        currentStream = null;
+    }
+    
+    const cameraPreview = document.getElementById('cameraPreview');
+    const capturedImage = document.getElementById('capturedImage');
+    const startCameraBtn = document.getElementById('startCameraBtn');
+    const captureBtn = document.getElementById('captureBtn');
+    const retakeBtn = document.getElementById('retakeBtn');
+    const stopCameraBtn = document.getElementById('stopCameraBtn');
+    const usePhotoBtn = document.getElementById('usePhotoBtn');
+    
+    cameraPreview.style.display = 'none';
+    capturedImage.style.display = 'none';
+    startCameraBtn.style.display = 'inline-block';
+    captureBtn.style.display = 'none';
+    retakeBtn.style.display = 'none';
+    stopCameraBtn.style.display = 'none';
+    usePhotoBtn.style.display = 'none';
+}
+
+async function useCurrentPhoto() {
+    const captureCanvas = document.getElementById('captureCanvas');
+    
+    try {
+        // Canvas を Blob に変換
+        captureCanvas.toBlob(async (blob) => {
+            const file = new File([blob], 'camera-capture.jpg', { type: 'image/jpeg' });
+            
+            // ファイルアップロード処理
+            const formData = new FormData();
+            formData.append('file', file);
+            
+            const response = await fetch('/api/upload-file', {
+                method: 'POST',
+                body: formData
+            });
+            
+            const data = await response.json();
+            
+            if (data.success) {
+                uploadedFiles.push({
+                    id: data.file_id,
+                    filename: data.filename
+                });
+                updateUploadedFilesList();
+                showAlert('success', '📷 写真をアップロードしました');
+                
+                // カメラモードからアップロードモードに切り替え
+                document.getElementById('uploadModeBtn').click();
+            } else {
+                showAlert('danger', data.error);
+            }
+        }, 'image/jpeg', 0.8);
+        
+    } catch (error) {
+        console.error('写真アップロードエラー:', error);
+        showAlert('danger', '写真のアップロードに失敗しました');
+    }
+}
+
+// プリセット機能
+const presets = {
+    'email-basic': {
+        sender_email: 'your-email@gmail.com',
+        receiver_email: 'recipient@example.com',
+        subject: '自動送信メール',
+        message: 'これは自動で送信されたメールです。',
+        apiKey: '',
+        email: 'your-email@gmail.com'
+    },
+    'excel-analysis': {
+        input_file: 'sales_data.xlsx',
+        output_file: 'analysis_result.xlsx',
+        target_column: '売上',
+        apiKey: '',
+        email: 'report@company.com'
+    },
+    'file-organizer': {
+        folder_path: 'C:/Users/YourName/Downloads',
+        apiKey: '',
+        email: 'admin@company.com'
+    },
+    'report-generator': {
+        report_type: '月次レポート',
+        output_format: 'PDF',
+        apiKey: '',
+        email: 'manager@company.com'
+    },
+    'data-scraping': {
+        target_url: 'https://example-shop.com',
+        search_keyword: '商品名',
+        apiKey: '',
+        email: 'data@company.com'
+    }
+};
+
+function initializePresets() {
+    const presetSelect = document.getElementById('presetSelect');
+    const loadPresetBtn = document.getElementById('loadPresetBtn');
+    const savePresetBtn = document.getElementById('savePresetBtn');
+    
+    presetSelect.addEventListener('change', () => {
+        loadPresetBtn.disabled = !presetSelect.value;
+    });
+    
+    loadPresetBtn.addEventListener('click', loadPreset);
+    savePresetBtn.addEventListener('click', savePreset);
+}
+
+function loadPreset() {
+    const presetSelect = document.getElementById('presetSelect');
+    const selectedPreset = presetSelect.value;
+    
+    if (!selectedPreset || !presets[selectedPreset]) {
+        return;
+    }
+    
+    const presetData = presets[selectedPreset];
+    
+    // 各フィールドに値を設定
+    Object.entries(presetData).forEach(([key, value]) => {
+        const field = document.getElementById(key);
+        if (field) {
+            field.value = value;
+        }
+    });
+    
+    showAlert('success', '✅ プリセット設定を読み込みました');
+}
+
+function savePreset() {
+    const presetName = prompt('プリセット名を入力してください:');
+    if (!presetName) return;
+    
+    const configData = {};
+    const configForm = document.getElementById('configForm');
+    const inputs = configForm.querySelectorAll('input, textarea, select');
+    
+    inputs.forEach(input => {
+        configData[input.id] = input.value;
+    });
+    
+    // 基本設定も含める
+    configData.apiKey = document.getElementById('apiKey').value;
+    configData.email = document.getElementById('email').value;
+    configData.customSettings = document.getElementById('customSettings').value;
+    
+    // LocalStorageに保存
+    const savedPresets = JSON.parse(localStorage.getItem('userPresets') || '{}');
+    savedPresets[presetName] = configData;
+    localStorage.setItem('userPresets', JSON.stringify(savedPresets));
+    
+    // セレクトボックスに追加
+    const presetSelect = document.getElementById('presetSelect');
+    const option = document.createElement('option');
+    option.value = presetName;
+    option.textContent = `💾 ${presetName}（保存済み）`;
+    presetSelect.appendChild(option);
+    
+    showAlert('success', `💾 プリセット「${presetName}」を保存しました`);
+}
+
+// PWA機能
+function initializePWA() {
+    // Service Worker登録
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/static/sw.js')
+                .then((registration) => {
+                    console.log('SW registered: ', registration);
+                })
+                .catch((registrationError) => {
+                    console.log('SW registration failed: ', registrationError);
+                });
+        });
+    }
+}
+
+// クリアボタン機能
+document.getElementById('clearBtn').addEventListener('click', function() {
+    if (confirm('プロンプトをクリアしますか？')) {
+        document.getElementById('promptInput').value = '';
+    }
 });
 </script>
 </body>

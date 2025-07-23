@@ -14,6 +14,273 @@
         .step-dot.completed { background: #28a745; color: white; }
         .step-line { width: 60px; height: 3px; background: #e9ecef; margin: 18px 0; }
         .step-line.completed { background: #28a745; }
+        
+        /* モバイルファーストのタッチ最適化 */
+        @media (max-width: 768px) {
+            /* モバイル用の大きなボタン */
+            .btn {
+                min-height: 60px;
+                font-size: 1.1rem;
+                padding: 15px 20px;
+                border-radius: 12px;
+                font-weight: 600;
+                touch-action: manipulation;
+                -webkit-tap-highlight-color: transparent;
+                margin: 8px 4px;
+            }
+            
+            .btn-lg {
+                min-height: 70px;
+                font-size: 1.3rem;
+                padding: 20px 25px;
+            }
+            
+            /* ウィザードステップの最適化 */
+            .wizard-step {
+                padding: 25px 20px;
+                margin: 15px 0;
+                border-radius: 20px;
+                box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+            }
+            
+            /* ステップインジケーターの最適化 */
+            .step-indicator {
+                margin-bottom: 25px;
+                overflow-x: auto;
+                padding: 10px 0;
+            }
+            
+            .step-dot {
+                width: 50px;
+                height: 50px;
+                margin: 0 8px;
+                font-size: 1.1rem;
+                font-weight: 700;
+                flex-shrink: 0;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+                transition: all 0.3s ease;
+            }
+            
+            .step-dot.active {
+                transform: scale(1.1);
+                box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
+            }
+            
+            .step-dot.completed {
+                box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+            }
+            
+            .step-line {
+                width: 40px;
+                height: 4px;
+                margin: 23px 0;
+                border-radius: 2px;
+                flex-shrink: 0;
+            }
+            
+            /* フォーム要素のタッチ最適化 */
+            .form-control, textarea, select {
+                min-height: 50px;
+                font-size: 1rem;
+                padding: 15px;
+                border-radius: 10px;
+                border: 2px solid #dee2e6;
+                transition: all 0.3s ease;
+            }
+            
+            .form-control:focus, textarea:focus, select:focus {
+                border-color: #007bff;
+                box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.25);
+                transform: scale(1.02);
+            }
+            
+            textarea {
+                min-height: 120px;
+                resize: vertical;
+            }
+            
+            /* ラベルの最適化 */
+            .form-label {
+                font-size: 1.05rem;
+                font-weight: 600;
+                margin-bottom: 8px;
+                color: #495057;
+            }
+            
+            /* チェックボックスの最適化 */
+            .form-check {
+                min-height: 50px;
+                display: flex;
+                align-items: center;
+                padding: 10px 15px;
+                border: 2px solid #dee2e6;
+                border-radius: 10px;
+                margin-bottom: 10px;
+                transition: all 0.3s ease;
+            }
+            
+            .form-check:hover {
+                border-color: #007bff;
+                background-color: #f8f9ff;
+            }
+            
+            .form-check-input {
+                width: 20px;
+                height: 20px;
+                margin-right: 12px;
+            }
+            
+            .form-check-label {
+                font-size: 1rem;
+                cursor: pointer;
+                flex: 1;
+            }
+            
+            /* カードの最適化 */
+            .card {
+                border-radius: 15px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+                margin-bottom: 20px;
+                border: none;
+            }
+            
+            .card-body {
+                padding: 1.5rem;
+            }
+            
+            /* タイトルの調整 */
+            h1 {
+                font-size: 1.6rem;
+                line-height: 1.3;
+                margin-bottom: 1rem;
+            }
+            
+            h2 {
+                font-size: 1.3rem;
+                line-height: 1.4;
+            }
+            
+            h3 {
+                font-size: 1.15rem;
+                line-height: 1.4;
+                margin-bottom: 1rem;
+            }
+            
+            h4 {
+                font-size: 1.1rem;
+                line-height: 1.4;
+            }
+            
+            /* コンテナの調整 */
+            .container {
+                padding-left: 15px;
+                padding-right: 15px;
+            }
+            
+            /* バッジの最適化 */
+            .badge {
+                font-size: 0.8rem;
+                padding: 8px 14px;
+                border-radius: 20px;
+                margin: 2px;
+            }
+            
+            /* テキストの調整 */
+            .text-muted {
+                font-size: 0.95rem;
+                line-height: 1.5;
+            }
+            
+            /* アイコンの最適化 */
+            .fas, .far {
+                font-size: 1.2rem;
+            }
+        }
+        
+        /* タブレット用の調整 */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .btn {
+                min-height: 55px;
+                font-size: 1.05rem;
+                padding: 12px 18px;
+            }
+            
+            .form-control, textarea {
+                min-height: 45px;
+                font-size: 0.95rem;
+            }
+            
+            .step-dot {
+                width: 45px;
+                height: 45px;
+            }
+        }
+        
+        /* すべてのデバイスでのタッチ改善 */
+        .btn {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.3s ease, height 0.3s ease;
+        }
+        
+        .btn:active::before {
+            width: 300px;
+            height: 300px;
+        }
+        
+        /* アクセシビリティ向上 */
+        .btn:focus, .form-control:focus {
+            box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.25);
+            outline: none;
+        }
+        
+        /* スムーズスクロール */
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        /* タッチフィードバック */
+        .btn, .card, .form-check, .step-dot {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+        
+        /* ローディング状態の改善 */
+        .btn:disabled {
+            opacity: 0.7;
+            transform: scale(0.98);
+        }
+        
+        /* アニメーション改善 */
+        .wizard-step {
+            animation: slideIn 0.3s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
     </style>
 </head>
 <body>
