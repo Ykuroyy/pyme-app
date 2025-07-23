@@ -1193,6 +1193,46 @@ def create_custom_automation_from_request(request_text, user_profile):
         'created_at': datetime.now().isoformat()
     }
 
+def initialize_database():
+    """データベースの初期化（テーブル作成とデータ投入）"""
+    with app.app_context():
+        try:
+            # テーブルを作成
+            db.create_all()
+            logger.info("Database tables created successfully")
+            
+            # ツールデータが存在しない場合のみ初期データを投入
+            if Tool.query.count() == 0:
+                logger.info("No tools found in database, initializing with default data...")
+                for tool_data in EXTRA_TOOLS:
+                    tool = Tool(
+                        category=tool_data['category'],
+                        number=tool_data['number'],
+                        title=tool_data['title'],
+                        desc=tool_data['desc'],
+                        how_to=tool_data['how_to'],
+                        sample_code=tool_data['sample_code'],
+                        libraries=tool_data['libraries'],
+                        explanation=tool_data['explanation'],
+                        benefits=tool_data.get('benefits', []),
+                        time_required=tool_data.get('time_required'),
+                        difficulty=tool_data.get('difficulty'),
+                        ai_prompt=tool_data.get('ai_prompt')
+                    )
+                    db.session.add(tool)
+                
+                db.session.commit()
+                logger.info(f"Successfully added {len(EXTRA_TOOLS)} tools to database")
+            else:
+                logger.info(f"Database already contains {Tool.query.count()} tools")
+                
+        except Exception as e:
+            logger.error(f"Database initialization error: {e}")
+            db.session.rollback()
+
+# アプリケーション起動時にデータベースを初期化
+initialize_database()
+
 if __name__ == '__main__':
     try:
         port = int(os.environ.get('PORT', 8000))
