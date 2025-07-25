@@ -195,33 +195,7 @@ file_data = pd.DataFrame({
     '重要度': ['高', '中', '低', '高', '中']
 })"""
 
-    code = f"""print('=== {tool_def['title']}システム ===')
-
-import pandas as pd
-import numpy as np
-from datetime import datetime
-{dummy_data}
-
-# 基本的な分析処理
-data = {dummy_data.split('=')[1].strip()}
-print('📊 {tool_def['desc']}の処理結果:')
-print(data.to_string(index=False))
-
-# 統計情報の計算
-print(f'\\\\n📈 分析結果サマリー:')
-print(f'・処理件数: {{len(data)}}件')
-
-# 数値カラムがある場合の統計
-numeric_columns = data.select_dtypes(include=[np.number]).columns
-if len(numeric_columns) > 0:
-    first_numeric = numeric_columns[0]
-    print(f'・{first_numeric}の平均: {{data[first_numeric].mean():.0f}}')
-    print(f'・{first_numeric}の最大: {{data[first_numeric].max()}}')
-    print(f'・{first_numeric}の合計: {{data[first_numeric].sum():,}}')
-
-print(f'・処理完了時刻: {{datetime.now().strftime(\"%Y-%m-%d %H:%M:%S\")}}')
-print('💡 実際に使う場合は、このダミーデータを実際のデータに変更してください')
-print('=== {tool_def['title']}処理完了 ===')"""
+    code = "print('=== " + tool_def['title'] + "システム ===')\\n\\nimport pandas as pd\\nimport numpy as np\\nfrom datetime import datetime\\n" + dummy_data + "\\n\\n# 基本的な分析処理\\ndata = " + dummy_data.split('=')[1].strip() + "\\nprint('📊 " + tool_def['desc'] + "の処理結果:')\\nprint(data.to_string(index=False))\\n\\n# 統計情報の計算\\nprint('\\\\n📈 分析結果サマリー:')\\nprint(f'・処理件数: {len(data)}件')\\n\\n# 数値カラムがある場合の統計\\nnumeric_columns = data.select_dtypes(include=[np.number]).columns\\nif len(numeric_columns) > 0:\\n    first_numeric = numeric_columns[0]\\n    print(f'・{first_numeric}の平均: {data[first_numeric].mean():.0f}')\\n    print(f'・{first_numeric}の最大: {data[first_numeric].max()}')\\n    print(f'・{first_numeric}の合計: {data[first_numeric].sum():,}')\\n\\nprint(f'・処理完了時刻: {datetime.now().strftime(\\\"%Y-%m-%d %H:%M:%S\\\")}')\\nprint('💡 実際に使う場合は、このダミーデータを実際のデータに変更してください')\\nprint('=== " + tool_def['title'] + "処理完了 ===')"
 
     return code.replace('\n', '\\n').replace("'", "\\'")
 
