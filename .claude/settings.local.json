@@ -6,7 +6,9 @@
       "Bash(chmod:*)",
       "Bash(python:*)",
       "Bash(grep:*)",
-      "Bash(touch:*)"
+      "Bash(touch:*)",
+      "Bash(cp:*)",
+      "Bash(mv:*)"
     ],
     "deny": []
   }
