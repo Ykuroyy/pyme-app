@@ -5,7 +5,8 @@
       "Bash(curl:*)",
       "Bash(chmod:*)",
       "Bash(python:*)",
-      "Bash(grep:*)"
+      "Bash(grep:*)",
+      "Bash(touch:*)"
     ],
     "deny": []
   }
