@@ -198,7 +198,7 @@ for tool_def in tool_definitions:
     else:
         # デフォルトの実装
         how_to = f"{tool_def['desc']}を実現するシステムです。データの収集、処理、分析、結果出力を自動化します。"
-        sample_code = f"import pandas as pd\\nimport numpy as np\\nfrom datetime import datetime\\n\\nprint('=== {tool_def['title']} ===')\\n\\n# {tool_def['desc']}のサンプル処理\\ndata = pd.DataFrame({{'項目': ['A', 'B', 'C'], '値': [100, 200, 300]}})\\nresult = data['値'].sum()\\n\\nprint('処理結果:')\\nprint(data)\\nprint(f'合計: {result}')\\nprint(f'=== {tool_def['title']}完了 ===')"
+        sample_code = "import pandas as pd\\nimport numpy as np\\nfrom datetime import datetime\\n\\nprint('=== " + tool_def['title'] + " ===')\\n\\n# " + tool_def['desc'] + "のサンプル処理\\ndata = pd.DataFrame({'項目': ['A', 'B', 'C'], '値': [100, 200, 300]})\\nresult = data['値'].sum()\\n\\nprint('処理結果:')\\nprint(data)\\nprint(f'合計: {result}')\\nprint('=== " + tool_def['title'] + "完了 ===')"
         libraries = "pandas、numpy、datetime（標準ライブラリ）"
     
     tool = {
